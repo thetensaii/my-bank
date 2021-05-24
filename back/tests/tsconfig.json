@@ -1,0 +1,11 @@
+// Ce fichier a été créé pour régler un problème lié a ESLint sur VSCode et le dossier de test de TS
+// VSCode ne reconnaissait pas la librairie mocha
+// Post avec la réponse : https://stackoverflow.com/questions/60943069/vscode-ts-language-features-unavailable-when-tests-are-not-included-in-the-ts
+
+{
+    "extends": "../tsconfig.json",
+    "include": [
+        "./**/*.spec.ts"
+    ]
+}
+
