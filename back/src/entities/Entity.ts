@@ -13,6 +13,10 @@ export class Entity {
     private _updated_at : Date|null;
 
     constructor(entity:EntityConfig){
+        if (this.constructor == Entity) {
+            throw new Error("Abstract classes can't be instantiated.");
+        }
+
         this._id = entity.id || null;
         this._created_at = entity.created_at || null;
         this._updated_at = entity.updated_at || null;

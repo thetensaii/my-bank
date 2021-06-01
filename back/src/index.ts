@@ -3,6 +3,7 @@ import express from "express";
 import Container from "typedi";
 import UserModel from "./models/User";
 import {UserEntity} from "./entities/User";
+import {Entity} from "./entities/Entity"
 import faker from "faker/locale/fr"
 import config from "./config"
 import MySQLDatabase from "./core/MySQLDatabase";
@@ -38,6 +39,9 @@ const main = async () => {
 
     userEntity = await factory.UserModel.getByID(userID);
     console.log(userEntity);
+    let e = {
+        id : 15
+    }
 }  
 
 main();
