@@ -19,5 +19,6 @@ else {
 }
 exports.default = {
     "DB": DB,
+    "SALT": process.env.SALT,
     "SALT_ROUNDS": process.env.SALT_ROUNDS || 0
 };

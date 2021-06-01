@@ -1,16 +1,15 @@
-export type UserConfig = {
-    id?: number,
+import {EntityConfig, Entity} from "./Entity"
+
+export interface UserConfig extends EntityConfig{
     login: string,
     firstname: string,
     lastname: string,
     email: string,
     password: string,
-    created_at?:Date,
-    updated_at?:Date
+    is_admin?:boolean
 }
 
-export class UserEntity{
-    private _id: number|null;
+export class UserEntity extends Entity{
 
     private _login: string;
 
@@ -22,27 +21,17 @@ export class UserEntity{
 
     private _password: string;
 
-    private _created_at : Date|null;
-    private _updated_at : Date|null;
-
+    private _is_admin:boolean;
     constructor(user:UserConfig){
-        this._id = user.id||null;
+        super(user);
         this._login = user.login;
         this._firstname = user.firstname;
         this._lastname = user.lastname;
         this._email = user.email;
         this._password = user.password;
-        this._created_at = user.created_at||null;
-        this._updated_at = user.updated_at||null;
+        this._is_admin = Boolean(user.is_admin) || false;
     }
 
-    get id() : number|null{
-        return this._id;
-    }
-
-    set id(value: number|null){
-        this._id = value;
-    }
 
     get login():string{
         return this._login;
@@ -84,11 +73,11 @@ export class UserEntity{
         this._password = value;
     }
 
-    get created_at():Date|null{
-        return this._created_at;
+    get is_admin():boolean{
+        return this._is_admin;
     }
 
-    get updated_at():Date|null{
-        return this._updated_at;
+    set is_admin(value:boolean){
+        this._is_admin = Boolean(value);
     }
 }

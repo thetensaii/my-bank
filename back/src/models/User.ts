@@ -48,13 +48,13 @@ export default class UserModel{
     async add(user:UserEntity): Promise<number> {
         let result = await this.connection.then(conn => {
             return conn.query("INSERT INTO users\
-                    (login, firstname, lastname, email, password)\
-                    VALUES (?, ?, ?, ?, ?);",
-                [user.login, user.firstname, user.lastname, user.email, user.password]);
+                    (login, firstname, lastname, email, password, is_admin)\
+                    VALUES (?, ?, ?, ?, ?, ?);",
+                [user.login, user.firstname, user.lastname, user.email, user.password, user.is_admin]);
         });
 
         return result.insertId;
-    }
+    } 
 
     async set(user:UserEntity): Promise<boolean>{
         await this.connection.then( conn => {
@@ -63,9 +63,10 @@ export default class UserModel{
                                 firstname = ?,\
                                 lastname = ?,\
                                 email = ?,\
-                                password = ?\
+                                password = ?,\
+                                is_admin = ?\
                                 WHERE id = ?;",
-                            [user.login, user.firstname, user.lastname, user.email, user.password, user.id]);
+                            [user.login, user.firstname, user.lastname, user.email, user.password, user.is_admin, user.id]);
         });
 
         return true;

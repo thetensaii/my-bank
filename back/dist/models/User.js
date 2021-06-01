@@ -37,8 +37,8 @@ class UserModel {
     async add(user) {
         let result = await this.connection.then(conn => {
             return conn.query("INSERT INTO users\
-                    (login, firstname, lastname, email, password)\
-                    VALUES (?, ?, ?, ?, ?);", [user.login, user.firstname, user.lastname, user.email, user.password]);
+                    (login, firstname, lastname, email, password, is_admin)\
+                    VALUES (?, ?, ?, ?, ?, ?);", [user.login, user.firstname, user.lastname, user.email, user.password, user.is_admin]);
         });
         return result.insertId;
     }
@@ -49,8 +49,9 @@ class UserModel {
                                 firstname = ?,\
                                 lastname = ?,\
                                 email = ?,\
-                                password = ?\
-                                WHERE id = ?;", [user.login, user.firstname, user.lastname, user.email, user.password, user.id]);
+                                password = ?,\
+                                is_admin = ?\
+                                WHERE id = ?;", [user.login, user.firstname, user.lastname, user.email, user.password, user.is_admin, user.id]);
         });
         return true;
     }

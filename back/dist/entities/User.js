@@ -9,6 +9,7 @@ class UserEntity {
         this._lastname = user.lastname;
         this._email = user.email;
         this._password = user.password;
+        this._is_admin = user.is_admin || false;
         this._created_at = user.created_at || null;
         this._updated_at = user.updated_at || null;
     }
@@ -47,6 +48,12 @@ class UserEntity {
     }
     set password(value) {
         this._password = value;
+    }
+    get is_admin() {
+        return this._is_admin;
+    }
+    set is_admin(value) {
+        this._is_admin = value;
     }
     get created_at() {
         return this._created_at;

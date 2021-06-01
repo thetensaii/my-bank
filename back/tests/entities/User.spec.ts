@@ -20,6 +20,7 @@ describe("UserEntity test", () => {
         expect(userEntity.lastname).to.equal(user.lastname);
         expect(userEntity.email).to.equal(user.email);
         expect(userEntity.password).to.equal(user.password);
+        expect(userEntity.is_admin).to.be.false;
         expect(userEntity.created_at).to.be.null;
         expect(userEntity.updated_at).to.be.null;
     });
@@ -32,6 +33,7 @@ describe("UserEntity test", () => {
             lastname: faker.name.lastName(),
             email: faker.internet.email(),
             password: faker.internet.password(),
+            is_admin: Boolean(Math.round(Math.random())),
             created_at: faker.date.soon(),
             updated_at: faker.date.future()
         }
@@ -45,6 +47,7 @@ describe("UserEntity test", () => {
         expect(userEntity.lastname).to.equal(user.lastname);
         expect(userEntity.email).to.equal(user.email);
         expect(userEntity.password).to.equal(user.password);
+        expect(userEntity.is_admin).to.equal(user.is_admin);
         expect(userEntity.created_at).to.equal(user.created_at);
         expect(userEntity.updated_at).to.equal(user.updated_at);
     });
@@ -68,6 +71,7 @@ describe("UserEntity test", () => {
         expect(userEntity.lastname).to.equal(user.lastname);
         expect(userEntity.email).to.equal(user.email);
         expect(userEntity.password).to.equal(user.password);
+        expect(userEntity.is_admin).to.be.false;
         expect(userEntity.created_at).to.equal(user.created_at);
         expect(userEntity.updated_at).to.be.null;
     });
@@ -81,6 +85,7 @@ describe("UserEntity test", () => {
             lastname: faker.name.lastName(),
             email: faker.internet.email(),
             password: faker.internet.password(),
+            is_admin: Boolean(Math.round(Math.random())),
             created_at: faker.date.soon()
         }
 
@@ -91,7 +96,8 @@ describe("UserEntity test", () => {
             login: faker.internet.userName(),
             firstname : faker.name.firstName(),
             lastname: faker.name.lastName(),
-            email: faker.internet.email()
+            email: faker.internet.email(),
+            is_admin: Boolean(Math.round(Math.random()))
         }
 
         userEntity.id = newUser.id;
@@ -99,6 +105,7 @@ describe("UserEntity test", () => {
         userEntity.firstname = newUser.firstname;
         userEntity.lastname = newUser.lastname;
         userEntity.email = newUser.email;
+        userEntity.is_admin = newUser.is_admin;
         
         expect(userEntity.id).to.equal(newUser.id);
         expect(userEntity.login).to.equal(newUser.login);
@@ -106,6 +113,7 @@ describe("UserEntity test", () => {
         expect(userEntity.lastname).to.equal(newUser.lastname);
         expect(userEntity.email).to.equal(newUser.email);
         expect(userEntity.password).to.equal(user.password);
+        expect(userEntity.is_admin).to.equal(newUser.is_admin);
         expect(userEntity.created_at).to.equal(user.created_at);
         expect(userEntity.updated_at).to.be.null;
     });

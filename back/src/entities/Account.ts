@@ -1,40 +1,25 @@
-export type AccountConfig = {
-    id?: number,
+import {EntityConfig, Entity} from "./Entity"
+
+export interface AccountConfig  extends EntityConfig{
     user_id:number,
     name:string,
-    balance:number,
-    created_at?:Date,
-    updated_at?:Date
+    balance:number
 }
 
-export class AccountEntity {
+export class AccountEntity extends Entity{
 
-    private _id: number|null;
     private _user_id: number;
 
     private _name: string;
 
     private _balance: number;
 
-    private _created_at : Date|null;
-
-    private _updated_at : Date|null;
 
     constructor(account:AccountConfig){
-        this._id = account.id||null;
+        super(account);
         this._user_id = account.user_id;
         this._name = account.name;
         this._balance = account.balance;
-        this._created_at = account.created_at||null;
-        this._updated_at = account.updated_at||null;
-    }
-
-    get id() : number|null{
-        return this._id;
-    }
-
-    set id(value: number|null){
-        this._id = value;
     }
 
     get user_id() : number{
@@ -61,11 +46,4 @@ export class AccountEntity {
         this._balance = value;
     }
 
-    get created_at():Date|null{
-        return this._created_at;
-    }
-
-    get updated_at():Date|null{
-        return this._updated_at;
-    }
 }

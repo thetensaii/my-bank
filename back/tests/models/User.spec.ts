@@ -19,7 +19,8 @@ describe("UserModel test", () => {
                 firstname : faker.name.firstName(),
                 lastname: faker.name.lastName(),
                 email: faker.internet.email(),
-                password: faker.internet.password()
+                password: faker.internet.password(),
+                is_admin: Boolean(Math.round(Math.random()))
             });
         }
 
@@ -83,6 +84,7 @@ describe("UserModel test", () => {
         expect(userEntity!.lastname).to.be.equal(user.lastname);
         expect(userEntity!.email).to.be.equal(user.email);
         expect(userEntity!.password).to.be.equal(user.password);
+        expect(userEntity!.is_admin).to.be.equal(user.is_admin);
         expect(userEntity!.created_at).to.be.a("Date");
         expect(userEntity!.updated_at).to.be.null;
         
@@ -107,6 +109,7 @@ describe("UserModel test", () => {
         expect(userEntity!.lastname).to.be.equal(user.lastname);
         expect(userEntity!.email).to.be.equal(user.email);
         expect(userEntity!.password).to.be.equal(user.password);
+        expect(userEntity!.is_admin).to.be.equal(user.is_admin);
         expect(userEntity!.created_at).to.be.a("Date");
         expect(userEntity!.updated_at).to.be.null;
         
@@ -143,7 +146,8 @@ describe("UserModel test", () => {
         expect(userEntity!.firstname).to.be.equal(setUser.firstname);
         expect(userEntity!.lastname).to.be.equal(setUser.lastname);
         expect(userEntity!.email).to.be.equal(setUser.email);
-        expect(userEntity!.password).to.be.equal(users[i].password);
+        expect(userEntity!.password).to.be.equal(user.password);
+        expect(userEntity!.is_admin).to.be.equal(user.is_admin);
         expect(userEntity!.created_at).to.be.a("Date");
         expect(userEntity!.updated_at).to.be.a("Date");
     });

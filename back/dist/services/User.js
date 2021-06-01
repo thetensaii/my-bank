@@ -24,25 +24,44 @@ let UserService = class UserService {
     }
     async signUp(user) {
         let userEntity;
+        user.password = await bcrypt_1.default.hash(user.password + config_1.default.SALT, config_1.default.SALT_ROUNDS);
+        userEntity = new User_1.UserEntity(user);
+        let u = await this.factory.UserModel.getByLogin(user.login);
+        if (u !== undefined) {
+            throw new Error("User already exists.");
+        }
         try {
-            this.factory.beginTransaction();
-            user.password = await bcrypt_1.default.hash(user.password, config_1.default.SALT_ROUNDS);
-            userEntity = new User_1.UserEntity(user);
+            await this.factory.beginTransaction();
             let userID = await this.factory.UserModel.add(userEntity);
             userEntity = await this.factory.UserModel.getByID(userID);
-            this.factory.commit();
+            await this.factory.commit();
+            return userEntity;
         }
         catch (error) {
-            this.factory.rollback();
+            await this.factory.rollback();
+            throw new Error("Error while creating user");
         }
-        return userEntity;
     }
     async login(login, password) {
-        this.factory.beginTransaction();
+        // this.factory.beginTransaction();
         let userEntity = await this.factory.UserModel.getByLogin(login);
-        if (userEntity === undefined)
-            return false;
-        let match = await bcrypt_1.default.compare(password, userEntity.password);
+        if (userEntity === undefined) {
+            throw new Error("User doesn't exist or wrong password");
+        }
+        let match = await bcrypt_1.default.compare(password + config_1.default.SALT, userEntity.password);
+        if (match) {
+            // Retourner un token
+            return userEntity;
+        }
+        else {
+            throw new Error("User doesn't exist or wrong password");
+        }
+    }
+    async changeUser(user) {
+        let userEntity = await this.factory.UserModel.getByID(user.id);
+        if (userEntity === undefined) {
+            throw new Error("User doesn't exist or wrong password");
+        }
     }
 };
 UserService = __decorate([

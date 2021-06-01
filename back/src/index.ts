@@ -12,18 +12,32 @@ import bcrypt from "bcrypt"
 const app = express();
 
 const main = async () => {
-    let salt = "gato";
-    let password = "password";
+    let user = {
+        login: faker.internet.userName(),
+        firstname : faker.name.firstName(),
+        lastname: faker.name.lastName(),
+        email: faker.internet.email(),
+        password: faker.internet.password()
+    }
 
-    // let hash = await bcrypt.hash(password, 10);
+    console.log(user)
+    console.log(" ");
+    let userEntity:UserEntity|undefined = new UserEntity(user);
+    
+    // userEntity.is_admin = user.is_admin;
+
+    console.log(userEntity.is_admin == false);
+    console.log(" ");
 
 
-    // let match1 = await bcrypt.compare(password, hash); 
-    let match2 = await bcrypt.compare("password", "$2b$10$sJEFRi89dvhDnqtmGU5ffOWNzV1dwSwxGxR4jJUqb/jnEfTVg9mpm");
+    let factory = Container.get(Factory);
+    
+    let userID = await factory.UserModel.add(userEntity);
+    console.log(userID);
+    console.log(" ");
 
-    // console.log(hash);
-    console.log(match2);
-
+    userEntity = await factory.UserModel.getByID(userID);
+    console.log(userEntity);
 }  
 
 main();
