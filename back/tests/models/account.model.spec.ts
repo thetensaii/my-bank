@@ -1,18 +1,18 @@
 import 'reflect-metadata';
 import { expect } from "chai";
 import Container from "typedi";
-import {UserConfig, UserEntity} from "../../src/entities/User";
-import {AccountConfig, AccountEntity} from "../../src/entities/Account";
-import { Factory } from "../../src/models/Factory"
+import {UserJSON, UserEntity} from "../../src/entities/user.entity";
+import {AccountJSON, AccountEntity} from "../../src/entities/account.entity";
+import { Factory } from "../../src/models/factory"
 import faker from "faker/locale/fr"
 
 describe("AccountModel test", () => {
-    let user:UserConfig;
-    let userEntity:UserEntity|undefined;
+    let user:UserJSON;
+    let userEntity:UserEntity|null;
     let userID:number;
 
-    let accounts:AccountConfig[] = [];
-    let accountEntity:AccountEntity|undefined;
+    let accounts:AccountJSON[] = [];
+    let accountEntity:AccountEntity|null;
 
     let factory:Factory;
 
@@ -59,10 +59,10 @@ describe("AccountModel test", () => {
         let accountID = Math.ceil(Math.random() * 15);
 
         // ACT
-        accountEntity = await factory.AccountModel.getByID(accountID);
+        accountEntity = await factory.AccountModel.findByID(accountID);
 
         //ASSERT
-        expect(accountEntity).to.be.undefined;
+        expect(accountEntity).to.be.null;
     });
 
     it("should add Account to DB", async () => {
@@ -87,10 +87,10 @@ describe("AccountModel test", () => {
         let accountID:number = await factory.AccountModel.add(accountEntity!);
 
         // ACT
-        accountEntity = await factory.AccountModel.getByID(accountID);
+        accountEntity = await factory.AccountModel.findByID(accountID);
 
         //ASSERT
-        expect(accountEntity).not.to.be.undefined;
+        expect(accountEntity).not.to.be.null;
         expect(accountEntity!.id).to.be.equal(accountID);
         expect(accountEntity!.user_id).to.be.equal(account.user_id);
         expect(accountEntity!.name).to.be.equal(account.name);
@@ -108,7 +108,7 @@ describe("AccountModel test", () => {
             email: faker.internet.email(),
             password: faker.internet.password()
         };
-        let userEntity2:UserEntity|undefined = new UserEntity(user2);
+        let userEntity2:UserEntity|null = new UserEntity(user2);
         let userID2:number = await factory.UserModel.add(userEntity2);
 
         for(let i = 0; i < 3; ++i){
@@ -125,7 +125,7 @@ describe("AccountModel test", () => {
         accountsEntity.map(async a => await factory.AccountModel.add(a));
 
         // ACT
-        let user1Accounts = await factory.AccountModel.getByUserID(userID);
+        let user1Accounts = await factory.AccountModel.findByUserID(userID);
 
         // ASSERT
         expect(user1Accounts.length).to.be.equal(accounts.length)
@@ -138,7 +138,7 @@ describe("AccountModel test", () => {
         accountEntity = new AccountEntity(account);
 
         let accountID:number = await factory.AccountModel.add(accountEntity);
-        accountEntity = await factory.AccountModel.getByID(accountID);
+        accountEntity = await factory.AccountModel.findByID(accountID);
         
         // ACT
         let setAccount = {
@@ -149,14 +149,64 @@ describe("AccountModel test", () => {
         accountEntity!.balance = setAccount.balance;
         
         await factory.AccountModel.set(accountEntity!);
-        accountEntity = await factory.AccountModel.getByID(accountID);
+        accountEntity = await factory.AccountModel.findByID(accountID);
 
         // ASSERT
-        expect(accountEntity).not.to.be.undefined;
+        expect(accountEntity).not.to.be.null;
         expect(accountEntity!.id).to.be.equal(accountID);
         expect(accountEntity!.user_id).to.be.equal(account.user_id);
         expect(accountEntity!.name).to.be.equal(setAccount.name);
         expect(accountEntity!.balance).to.be.equal(setAccount.balance);
+        expect(accountEntity!.created_at).to.be.a("Date");
+        expect(accountEntity!.updated_at).to.be.a("Date");
+    });
+
+    it("should set Account name in DB", async () => {
+        // ARRANGE
+        let i = Math.floor(Math.random() * accounts.length);
+        let account = accounts[i];
+        accountEntity = new AccountEntity(account);
+
+        let accountID:number = await factory.AccountModel.add(accountEntity);
+        accountEntity = await factory.AccountModel.findByID(accountID);
+        
+        // ACT
+        let newName : string = faker.vehicle.vehicle();
+        
+        await factory.AccountModel.setName(accountID, newName);
+        accountEntity = await factory.AccountModel.findByID(accountID);
+
+        // ASSERT
+        expect(accountEntity).not.to.be.null;
+        expect(accountEntity!.id).to.be.equal(accountID);
+        expect(accountEntity!.user_id).to.be.equal(account.user_id);
+        expect(accountEntity!.name).to.be.equal(newName);
+        expect(accountEntity!.balance).to.be.equal(account.balance);
+        expect(accountEntity!.created_at).to.be.a("Date");
+        expect(accountEntity!.updated_at).to.be.a("Date");
+    });
+
+    it("should set Account balance in DB", async () => {
+        // ARRANGE
+        let i = Math.floor(Math.random() * accounts.length);
+        let account = accounts[i];
+        accountEntity = new AccountEntity(account);
+
+        let accountID:number = await factory.AccountModel.add(accountEntity);
+        accountEntity = await factory.AccountModel.findByID(accountID);
+        
+        // ACT
+        let newBalance : number = faker.datatype.number()
+        
+        await factory.AccountModel.setBalance(accountID, newBalance);
+        accountEntity = await factory.AccountModel.findByID(accountID);
+
+        // ASSERT
+        expect(accountEntity).not.to.be.null;
+        expect(accountEntity!.id).to.be.equal(accountID);
+        expect(accountEntity!.user_id).to.be.equal(account.user_id);
+        expect(accountEntity!.name).to.be.equal(account.name);
+        expect(accountEntity!.balance).to.be.equal(newBalance);
         expect(accountEntity!.created_at).to.be.a("Date");
         expect(accountEntity!.updated_at).to.be.a("Date");
     });
@@ -168,14 +218,14 @@ describe("AccountModel test", () => {
         accountEntity = new AccountEntity(account);
 
         let accountID:number = await factory.AccountModel.add(accountEntity);
-        accountEntity = await factory.AccountModel.getByID(accountID);
+        accountEntity = await factory.AccountModel.findByID(accountID);
 
         // ACT
         await factory.AccountModel.delete(accountEntity!.id!);
-        accountEntity = await factory.AccountModel.getByID(accountEntity!.id!);
+        accountEntity = await factory.AccountModel.findByID(accountEntity!.id!);
 
         // ASSERT
-        expect(accountEntity).to.be.undefined;
+        expect(accountEntity).to.be.null;
     });
 
     it("should get all accounts in DB", async () => {
@@ -184,7 +234,7 @@ describe("AccountModel test", () => {
         accountsEntity.map(async a => await factory.AccountModel.add(a));
 
         // ACT
-        let results = await factory.AccountModel.getAll();
+        let results = await factory.AccountModel.findAll();
 
         // ASSERT
         expect(results.length).to.be.equal(accounts.length);

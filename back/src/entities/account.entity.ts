@@ -1,6 +1,6 @@
-import {EntityConfig, Entity} from "./Entity"
+import {EntityJSON, Entity} from "./entity"
 
-export interface AccountConfig  extends EntityConfig{
+export interface AccountJSON  extends EntityJSON{
     user_id:number,
     name:string,
     balance:number
@@ -15,7 +15,7 @@ export class AccountEntity extends Entity{
     private _balance: number;
 
 
-    constructor(account:AccountConfig){
+    constructor(account:AccountJSON){
         super(account);
         this._user_id = account.user_id;
         this._name = account.name;

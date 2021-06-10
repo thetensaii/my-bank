@@ -1,14 +1,14 @@
 import 'reflect-metadata';
 import { expect } from "chai";
 import Container from "typedi";
-import { UserConfig, UserEntity } from "../../src/entities/User";
-import { Factory } from "../../src/models/Factory"
+import { UserJSON, UserEntity } from "../../src/entities/user.entity";
+import { Factory } from "../../src/models/factory"
 import faker from "faker/locale/fr"
 
 describe("UserModel test", () => {
-    let users:UserConfig[] = [];
+    let users:UserJSON[] = [];
 
-    let userEntity:UserEntity|undefined;
+    let userEntity:UserEntity|null;
     let factory:Factory;
     before(async () => {
         let l = Math.ceil(Math.random() * 15); // Nombre de users
@@ -23,8 +23,7 @@ describe("UserModel test", () => {
                 is_admin: Boolean(Math.round(Math.random()))
             });
         }
-
-        // userEntity = new UserEntity(users[0]);
+        
         factory = Container.get(Factory); 
     })
 
@@ -42,13 +41,13 @@ describe("UserModel test", () => {
 
     it("should find nothing in DB", async () => {
         // ARRANGE
-        let userID = Math.ceil(Math.random() * 15);
+        let userID = faker.datatype.number();
 
         // ACT
-        userEntity = await factory.UserModel.getByID(userID);
+        userEntity = await factory.UserModel.findByID(userID);
 
         //ASSERT
-        expect(userEntity).to.be.undefined;
+        expect(userEntity).to.be.null;
     });
 
     it("should add User to DB", async () => {
@@ -74,10 +73,10 @@ describe("UserModel test", () => {
         let userID:number = await factory.UserModel.add(userEntity!);
 
         // ACT
-        userEntity = await factory.UserModel.getByID(userID);
+        userEntity = await factory.UserModel.findByID(userID);
 
         //ASSERT
-        expect(userEntity).not.to.be.undefined;
+        expect(userEntity).not.to.be.null;
         expect(userEntity!.id).to.be.equal(userID);
         expect(userEntity!.login).to.be.equal(user.login);
         expect(userEntity!.firstname).to.be.equal(user.firstname);
@@ -99,10 +98,10 @@ describe("UserModel test", () => {
         let userID:number = await factory.UserModel.add(userEntity!);
 
         // ACT
-        userEntity = await factory.UserModel.getByLogin(userEntity.login);
+        userEntity = await factory.UserModel.findByLogin(userEntity.login);
 
         //ASSERT
-        expect(userEntity).not.to.be.undefined;
+        expect(userEntity).not.to.be.null;
         expect(userEntity!.id).to.be.equal(userID);
         expect(userEntity!.login).to.be.equal(user.login);
         expect(userEntity!.firstname).to.be.equal(user.firstname);
@@ -122,7 +121,7 @@ describe("UserModel test", () => {
         userEntity = new UserEntity(user);
 
         let userID:number = await factory.UserModel.add(userEntity!);
-        userEntity = await factory.UserModel.getByID(userID);
+        userEntity = await factory.UserModel.findByID(userID);
         
         // ACT
         let setUser = {
@@ -137,10 +136,9 @@ describe("UserModel test", () => {
         userEntity!.email = setUser.email;
         
         await factory.UserModel.set(userEntity!);
-        userEntity = await factory.UserModel.getByID(userID);
+        userEntity = await factory.UserModel.findByID(userID);
 
         // ASSERT
-        expect(userEntity).not.to.be.undefined;
         expect(userEntity!.id).to.be.equal(userID);
         expect(userEntity!.login).to.be.equal(setUser.login);
         expect(userEntity!.firstname).to.be.equal(setUser.firstname);
@@ -159,23 +157,23 @@ describe("UserModel test", () => {
         userEntity = new UserEntity(user);
 
         let userID:number = await factory.UserModel.add(userEntity!);
-        userEntity = await factory.UserModel.getByID(userID);
+        userEntity = await factory.UserModel.findByID(userID);
         
         // ACT
         await factory.UserModel.delete(userEntity!.id!);
-        userEntity = await factory.UserModel.getByID(userEntity!.id!);
+        userEntity = await factory.UserModel.findByID(userEntity!.id!);
 
         // ASSERT
-        expect(userEntity).to.be.undefined;
+        expect(userEntity).to.be.null;
     });
 
     it("should get all users in DB", async () => {
         // ARRANGE
         let usersEntity = users.map(user => new UserEntity(user));
-        usersEntity.map(async u => await factory.UserModel.add(u));
+        await usersEntity.map(async u => await factory.UserModel.add(u));
 
         // ACT
-        let results = await factory.UserModel.getAll();
+        let results = await factory.UserModel.findAll();
 
         // ASSERT
         expect(results.length).to.be.equal(users.length);

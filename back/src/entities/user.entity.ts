@@ -1,6 +1,14 @@
-import {EntityConfig, Entity} from "./Entity"
+import { runInThisContext } from "vm";
+import {EntityJSON, Entity} from "./entity"
 
-export interface UserConfig extends EntityConfig{
+export interface UserPublicJSON extends EntityJSON{
+    login: string,
+    firstname: string,
+    lastname: string,
+    email: string,
+    is_admin?:boolean
+}
+export interface UserJSON extends EntityJSON{
     login: string,
     firstname: string,
     lastname: string,
@@ -22,7 +30,7 @@ export class UserEntity extends Entity{
     private _password: string;
 
     private _is_admin:boolean;
-    constructor(user:UserConfig){
+    constructor(user:UserJSON){
         super(user);
         this._login = user.login;
         this._firstname = user.firstname;
@@ -79,5 +87,16 @@ export class UserEntity extends Entity{
 
     set is_admin(value:boolean){
         this._is_admin = Boolean(value);
+    }
+
+    toPublicJSON() : UserPublicJSON {
+        return {
+            id : super.id,
+            login : this._login,
+            firstname : this._firstname,
+            lastname : this._lastname,
+            email : this._email,
+            is_admin :this._is_admin
+        }
     }
 }

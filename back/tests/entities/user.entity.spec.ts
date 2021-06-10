@@ -1,10 +1,10 @@
 import { expect } from "chai";
-import { UserConfig, UserEntity } from "../../src/entities/User";
+import { UserJSON, UserEntity } from "../../src/entities/user.entity";
 import faker from "faker/locale/fr"
 
 describe("UserEntity test", () => {
     it("should create UserEntity without id, created_at and updated_at", () => {
-        let user:UserConfig = {
+        let user:UserJSON = {
             login: faker.internet.userName(),
             firstname : faker.name.firstName(),
             lastname: faker.name.lastName(),
@@ -26,7 +26,7 @@ describe("UserEntity test", () => {
     });
 
     it("should create UserEntity with id, created_at and updated_at", () => {
-        let user:UserConfig = {
+        let user:UserJSON = {
             id: faker.datatype.number(),
             login: faker.internet.userName(),
             firstname : faker.name.firstName(),
@@ -53,7 +53,7 @@ describe("UserEntity test", () => {
     });
 
     it("should create UserEntity with id and created_at without updated_at", () => {
-        let user:UserConfig = {
+        let user:UserJSON = {
             id: faker.datatype.number(),
             login: faker.internet.userName(),
             firstname : faker.name.firstName(),
@@ -78,7 +78,7 @@ describe("UserEntity test", () => {
 
     it("should set UserEntity", () => {
 
-        let user:UserConfig = {
+        let user:UserJSON = {
             id: faker.datatype.number(),
             login: faker.internet.userName(),
             firstname : faker.name.firstName(),

@@ -1,10 +1,10 @@
 import {expect} from "chai"
-import {OperatingConfig, OperationEntity} from "../../src/entities/Operation"
+import {OperatingJSON, OperationEntity} from "../../src/entities/operation.entity"
 import faker from "faker/locale/fr"
 
 describe("OperationEntity test", () => {
     it("should create OperationEntity without id, created_at and updated_at", () => {
-        let operation:OperatingConfig = {
+        let operation:OperatingJSON = {
             account_id: faker.datatype.number(),
             amount: faker.datatype.number()
         }
@@ -19,7 +19,7 @@ describe("OperationEntity test", () => {
     });
 
     it("should create OperationEntity with id, created_at and updated_at", () => {
-        let operation:OperatingConfig = {
+        let operation:OperatingJSON = {
             id: faker.datatype.number(),
             account_id: faker.datatype.number(),
             amount: faker.datatype.number(),
@@ -37,7 +37,7 @@ describe("OperationEntity test", () => {
     });
 
     it("should create OperationEntity with id and created_at without updated_at", () => {
-        let operation:OperatingConfig = {
+        let operation:OperatingJSON = {
             id: faker.datatype.number(),
             account_id: faker.datatype.number(),
             amount: faker.datatype.number(),
@@ -54,7 +54,7 @@ describe("OperationEntity test", () => {
     });
 
     it("should set OperationEntity", () => {
-        let operation:OperatingConfig = {
+        let operation:OperatingJSON = {
             id: faker.datatype.number(),
             account_id: faker.datatype.number(),
             amount: faker.datatype.number(),

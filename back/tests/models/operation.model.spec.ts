@@ -1,23 +1,23 @@
 import 'reflect-metadata';
 import { expect } from "chai";
 import Container from "typedi";
-import { UserConfig, UserEntity } from "../../src/entities/User";
-import { AccountConfig, AccountEntity } from "../../src/entities/Account";
-import { OperatingConfig, OperationEntity } from "../../src/entities/Operation"
-import { Factory } from "../../src/models/Factory"
+import { UserJSON, UserEntity } from "../../src/entities/user.entity";
+import { AccountJSON, AccountEntity } from "../../src/entities/account.entity";
+import { OperatingJSON, OperationEntity } from "../../src/entities/operation.entity"
+import { Factory } from "../../src/models/factory"
 import faker from "faker/locale/fr"
 
 describe("OperationModel test", () => {
-    let user:UserConfig;
-    let userEntity:UserEntity|undefined;
+    let user:UserJSON;
+    let userEntity:UserEntity|null;
     let userID:number;
 
-    let accounts:AccountConfig[] = [];
+    let accounts:AccountJSON[] = [];
     let accountsEntity:AccountEntity[];
     let accountID:number;
 
-    let operations:OperatingConfig[] = [];
-    let operationEntity: OperationEntity|undefined;
+    let operations:OperatingJSON[] = [];
+    let operationEntity: OperationEntity|null;
 
     let factory:Factory;
 
@@ -53,7 +53,7 @@ describe("OperationModel test", () => {
 
         accountsEntity = accounts.map(account => new AccountEntity(account));
         accountsEntity.map(async a => await factory.AccountModel.add(a));
-        accountsEntity = await factory.AccountModel.getAll();
+        accountsEntity = await factory.AccountModel.findAll();
         accountID = accountsEntity[0]!.id!;
 
         // SETTING UP 1ST ACCOUNT OPERATIONS
@@ -85,10 +85,10 @@ describe("OperationModel test", () => {
         let operationID = faker.datatype.number();
 
         // ACT
-        operationEntity = await factory.OperationModel.getByID(operationID);
+        operationEntity = await factory.OperationModel.findByID(operationID);
 
         //ASSERT
-        expect(operationEntity).to.be.undefined;
+        expect(operationEntity).to.be.null;
     });
 
     it("should add Account to DB", async () => {
@@ -113,10 +113,10 @@ describe("OperationModel test", () => {
         let operationID:number = await factory.OperationModel.add(operationEntity!);
 
         // ACT
-        operationEntity = await factory.OperationModel.getByID(operationID);
+        operationEntity = await factory.OperationModel.findByID(operationID);
 
         //ASSERT
-        expect(operationEntity).not.to.be.undefined;
+        expect(operationEntity).not.to.be.null;
         expect(operationEntity!.id).to.be.equal(operationID);
         expect(operationEntity!.amount).to.be.equal(operation.amount);
         expect(operationEntity!.created_at).to.be.a("Date");
@@ -140,7 +140,7 @@ describe("OperationModel test", () => {
         operationsEntity.map(async o => await factory.OperationModel.add(o));
 
         // ACT
-        let account1_Operations = await factory.OperationModel.getByAccountID(accountID);
+        let account1_Operations = await factory.OperationModel.findByAccountID(accountID);
 
         // ASSERT
         expect(account1_Operations.length).to.be.equal(operations.length)
@@ -153,7 +153,7 @@ describe("OperationModel test", () => {
         operationEntity = new OperationEntity(operation);
 
         let operationID:number = await factory.OperationModel.add(operationEntity);
-        operationEntity = await factory.OperationModel.getByID(operationID);
+        operationEntity = await factory.OperationModel.findByID(operationID);
         
         // ACT
         let setOperation = {
@@ -163,10 +163,10 @@ describe("OperationModel test", () => {
         operationEntity!.amount = setOperation.amount;
         
         await factory.OperationModel.set(operationEntity!);
-        operationEntity = await factory.OperationModel.getByID(operationID);
+        operationEntity = await factory.OperationModel.findByID(operationID);
 
         // ASSERT
-        expect(operationEntity).not.to.be.undefined;
+        expect(operationEntity).not.to.be.null;
         expect(operationEntity!.id).to.be.equal(operationID);
         expect(operationEntity!.account_id).to.be.equal(accountID);
         expect(operationEntity!.amount).to.be.equal(setOperation.amount);
@@ -182,14 +182,14 @@ describe("OperationModel test", () => {
 
 
         let operationID:number = await factory.OperationModel.add(operationEntity);
-        operationEntity = await factory.OperationModel.getByID(operationID);
+        operationEntity = await factory.OperationModel.findByID(operationID);
 
         // ACT
         await factory.OperationModel.delete(operationEntity!.id!);
-        operationEntity = await factory.OperationModel.getByID(operationEntity!.id!);
+        operationEntity = await factory.OperationModel.findByID(operationEntity!.id!);
 
         // ASSERT
-        expect(operationEntity).to.be.undefined;
+        expect(operationEntity).to.be.null;
     });
 
     it("should get all Operations in DB", async () => {
@@ -198,7 +198,7 @@ describe("OperationModel test", () => {
         operationsEntity.map(async o => await factory.OperationModel.add(o));
 
         // ACT
-        let results = await factory.OperationModel.getAll();
+        let results = await factory.OperationModel.findAll();
 
         // ASSERT
         expect(results.length).to.be.equal(operations.length);

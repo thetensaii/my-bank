@@ -1,12 +1,12 @@
 import { expect } from "chai";
-import {AccountConfig, AccountEntity} from "../../src/entities/Account"
+import {AccountJSON, AccountEntity} from "../../src/entities/account.entity"
 import faker from "faker/locale/fr"
 
 describe("AccountEntity test", () => {
 
     it("should create AccountEntity without id, created_at and updated_at", () => {
         // ARRANGE
-        let account:AccountConfig = {
+        let account:AccountJSON = {
             user_id: faker.datatype.number(),
             name : faker.random.word(),
             balance: faker.datatype.number()
@@ -26,7 +26,7 @@ describe("AccountEntity test", () => {
 
     it("should create AccountEntity with id, created_at and updated_at", () => {
         // ARRANGE
-        let account:AccountConfig = {
+        let account:AccountJSON = {
             id: faker.datatype.number(),
             user_id: faker.datatype.number(),
             name : faker.random.word(),
@@ -49,7 +49,7 @@ describe("AccountEntity test", () => {
 
     it("should create AccountEntity with id and created_at without updated_at", () => {
         // ARRANGE
-        let account:AccountConfig = {
+        let account:AccountJSON = {
             id: faker.datatype.number(),
             user_id: faker.datatype.number(),
             name : faker.random.word(),
@@ -71,7 +71,7 @@ describe("AccountEntity test", () => {
 
     it("should set AccountEntity", () => {
         // ARRANGE
-        let account:AccountConfig = {
+        let account:AccountJSON = {
             id: faker.datatype.number(),
             user_id: faker.datatype.number(),
             name : faker.random.word(),

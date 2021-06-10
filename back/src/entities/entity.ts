@@ -1,7 +1,7 @@
-export type EntityConfig = {
-    id?: number,
-    created_at?:Date,
-    updated_at?:Date
+export type EntityJSON = {
+    id?: number|null,
+    created_at?:Date|null,
+    updated_at?:Date|null
 }
 
 export class Entity {
@@ -12,7 +12,7 @@ export class Entity {
     
     private _updated_at : Date|null;
 
-    constructor(entity:EntityConfig){
+    constructor(entity:EntityJSON){
         if (this.constructor == Entity) {
             throw new Error("Abstract classes can't be instantiated.");
         }

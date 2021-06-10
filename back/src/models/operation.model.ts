@@ -1,22 +1,22 @@
 import { Service } from "typedi";
-import {OperatingConfig, OperationEntity} from "../entities/Operation"
+import {OperatingJSON, OperationEntity} from "../entities/operation.entity"
 import mysql from "promise-mysql"
 
 export default class AccountModel{
 
     constructor(private connection: Promise<mysql.PoolConnection>){}
 
-    async getAll(): Promise<OperationEntity[]>{
+    async findAll(): Promise<OperationEntity[]>{
         
         let results = await this.connection.then( conn => {
             return conn.query("SELECT * FROM operations;");
         });
 
-        let accounts = results.map((result:OperatingConfig) => new OperationEntity(result));
+        let accounts = results.map((result:OperatingJSON) => new OperationEntity(result));
         return accounts;
     } 
 
-    async getByAccountID(account_id:number): Promise<OperationEntity[]> {
+    async findByAccountID(account_id:number): Promise<OperationEntity[]> {
         let results = await this.connection.then( conn => {
             return conn.query("SELECT *\
                                 FROM operations \
@@ -24,11 +24,11 @@ export default class AccountModel{
                             [account_id]);
         });
 
-        let accounts = results.map((result:OperatingConfig) => new OperationEntity(result));
+        let accounts = results.map((result:OperatingJSON) => new OperationEntity(result));
         return accounts;
     }
 
-    async getByID(id:number): Promise<OperationEntity|undefined> {
+    async findByID(id:number): Promise<OperationEntity|null> {
         let results = await this.connection.then( conn => {
             return conn.query("SELECT *\
                                 FROM operations \
@@ -37,7 +37,7 @@ export default class AccountModel{
         });
                                              
         if(!results.length){
-            return undefined;
+            return null;
         }
         
         return new OperationEntity(results[0]);
@@ -53,7 +53,7 @@ export default class AccountModel{
         return result.insertId;
     }
 
-    async set(operation:OperationEntity): Promise<boolean>{
+    async set(operation:OperationEntity): Promise<void>{
         await this.connection.then( conn => {
             return conn.query("UPDATE operations\
                                 SET account_id = ?,\
@@ -61,18 +61,14 @@ export default class AccountModel{
                                 WHERE id = ?;",
                             [operation.account_id, operation.amount, operation.id]);
         });
-
-        return true;
     }
 
-    async delete(id:number): Promise<boolean>{
+    async delete(id:number): Promise<void>{
         await this.connection.then(conn => {
             conn.query("DELETE from operations\
                             WHERE id = ?;", 
                         [id]);
         });
-
-        return true;
     }
 
 }

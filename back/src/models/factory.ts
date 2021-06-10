@@ -1,11 +1,11 @@
 import { Service } from "typedi";
-import UserModel from "./User";
-import AccountModel from "./Account";
-import OperationModel from "./Operation";
+import UserModel from "./user.model";
+import AccountModel from "./account.model";
+import OperationModel from "./operation.model";
 import mysql from "promise-mysql"
-import MySQLDatabase from "../core/MySQLDatabase";
+import MySQLDatabase from "../core/mysql.database";
 
-// @Service({ scope: "transient" })
+
 @Service({transient : true}) // create a new instance everytime container.get is called
 export class Factory {
     private userModel: UserModel;

@@ -1,47 +1,55 @@
 import "reflect-metadata"
 import express from "express";
 import Container from "typedi";
-import UserModel from "./models/User";
-import {UserEntity} from "./entities/User";
-import {Entity} from "./entities/Entity"
+import { UserEntity, UserJSON, UserPublicJSON } from "./entities/user.entity";
 import faker from "faker/locale/fr"
-import config from "./config"
-import MySQLDatabase from "./core/MySQLDatabase";
-import { Factory } from "./models/Factory";
+import { createUserToken, verifyUserToken } from "./core/JWT"
+import { ObjectToken } from "./types/ObjectToken";
+import { AuthService } from "./services/auth.service";
+import { UserService } from "./services/user.service";
+import { Factory } from "./models/factory"
 
-import bcrypt from "bcrypt"
 const app = express();
 
 const main = async () => {
-    let user = {
-        login: faker.internet.userName(),
-        firstname : faker.name.firstName(),
-        lastname: faker.name.lastName(),
-        email: faker.internet.email(),
-        password: faker.internet.password()
+    let users:UserJSON[] = [];
+     
+    for(let i = 0; i < 5;++i){ 
+        users.push({
+            login: faker.internet.userName(),
+            firstname : faker.name.firstName(),
+            lastname: faker.name.lastName(),
+            email: faker.internet.email(),
+            password: faker.internet.password(),
+            is_admin: Boolean(Math.round(Math.random()))
+        });
     }
 
-    console.log(user)
-    console.log(" ");
-    let userEntity:UserEntity|undefined = new UserEntity(user);
-    
-    // userEntity.is_admin = user.is_admin;
+    console.log(users.length)
+    let authService:AuthService;
+    // let userEntity = await Promise.all(users.map(async (u) =>{
+    //     authService = Container.get(AuthService);
+    //     return await authService.signUp(u);
+    // }));
 
-    console.log(userEntity.is_admin == false);
-    console.log(" ");
-
-
-    let factory = Container.get(Factory);
-    
-    let userID = await factory.UserModel.add(userEntity);
-    console.log(userID);
-    console.log(" ");
-
-    userEntity = await factory.UserModel.getByID(userID);
-    console.log(userEntity);
-    let e = {
-        id : 15
+    for(let u of users){
+        authService = Container.get(AuthService);
+        await authService.signUp(u);
     }
-}  
 
-main();
+
+    // let factory = Container.get(Factory); 
+    // let usersEntity = users.map(user => new UserEntity(user));
+    // await usersEntity.map(async u => await factory.UserModel.add(u));
+    // await factory.release()
+    // console.log(usersEntity.length);
+    
+    let userService:UserService = Container.get(UserService); 
+        // ACT 
+    let results:UserEntity[] = await userService.findAll();
+ 
+    console.log(results.length);
+ 
+}
+
+main(); 

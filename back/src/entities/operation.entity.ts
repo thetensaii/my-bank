@@ -1,5 +1,5 @@
-import {EntityConfig, Entity} from "./Entity"
-export interface OperatingConfig extends EntityConfig {
+import {EntityJSON, Entity} from "./entity"
+export interface OperatingJSON extends EntityJSON {
     account_id:number, 
     amount:number
 }
@@ -10,7 +10,7 @@ export class OperationEntity extends Entity {
 
     private _amount:number;
 
-    constructor(operation:OperatingConfig){
+    constructor(operation:OperatingJSON){
         super(operation);
         this._account_id = operation.account_id;
         this._amount = operation.amount;
