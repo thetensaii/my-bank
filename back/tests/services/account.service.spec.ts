@@ -174,4 +174,23 @@ describe("AccountService test", () => {
         expect(results.length).to.be.equal(accounts.length);
     })
 
+    it("should delete Account", async () => {
+        // ARRANGE
+        let i:number = Math.floor(Math.random() * accounts.length);
+        account = accounts[i];
+        accountEntity = await accountService.create(userEntity.toPublicJSON(), account)
+        
+        let accountID:number = accountEntity.id!;
+
+        // ACT
+        accountService = Container.get(AccountService);
+        await accountService.delete(userEntity.toPublicJSON(), accountID)
+
+        accountService = Container.get(AccountService);
+        accountEntity = await accountService.findByID(accountID);
+
+        // ASSERT
+        expect(accountEntity).to.be.null
+    })
+
 });

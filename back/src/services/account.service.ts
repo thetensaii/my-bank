@@ -100,4 +100,33 @@ export class AccountService {
         }
     }
 
+    async delete(user:UserPublicJSON, accountID:number):Promise<void>{
+        if(!user.id){ 
+            this.factory.release()
+            throw new Error("User doesn't exist");
+        }
+
+        let accountEntity:AccountEntity|null = await this.factory.AccountModel.findByID(accountID);
+        if(!accountEntity){
+            this.factory.release()
+            throw new Error("Account doesn't exist");
+        }
+
+        if(accountEntity.user_id !== user.id){
+            this.factory.release()
+            throw new Error("Access denied to this account");
+        }
+
+        try {
+            await this.factory.AccountModel.delete(accountID);
+            await this.factory.release()
+        } catch (error) {
+            await this.factory.rollback()
+            await this.factory.release()
+
+            throw new Error("Error while deleting account")
+        }
+
+    }
+
 }
