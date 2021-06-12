@@ -227,6 +227,20 @@ describe("AccountModel test", () => {
         // ASSERT
         expect(accountEntity).to.be.null;
     });
+ 
+    it("should delete Account by User", async () => {
+        // ARRANGE
+        let accountsEntity:AccountEntity[] = accounts.map(account => new AccountEntity(account));
+        accountsEntity.map(async a => await factory.AccountModel.add(a));
+
+        // ACT
+        await factory.AccountModel.deleteByUser(userID);
+        let results = await factory.AccountModel.findAll();
+
+        // ASSERT
+        expect(results.length).to.be.equal(0);
+    })
+
 
     it("should get all accounts in DB", async () => {
         // ARRANGE

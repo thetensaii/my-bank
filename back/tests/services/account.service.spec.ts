@@ -58,11 +58,11 @@ describe("AccountService test", () => {
 
         await conn.query("DELETE FROM users");
         await conn.release();
-    })
+    });
 
     beforeEach(async () => {    
         accountService = Container.get(AccountService);
-    })
+    });
 
     afterEach(async () => {    
         let db:MySQLDatabase = Container.get(MySQLDatabase);
@@ -70,7 +70,7 @@ describe("AccountService test", () => {
 
         await conn.query("DELETE FROM accounts");
         await conn.release();
-    })
+    });
 
     it("should find null", async () => {
         // ARRANGE
@@ -156,7 +156,7 @@ describe("AccountService test", () => {
 
         // ASSERT
         expect(results.length).to.be.equal(accounts.length);
-    })
+    });
 
     it("should get accounts by User", async () => {
         // ARRANGE
@@ -172,7 +172,7 @@ describe("AccountService test", () => {
 
         // ASSERT
         expect(results.length).to.be.equal(accounts.length);
-    })
+    });
 
     it("should delete Account", async () => {
         // ARRANGE
@@ -186,11 +186,11 @@ describe("AccountService test", () => {
         accountService = Container.get(AccountService);
         await accountService.delete(userEntity.toPublicJSON(), accountID)
 
+        // ASSERT
         accountService = Container.get(AccountService);
         accountEntity = await accountService.findByID(accountID);
 
-        // ASSERT
         expect(accountEntity).to.be.null
-    })
+    });
 
 });

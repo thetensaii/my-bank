@@ -147,7 +147,7 @@ describe("OperationModel test", () => {
 
         // ASSERT
         expect(account1_Operations.length).to.be.equal(operations.length)
-    })
+    });
 
     // it("should set Operation in DB", async () => {
     //     // ARRANGE
@@ -201,9 +201,22 @@ describe("OperationModel test", () => {
         operationsEntity.map(async o => await factory.OperationModel.add(o));
 
         // ACT
+        await factory.OperationModel.deleteByAccount(accountID);
+        let results = await factory.OperationModel.findAll();
+
+        // ASSERT
+        expect(results.length).to.be.equal(0);
+    });
+
+    it("should get all Operations in DB", async () => {
+        // ARRANGE
+        let operationsEntity:OperationEntity[] = operations.map(operation => new OperationEntity(operation));
+        operationsEntity.map(async o => await factory.OperationModel.add(o));
+
+        // ACT
         let results = await factory.OperationModel.findAll();
 
         // ASSERT
         expect(results.length).to.be.equal(operations.length);
-    })
+    });
 });

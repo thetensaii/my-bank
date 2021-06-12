@@ -72,7 +72,5 @@ describe("AuthService test", () => {
         expect(userEntity.created_at).to.be.a("Date");
         expect(userEntity.updated_at).to.be.null;
     });
-
-
-
+    
 });

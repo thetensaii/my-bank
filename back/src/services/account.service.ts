@@ -118,7 +118,9 @@ export class AccountService {
         }
 
         try {
+            await this.factory.OperationModel.deleteByAccount(accountID);
             await this.factory.AccountModel.delete(accountID);
+            
             await this.factory.release()
         } catch (error) {
             await this.factory.rollback()

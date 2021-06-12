@@ -71,4 +71,12 @@ export default class AccountModel{
         });
     }
 
+    async deleteByAccount(accountID:number): Promise<void>{
+        await this.connection.then(conn => {
+            conn.query("DELETE from operations\
+                            WHERE account_id = ?;", 
+                        [accountID]);
+        });
+    }
+
 }

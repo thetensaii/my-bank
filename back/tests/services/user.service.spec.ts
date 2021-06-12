@@ -32,8 +32,6 @@ describe("UserService test", () => {
 
     });
 
-
-
     beforeEach(async () => {    
         authService = Container.get(AuthService);
     })
@@ -152,4 +150,24 @@ describe("UserService test", () => {
         expect(userEntity?.created_at).to.be.a("Date");
         expect(userEntity?.updated_at).to.be.a("Date");
     })
+
+    it("should delete User", async () => {
+        // ARRANGE
+        let i:number = Math.floor(Math.random() * users.length);
+        user = users[i];
+        userEntity = await authService.signUp(user);
+        userService = Container.get(UserService);
+        
+        let userID:number = userEntity.id!;
+        
+        // ACT
+        await userService.delete(userEntity.toPublicJSON(), userID);
+        
+        // ASSERT
+        userService = Container.get(UserService);
+        userEntity = await userService.findByID(userID);
+
+        expect(userEntity).to.be.null;
+    });
+
 });

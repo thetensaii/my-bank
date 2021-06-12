@@ -3,6 +3,8 @@ import { UserJSON, UserEntity, UserPublicJSON } from "../entities/user.entity";
 import { Factory } from "../models/factory";
 import bcrypt from "bcrypt"
 import config from "../config"
+import { AccountEntity } from "../entities/account.entity";
+import { OperationEntity } from "../entities/operation.entity";
 
 @Service({transient : true})
 export class UserService {
@@ -86,6 +88,47 @@ export class UserService {
             this.factory.release();
             console.log(error)
             throw new Error("Error while updating user")
+        }
+    }
+
+    async delete(user:UserPublicJSON, userID:number): Promise<UserEntity>{
+        if(!user.id){ 
+            this.factory.release();
+            throw new Error("User doesn't exist");
+        }
+
+        let userEntity:UserEntity|null = await this.factory.UserModel.findByID(userID);
+        if(!userEntity){
+            this.factory.release();
+            throw new Error("User doesn't exist");
+        }
+
+        if(user.id !== userID){
+            this.factory.release();
+            throw new Error("Access denied to this account");
+        }
+
+        try {
+            this.factory.beginTransaction();
+
+            let accounts:AccountEntity[] = await this.factory.AccountModel.findByUserID(userID);
+            for(let a of accounts){
+                if(!a.id) continue;
+                await this.factory.OperationModel.deleteByAccount(a.id);
+            }
+            await this.factory.AccountModel.deleteByUser(userID);
+            await this.factory.UserModel.delete(userID);
+
+            this.factory.commit();
+            this.factory.release();
+
+            return userEntity;
+            
+        } catch (error) {
+            this.factory.rollback();
+            this.factory.release();
+            console.log(error)
+            throw new Error("Error while deleting user")
         }
     }
 
