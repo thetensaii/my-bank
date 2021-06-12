@@ -32,6 +32,7 @@ CREATE TABLE operations (
     id INT NOT NULL AUTO_INCREMENT,
     account_id INT NOT NULL,
     amount INT NOT NULL,
+    comment TEXT NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),

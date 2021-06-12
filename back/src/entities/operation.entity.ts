@@ -1,7 +1,8 @@
 import {EntityJSON, Entity} from "./entity"
-export interface OperatingJSON extends EntityJSON {
+export interface OperationJSON extends EntityJSON {
     account_id:number, 
-    amount:number
+    amount:number,
+    comment:string
 }
  
 export class OperationEntity extends Entity {
@@ -10,10 +11,13 @@ export class OperationEntity extends Entity {
 
     private _amount:number;
 
-    constructor(operation:OperatingJSON){
+    private _comment:string;
+
+    constructor(operation:OperationJSON){
         super(operation);
         this._account_id = operation.account_id;
         this._amount = operation.amount;
+        this._comment = operation.comment;
     }
 
 
@@ -31,6 +35,14 @@ export class OperationEntity extends Entity {
 
     set amount(value: number){
         this._amount = value;
+    }
+
+    get comment() : string{
+        return this._comment;
+    }
+
+    set comment(value: string){
+        this._comment = value;
     }
     
 }

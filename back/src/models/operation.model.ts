@@ -1,5 +1,5 @@
 import { Service } from "typedi";
-import {OperatingJSON, OperationEntity} from "../entities/operation.entity"
+import {OperationJSON, OperationEntity} from "../entities/operation.entity"
 import mysql from "promise-mysql"
 
 export default class AccountModel{
@@ -12,7 +12,7 @@ export default class AccountModel{
             return conn.query("SELECT * FROM operations;");
         });
 
-        let accounts = results.map((result:OperatingJSON) => new OperationEntity(result));
+        let accounts = results.map((result:OperationJSON) => new OperationEntity(result));
         return accounts;
     } 
 
@@ -24,7 +24,7 @@ export default class AccountModel{
                             [account_id]);
         });
 
-        let accounts = results.map((result:OperatingJSON) => new OperationEntity(result));
+        let accounts = results.map((result:OperationJSON) => new OperationEntity(result));
         return accounts;
     }
 
@@ -46,22 +46,22 @@ export default class AccountModel{
     async add(operation:OperationEntity): Promise<number> {
         let result = await this.connection.then(conn => {
             return conn.query("INSERT INTO operations\
-                    (account_id, amount)\
-                    VALUES (?, ?);",
-                [operation.account_id, operation.amount]);
+                    (account_id, amount, comment)\
+                    VALUES (?, ?, ?);",
+                [operation.account_id, operation.amount, operation.comment]);
         });
         return result.insertId;
     }
 
-    async set(operation:OperationEntity): Promise<void>{
-        await this.connection.then( conn => {
-            return conn.query("UPDATE operations\
-                                SET account_id = ?,\
-                                amount = ?\
-                                WHERE id = ?;",
-                            [operation.account_id, operation.amount, operation.id]);
-        });
-    }
+    // async set(operation:OperationEntity): Promise<void>{
+    //     await this.connection.then( conn => {
+    //         return conn.query("UPDATE operations\
+    //                             SET account_id = ?,\
+    //                             amount = ?\
+    //                             WHERE id = ?;",
+    //                         [operation.account_id, operation.amount, operation.id]);
+    //     });
+    // }
 
     async delete(id:number): Promise<void>{
         await this.connection.then(conn => {
