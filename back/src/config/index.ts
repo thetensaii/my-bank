@@ -18,10 +18,19 @@ if(process.env.NODE_ENV === "test"){
 }
 
 export default {
-    "NODE_ENV" : process.env.NODE_ENV || "",
+    "NODE_ENV" : process.env.NODE_ENV,
+
+    // Server port
+    "PORT": process.env.PORT,
+
+    // Database
     "DB" : DB,
-    "PASSWORD_SALT": process.env.PASSWORD_SALT || "",
+
+    // Password
+    "PASSWORD_SALT": process.env.PASSWORD_SALT,
     "SALT_ROUNDS" : +(process.env.SALT_ROUNDS || 0),
-    "JWT_SECRET": process.env.JWT_SECRET || "",
+
+    // JWT
+    "JWT_SECRET": process.env.JWT_SECRET,
     "JWT_TOKEN_EXP_IN_MINUTES": +(process.env.JWT_TOKEN_EXP_IN_MINUTES || 0)
 }
