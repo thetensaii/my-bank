@@ -1,10 +1,9 @@
 import { Service } from "typedi";
-import { UserJSON, UserEntity, UserPublicJSON } from "../entities/user.entity";
+import { UserEntity, UserPublicJSON } from "../entities/user.entity";
 import { Factory } from "../models/factory";
 import bcrypt from "bcrypt"
 import config from "../config"
 import { AccountEntity } from "../entities/account.entity";
-import { OperationEntity } from "../entities/operation.entity";
 
 @Service({transient : true})
 export class UserService {

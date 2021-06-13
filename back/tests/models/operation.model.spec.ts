@@ -92,7 +92,7 @@ describe("OperationModel test", () => {
         expect(operationEntity).to.be.null;
     });
 
-    it("should add Account to DB", async () => {
+    it("should add Operation to DB", async () => {
         // ARRANGE
         let i = Math.floor(Math.random() * operations.length);
         let operation = operations[i];
@@ -105,7 +105,7 @@ describe("OperationModel test", () => {
         expect(operationID).to.be.a("number");
     });
 
-    it("should find Account by ID in DB", async () => {
+    it("should find Operation by ID in DB", async () => {
         // ARRANGE
         let i = Math.floor(Math.random() * operations.length);
         let operation = operations[i];

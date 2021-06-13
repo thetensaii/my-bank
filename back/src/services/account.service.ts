@@ -1,7 +1,5 @@
 import { Service } from "typedi";
 import { Factory } from "../models/factory";
-import bcrypt from "bcrypt"
-import config from "../config"
 import { AccountEntity, AccountJSON } from "../entities/account.entity";
 import { UserEntity, UserPublicJSON } from "../entities/user.entity";
 
@@ -23,8 +21,8 @@ export class AccountService {
         return accountEntity;
     }
 
-    async findByUserID(id:number):Promise<AccountEntity[]>{
-        let accounts:AccountEntity[] = await this.factory.AccountModel.findByUserID(id);
+    async findByUserID(userID:number):Promise<AccountEntity[]>{
+        let accounts:AccountEntity[] = await this.factory.AccountModel.findByUserID(userID);
         await this.factory.release();
 
         return accounts;
@@ -51,12 +49,12 @@ export class AccountService {
             if(!accountEntity) throw new Error(); 
 
             this.factory.commit();
-            await this.factory.release()
+            await this.factory.release();
 
             return accountEntity;
         } catch (error) {
-            await this.factory.rollback()
-            await this.factory.release()
+            await this.factory.rollback();
+            await this.factory.release();
 
             throw new Error("Error while creating account")
         }
@@ -64,20 +62,20 @@ export class AccountService {
 
     async changeName(user:UserPublicJSON, accountID:number, name:string): Promise<AccountEntity>{
         if(!user.id){ 
-            this.factory.release()
+            this.factory.release();
             throw new Error("User doesn't exist");
         }
 
         let accountEntity:AccountEntity|null = await this.factory.AccountModel.findByID(accountID);
         if(!accountEntity){
-            this.factory.release()
+            this.factory.release();
             throw new Error("Account doesn't exist");
         }
 
         // Gestion des admins à faire 
         // Ex : if(!user.is_admin && accountEntity.user_id !== user.id)
         if(accountEntity.user_id !== user.id){
-            this.factory.release()
+            this.factory.release();
             throw new Error("Access denied to this account");
         }
 
@@ -88,13 +86,15 @@ export class AccountService {
             await this.factory.AccountModel.setName(accountID, name);
             accountEntity = await this.factory.AccountModel.findByID(accountID);
             
-            if(!accountEntity) throw new Error(); 
+            if(!accountEntity) throw new Error();
+
             this.factory.commit();
-            await this.factory.release()
+            await this.factory.release();
+            
             return accountEntity;
         } catch (error) {
-            await this.factory.rollback()
-            await this.factory.release()
+            await this.factory.rollback();
+            await this.factory.release();
 
             throw new Error("Error while updating account")
         }
@@ -102,13 +102,13 @@ export class AccountService {
 
     async delete(user:UserPublicJSON, accountID:number):Promise<void>{
         if(!user.id){ 
-            this.factory.release()
+            this.factory.release();
             throw new Error("User doesn't exist");
         }
 
         let accountEntity:AccountEntity|null = await this.factory.AccountModel.findByID(accountID);
         if(!accountEntity){
-            this.factory.release()
+            this.factory.release();
             throw new Error("Account doesn't exist");
         }
 
@@ -120,13 +120,13 @@ export class AccountService {
         try {
             await this.factory.OperationModel.deleteByAccount(accountID);
             await this.factory.AccountModel.delete(accountID);
-            
-            await this.factory.release()
-        } catch (error) {
-            await this.factory.rollback()
-            await this.factory.release()
 
-            throw new Error("Error while deleting account")
+            await this.factory.release();
+        } catch (error) {
+            await this.factory.rollback();
+            await this.factory.release();
+
+            throw new Error("Error while deleting account");
         }
 
     }

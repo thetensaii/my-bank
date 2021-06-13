@@ -27,7 +27,7 @@ describe("AccountService test", () => {
     let authService:AuthService;
 
     before(async () => {
-        let l:number = Math.ceil(Math.random() * 15); // Number of accounts
+        let l_accounts:number = Math.ceil(Math.random() * 15); // Number of accounts
         
         // Creating user
         user = {
@@ -42,7 +42,7 @@ describe("AccountService test", () => {
         authService = Container.get(AuthService);
         userEntity = await authService.signUp(user);
 
-        for(let i = 0; i < l;++i){
+        for(let i = 0; i < l_accounts;++i){
             accounts.push({
                 user_id : userEntity.id!,
                 name : faker.vehicle.vehicle(),
@@ -106,7 +106,6 @@ describe("AccountService test", () => {
         accountEntity = await accountService.create(userEntity.toPublicJSON(), account)
         
         let accountID:number = accountEntity.id!;
-        let createdAt:Date = accountEntity.created_at!;
 
         // ACT
         accountService = Container.get(AccountService);
