@@ -41,7 +41,7 @@ export class AuthService {
         }
     }
 
-    async login(login:string, password:string):Promise<UserEntity>{
+    async signIn(login:string, password:string):Promise<UserEntity>{
 
         let userEntity:UserEntity|null = await this.factory.UserModel.findByLogin(login);
         await this.factory.release(); 

@@ -1,0 +1,26 @@
+import Joi from "joi";
+import { Request, Response, NextFunction } from 'express';
+import { StatusCodes } from 'http-status-codes';
+
+export class AuthValidator {
+    static async signUp(req:Request, res:Response, next:NextFunction) {
+
+        let signUpSchema:Joi.ObjectSchema = Joi.object({
+            login : Joi.string().min(3).required(),
+            firstname : Joi.string().min(3).required(),
+            lastname : Joi.string().min(2).required(),
+            email : Joi.string().email().required(),
+            password : Joi.string().min(5).required()
+        }).required();
+
+        try {
+            const value = await signUpSchema.validateAsync(req.body);
+            res.locals.user = value;
+            next()
+        } catch(error){
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error.message);
+        }
+    
+    }
+
+}

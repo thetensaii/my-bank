@@ -59,7 +59,7 @@ describe("AuthService test", () => {
         authService = Container.get(AuthService);
         
         // ACT
-        userEntity = await authService.login(user.login, user.password);
+        userEntity = await authService.signIn(user.login, user.password);
 
         // ASSERT
         expect(userEntity.id).to.be.a.a("number")
