@@ -4,6 +4,8 @@ import { Factory } from "../models/factory";
 import bcrypt from "bcrypt"
 import config from "../config"
 import { AccountEntity } from "../entities/account.entity";
+import { HttpError } from "../core/HttpError";
+import { StatusCodes } from "http-status-codes";
 
 @Service({transient : true})
 export class UserService {
@@ -16,9 +18,13 @@ export class UserService {
         return users;
     }
     
-    async findByID(id:number):Promise<UserEntity|null>{
+    async findByID(id:number):Promise<UserEntity>{
         let userEntity:UserEntity|null = await this.factory.UserModel.findByID(id);
         await this.factory.release();
+
+        if(!userEntity){
+            throw new HttpError(StatusCodes.NOT_FOUND, "User doesn't exist");
+        }
 
         return userEntity;
     }

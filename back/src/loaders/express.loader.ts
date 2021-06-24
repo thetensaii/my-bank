@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
 
 import { AuthRouter } from "../routes/auth.route";
+import { UserRouter } from "../routes/user.route";
 export default async ({ app }: { app: express.Application })=> {
 
     app.use(express.json())
@@ -13,4 +14,6 @@ export default async ({ app }: { app: express.Application })=> {
     });
 
     app.use("/auth", AuthRouter);
+    app.use("/users", UserRouter);
+
 };

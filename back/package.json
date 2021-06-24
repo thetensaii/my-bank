@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "tsc && node -r dotenv/config -r ts-node/register dist/index.js",
-    "dev": "concurrently -k -n \"TypeScript,Node\" -p \"[{name}]\" -c \"blue,green\" \"tsc --watch\" \"nodemon -r dotenv/config dist/index.js\"",
+    "dev": "concurrently -k -n \"TypeScript,Node\" -p \"[{name}]\" -c \"blue,green\" \"tsc --watch\" \"rm -r dist/* && nodemon -r dotenv/config dist/index.js\"",
     "test": "mocha -r dotenv/config -r ts-node/register \"tests/**/*.spec.ts\"",
     "build": "tsc",
     "init-db": "sudo mysql -u root -p < init_db.sql",
