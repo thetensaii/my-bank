@@ -24,4 +24,22 @@ export class AuthValidator {
     
     }
 
+    static async signIn(req:Request, res:Response, next:NextFunction) {
+
+        let signInSchema:Joi.ObjectSchema = Joi.object({
+            login : Joi.string().min(3).required(),
+            password : Joi.string().min(5).required()
+        }).required();
+
+        try {
+            const value = await signInSchema.validateAsync(req.body);
+            res.locals.user = value;
+            next()
+        } catch(error){
+            res.status(StatusCodes.BAD_REQUEST).send(error.message);
+            console.log(`${StatusCodes.BAD_REQUEST} - ${error.message}`)
+        }
+    
+    }
+
 }

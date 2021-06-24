@@ -49,7 +49,7 @@ export class AuthService {
         await this.factory.release(); 
         
         if(!userEntity){
-            throw new Error("User doesn't exist or wrong password");
+            throw new HttpError(StatusCodes.NOT_FOUND, "User doesn't exist or wrong password");
         }
 
         let match = await bcrypt.compare(password + config.PASSWORD_SALT, userEntity.password);
@@ -57,7 +57,7 @@ export class AuthService {
             // Retourner un token
             return userEntity;
         } else {
-            throw new Error("User doesn't exist or wrong password");
+            throw new HttpError(StatusCodes.NOT_FOUND, "User doesn't exist or wrong password");
         }
     }
 
