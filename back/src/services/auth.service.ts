@@ -3,7 +3,8 @@ import { UserJSON, UserEntity } from "../entities/user.entity";
 import { Factory } from "../models/factory";
 import bcrypt from "bcrypt"
 import config from "../config"
-
+import { HttpError } from "../core/HttpError";
+import { StatusCodes } from "http-status-codes";
 
 @Service({transient : true})
 export class AuthService {
@@ -17,7 +18,7 @@ export class AuthService {
 
         let u = await this.factory.UserModel.findByLogin(user.login)
         if(u){
-            throw new Error("User already exists.")
+            throw new HttpError(StatusCodes.CONFLICT, "User already exists.")
         }
 
         // Add find by Email
@@ -37,7 +38,8 @@ export class AuthService {
         } catch(error) {
             await this.factory.rollback();
             await this.factory.release();
-            throw new Error("Error while creating user")
+
+            throw new HttpError(StatusCodes.INTERNAL_SERVER_ERROR, "Error while creating user")
         }
     }
 

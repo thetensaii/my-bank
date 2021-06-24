@@ -4,14 +4,17 @@ import { Container } from "typedi"
 import { AuthService } from "../services/auth.service";
 import { UserEntity } from "../entities/user.entity";
 import { StatusCodes } from "http-status-codes";
+import { createUserToken } from "../core/JWT";
 export const AuthRouter = Router();
 
 AuthRouter.post("/signup", AuthValidator.signUp, async (req:Request, res:Response) => {
     let authService = Container.get(AuthService);
     try {
         let userEntity:UserEntity = await authService.signUp(res.locals.user);
-        res.status(StatusCodes.CREATED).send(userEntity.toPublicJSON());
+        let token:string = await createUserToken(userEntity);
+        res.status(StatusCodes.CREATED).json({token : token});
     } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error.message)
+        console.log(`${error.httpCode} - ${error.message}`)
+        res.status(error.httpCode).send(error.message)
     }
 });

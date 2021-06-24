@@ -18,7 +18,8 @@ export class AuthValidator {
             res.locals.user = value;
             next()
         } catch(error){
-            res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error.message);
+            res.status(StatusCodes.BAD_REQUEST).send(error.message);
+            console.log(`${StatusCodes.BAD_REQUEST} - ${error.message}`)
         }
     
     }
