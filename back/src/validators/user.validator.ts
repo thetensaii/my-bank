@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 export class UserValidator {
+
     static async findByID(req:Request, res:Response, next:NextFunction) {
 
         let findByIDSchema:Joi.ObjectSchema = Joi.object({
