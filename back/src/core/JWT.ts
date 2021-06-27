@@ -5,7 +5,7 @@ import config from "../config"
 
 export const createUserToken = async (user : UserEntity) : Promise<string> => {
     let payload:ObjectToken = {
-        user_id : user.id!,
+        id : user.id!,
         login : user.login,
         firstname : user.firstname,
         lastname : user.lastname,

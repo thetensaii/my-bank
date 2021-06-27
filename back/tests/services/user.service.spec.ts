@@ -96,7 +96,7 @@ describe("UserService test", () => {
         userService = Container.get(UserService);
         
         // ACT
-        userEntity = await userService.changeUser(u)
+        userEntity = await userService.changeUser(userEntity.toPublicJSON(), u)
 
         // ASSERT
         expect(userEntity?.id).to.be.a.a("number")
