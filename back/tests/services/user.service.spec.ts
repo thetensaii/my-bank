@@ -136,7 +136,7 @@ describe("UserService test", () => {
         let newPassword = faker.internet.password();
         // ACT
 
-        userEntity = await userService.changePassword(userPublic, newPassword);
+        userEntity = await userService.changePassword(userPublic, userPublic.id!, newPassword);
 
         // ASSERT
         expect(userEntity).not.to.be.null

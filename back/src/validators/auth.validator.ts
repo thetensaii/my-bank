@@ -16,7 +16,7 @@ export class AuthValidator {
         try {
             const value = await signUpSchema.validateAsync(req.body);
             res.locals.user = value;
-            next()
+            next();
         } catch(error){
             res.status(StatusCodes.BAD_REQUEST).send(error.message);
             console.log(`${StatusCodes.BAD_REQUEST} - ${error.message}`)
@@ -34,7 +34,7 @@ export class AuthValidator {
         try {
             const value = await signInSchema.validateAsync(req.body);
             res.locals.user = value;
-            next()
+            next();
         } catch(error){
             res.status(StatusCodes.BAD_REQUEST).send(error.message);
             console.log(`${StatusCodes.BAD_REQUEST} - ${error.message}`)

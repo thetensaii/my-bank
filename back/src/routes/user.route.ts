@@ -53,3 +53,16 @@ UserRouter.put("/:id",UserValidator.changeUser, AuthMiddleware.isAuth, async (re
         res.status(error.httpCode).send(error.message)
     }
 });
+
+UserRouter.put("/password/:id",UserValidator.changePassword, AuthMiddleware.isAuth, async (req:Request, res:Response) => {
+    let userService = Container.get(UserService);
+    try {
+        let userEntity:UserEntity = await userService.changePassword(res.locals.user, res.locals.id, res.locals.password);
+        let token:string = await createUserToken(userEntity);
+
+        res.status(StatusCodes.OK).json({token : token});
+    } catch (error) {
+        console.log(`${error.httpCode} - ${error.message}`)
+        res.status(error.httpCode).send(error.message)
+    }
+});

@@ -11,7 +11,7 @@ export class UserValidator {
 
         try {
             const value = await findByIDSchema.validateAsync(req.params);
-            next()
+            next();
         } catch(error){
             res.status(StatusCodes.BAD_REQUEST).send(error.message);
             console.log(`${StatusCodes.BAD_REQUEST} - ${error.message}`);
@@ -35,11 +35,33 @@ export class UserValidator {
             res.locals.changedUser = await ChangeUserSchema.validateAsync(req.body);
             let value = await IDSchema.validateAsync(req.params);
             res.locals.changedUser.id = value.id;
-            next()
+            next();
         } catch(error){
             res.status(StatusCodes.BAD_REQUEST).send(error.message);
             console.log(`${StatusCodes.BAD_REQUEST} - ${error.message}`);
-            console.log(req.params)
+        }
+    }
+
+    static async changePassword(req:Request, res:Response, next:NextFunction) {
+
+        let IDSchema:Joi.ObjectSchema = Joi.object({
+            id : Joi.number().required()
+        }).required();
+        
+        let ChangePasswordSchema:Joi.ObjectSchema = Joi.object({
+            password : Joi.string().min(5).required()
+        }).required();
+
+        try {
+            let value = await ChangePasswordSchema.validateAsync(req.body);
+            res.locals.password = value.password;
+
+            value = await IDSchema.validateAsync(req.params);
+            res.locals.id = value.id;
+            next();
+        } catch(error){
+            res.status(StatusCodes.BAD_REQUEST).send(error.message);
+            console.log(`${StatusCodes.BAD_REQUEST} - ${error.message}`);
         }
     }
 

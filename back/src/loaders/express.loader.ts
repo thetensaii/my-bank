@@ -10,7 +10,7 @@ export default async ({ app }: { app: express.Application })=> {
     app.use(express.urlencoded({ extended : false}))
 
     app.get("/status", (req:express.Request, res:express.Response) => {
-        res.status(StatusCodes.OK).send(res.locals.user);
+        res.status(StatusCodes.OK).json({"Status" : "OK"});
     });
 
     app.use("/auth", AuthRouter);

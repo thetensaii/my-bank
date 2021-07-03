@@ -41,7 +41,7 @@ export class UserService {
         
         if(!user.is_admin && user.id !== changedUser.id){
             this.factory.release();
-            throw new HttpError(StatusCodes.FORBIDDEN, "Changed user doesn't exist");
+            throw new HttpError(StatusCodes.FORBIDDEN, "You don't have access to this user.");
         }
 
         let userEntity:UserEntity|null = await this.factory.UserModel.findByID(user.id);
@@ -53,7 +53,7 @@ export class UserService {
         let changedUserEntity:UserEntity|null = await this.factory.UserModel.findByID(changedUser.id);
         if(!changedUserEntity){
             this.factory.release();
-            throw new HttpError(StatusCodes.NOT_FOUND, "User doesn't exist");
+            throw new HttpError(StatusCodes.NOT_FOUND, "Changed user doesn't exist");
         }
 
         changedUserEntity.login = changedUser.login;
@@ -78,24 +78,40 @@ export class UserService {
         }
     }
 
-    async changePassword(user:UserPublicJSON, password:string): Promise<UserEntity>{
+    async changePassword(user:UserPublicJSON, user_id:number, password:string): Promise<UserEntity>{
         if(!user.id){ 
             this.factory.release();
-            throw new Error("User doesn't exist");
+            throw new HttpError(StatusCodes.NOT_FOUND, "User doesn't exist");
         }
-        let userEntity:UserEntity|null = await this.factory.UserModel.findByID(user.id);
 
+        if(!user_id){ 
+            this.factory.release();
+            throw new HttpError(StatusCodes.NOT_FOUND, "Changed user doesn't exist");
+        }
+
+        if(!user.is_admin && user.id !== user_id){
+            this.factory.release();
+            throw new HttpError(StatusCodes.FORBIDDEN, "You don't have access to this user.");
+        }
+
+        let userEntity:UserEntity|null = await this.factory.UserModel.findByID(user.id);
         if(!userEntity){
             this.factory.release();
-            throw new Error("User doesn't exist");
+            throw new HttpError(StatusCodes.NOT_FOUND, "User doesn't exist");
         } 
 
-        userEntity.password = await bcrypt.hash(password + config.PASSWORD_SALT, config.SALT_ROUNDS);
+        let changedUserEntity:UserEntity|null = await this.factory.UserModel.findByID(user_id);
+        if(!changedUserEntity){
+            this.factory.release();
+            throw new HttpError(StatusCodes.NOT_FOUND, "Changed user doesn't exist");
+        }
+
+        let hashedPassword = await bcrypt.hash(password + config.PASSWORD_SALT, config.SALT_ROUNDS);
 
         try {
             this.factory.beginTransaction();
             
-            await this.factory.UserModel.setPassword(user.id, userEntity.password);
+            await this.factory.UserModel.setPassword(user_id, hashedPassword);
             userEntity = await this.factory.UserModel.findByID(user.id);
             if(!userEntity) throw new Error(); 
 
