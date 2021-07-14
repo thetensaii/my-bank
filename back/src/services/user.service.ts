@@ -34,6 +34,7 @@ export class UserService {
             this.factory.release();
             throw new HttpError(StatusCodes.NOT_FOUND, "User doesn't exist");
         }
+        
         if(!changedUser.id){
             this.factory.release();
             throw new HttpError(StatusCodes.NOT_FOUND, "Changed user doesn't exist");
@@ -123,25 +124,25 @@ export class UserService {
             this.factory.rollback();
             this.factory.release();
             console.log(error);
-            throw new Error("Error while updating user")
+            throw new HttpError(StatusCodes.INTERNAL_SERVER_ERROR, "Error while updating user")
         }
     }
 
-    async delete(user:UserPublicJSON, userID:number): Promise<UserEntity>{
+    async delete(user:UserPublicJSON, userID:number) {
         if(!user.id){ 
             this.factory.release();
-            throw new Error("User doesn't exist");
+            throw new HttpError(StatusCodes.NOT_FOUND, "User doesn't exist");
         }
 
         let userEntity:UserEntity|null = await this.factory.UserModel.findByID(userID);
         if(!userEntity){
             this.factory.release();
-            throw new Error("User doesn't exist");
+            throw new HttpError(StatusCodes.NOT_FOUND, "User doesn't exist");
         }
 
         if(user.id !== userID){
             this.factory.release();
-            throw new Error("Access denied to this account");
+            throw new HttpError(StatusCodes.FORBIDDEN, "Access denied to this account");
         }
 
         try {
@@ -164,7 +165,7 @@ export class UserService {
             this.factory.rollback();
             this.factory.release();
             console.log(error)
-            throw new Error("Error while deleting user")
+            throw new HttpError(StatusCodes.INTERNAL_SERVER_ERROR, "Error while deleting user")
         }
     }
 

@@ -8,7 +8,7 @@ import { createUserToken } from "../core/JWT";
 export const AuthRouter = Router();
 
 AuthRouter.post("/signup", AuthValidator.signUp, async (req:Request, res:Response) => {
-    let authService = Container.get(AuthService);
+    let authService:AuthService = Container.get(AuthService);
     try {
         let userEntity:UserEntity = await authService.signUp(res.locals.user);
         let token:string = await createUserToken(userEntity);
@@ -21,11 +21,11 @@ AuthRouter.post("/signup", AuthValidator.signUp, async (req:Request, res:Respons
 });
 
 AuthRouter.post("/signin", AuthValidator.signIn, async (req:Request, res:Response) => {
-    let authService = Container.get(AuthService);
+    let authService:AuthService = Container.get(AuthService);
     try {
         let userEntity:UserEntity = await authService.signIn(res.locals.user.login, res.locals.user.password);
         let token:string = await createUserToken(userEntity);
-        
+
         res.cookie("token", token);
         res.status(StatusCodes.OK).json({user_id : userEntity.id});
     } catch (error) {

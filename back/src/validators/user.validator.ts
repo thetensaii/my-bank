@@ -65,5 +65,19 @@ export class UserValidator {
         }
     }
 
+    static async deleteByID(req:Request, res:Response, next:NextFunction) {
+
+        let deleteByIDSchema:Joi.ObjectSchema = Joi.object({
+            id : Joi.number().required()
+        }).required();
+
+        try {
+            const value = await deleteByIDSchema.validateAsync(req.params);
+            next();
+        } catch(error){
+            res.status(StatusCodes.BAD_REQUEST).send(error.message);
+            console.log(`${StatusCodes.BAD_REQUEST} - ${error.message}`);
+        }
+    }
 
 }

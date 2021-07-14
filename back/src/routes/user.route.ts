@@ -14,7 +14,7 @@ export const UserRouter = Router();
 
 
 UserRouter.get("/:id", UserValidator.findByID, AuthMiddleware.isAuth, async (req:Request, res:Response) => {
-    let userService = Container.get(UserService);
+    let userService:UserService = Container.get(UserService);
     try {
         let userEntity:UserEntity|null = await userService.findByID(+req.params.id);
         
@@ -30,7 +30,7 @@ UserRouter.get("/:id", UserValidator.findByID, AuthMiddleware.isAuth, async (req
 });
 
 UserRouter.get("/", AuthMiddleware.isAuth, async (req:Request, res:Response) => {
-    let userService = Container.get(UserService);
+    let userService:UserService = Container.get(UserService);
     try {
         let usersEntity:UserEntity[] = await userService.findAll();
 
@@ -42,12 +42,16 @@ UserRouter.get("/", AuthMiddleware.isAuth, async (req:Request, res:Response) => 
 });
 
 UserRouter.put("/:id",UserValidator.changeUser, AuthMiddleware.isAuth, async (req:Request, res:Response) => {
-    let userService = Container.get(UserService);
+    let userService:UserService = Container.get(UserService);
     try {
         let userEntity:UserEntity = await userService.changeUser(res.locals.user, res.locals.changedUser);
         let token:string = await createUserToken(userEntity);
 
-        res.status(StatusCodes.OK).json({token : token});
+        if(res.locals.user.id == res.locals.changedUser.id){
+            res.cookie("token", token);
+        }
+
+        res.sendStatus(StatusCodes.OK);
     } catch (error) {
         console.log(`${error.httpCode} - ${error.message}`)
         res.status(error.httpCode).send(error.message)
@@ -55,12 +59,28 @@ UserRouter.put("/:id",UserValidator.changeUser, AuthMiddleware.isAuth, async (re
 });
 
 UserRouter.put("/password/:id",UserValidator.changePassword, AuthMiddleware.isAuth, async (req:Request, res:Response) => {
-    let userService = Container.get(UserService);
+    let userService:UserService = Container.get(UserService);
     try {
         let userEntity:UserEntity = await userService.changePassword(res.locals.user, res.locals.id, res.locals.password);
         let token:string = await createUserToken(userEntity);
 
-        res.status(StatusCodes.OK).json({token : token});
+        if(res.locals.user.id == res.locals.id){
+            res.cookie("token", token);
+        }
+
+        res.sendStatus(StatusCodes.OK);
+    } catch (error) {
+        console.log(`${error.httpCode} - ${error.message}`)
+        res.status(error.httpCode).send(error.message)
+    }
+});
+
+UserRouter.delete("/:id", UserValidator.deleteByID, AuthMiddleware.isAuth, async (req:Request, res:Response) => {
+    let userService:UserService = Container.get(UserService);
+    try {
+        await userService.delete(res.locals.user, +req.params.id);
+        
+        res.sendStatus(StatusCodes.OK)
     } catch (error) {
         console.log(`${error.httpCode} - ${error.message}`)
         res.status(error.httpCode).send(error.message)
