@@ -12,7 +12,8 @@ AuthRouter.post("/signup", AuthValidator.signUp, async (req:Request, res:Respons
     try {
         let userEntity:UserEntity = await authService.signUp(res.locals.user);
         let token:string = await createUserToken(userEntity);
-        res.status(StatusCodes.CREATED).json({token : token});
+
+        res.status(StatusCodes.CREATED).json({user_id : userEntity.id});
     } catch (error) {
         console.log(`${error.httpCode} - ${error.message}`)
         res.status(error.httpCode).send(error.message)
@@ -24,7 +25,9 @@ AuthRouter.post("/signin", AuthValidator.signIn, async (req:Request, res:Respons
     try {
         let userEntity:UserEntity = await authService.signIn(res.locals.user.login, res.locals.user.password);
         let token:string = await createUserToken(userEntity);
-        res.status(StatusCodes.OK).json({token : token});
+        
+        res.cookie("token", token);
+        res.status(StatusCodes.OK).json({user_id : userEntity.id});
     } catch (error) {
         console.log(`${error.httpCode} - ${error.message}`)
         res.status(error.httpCode).send(error.message)

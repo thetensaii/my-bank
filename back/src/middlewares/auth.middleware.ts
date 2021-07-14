@@ -5,20 +5,13 @@ import { ObjectToken } from '../types/ObjectToken';
 
 export class AuthMiddleware {
     static async isAuth(req:Request, res:Response, next:NextFunction){
-        if(!req.headers.authorization){
+        if(!req.cookies.token){
             res.sendStatus(StatusCodes.UNAUTHORIZED);
             return;
         }
+
+        let token:string = req.cookies.token;
         
-        let auth:string = req.headers.authorization;
-        let scheme:string = auth.split(" ")[0];
-        let token:string = auth.split(" ")[1];
-
-        if(scheme !== "Bearer"){
-            res.sendStatus(StatusCodes.UNAUTHORIZED);
-            return;
-        } 
-
         try { 
             let user:ObjectToken = await verifyUserToken(token);
             res.locals.user = user;
