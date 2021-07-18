@@ -61,12 +61,7 @@ UserRouter.put("/:id",UserValidator.changeUser, AuthMiddleware.isAuth, async (re
 UserRouter.put("/password/:id",UserValidator.changePassword, AuthMiddleware.isAuth, async (req:Request, res:Response) => {
     let userService:UserService = Container.get(UserService);
     try {
-        let userEntity:UserEntity = await userService.changePassword(res.locals.user, res.locals.id, res.locals.password);
-        let token:string = await createUserToken(userEntity);
-
-        if(res.locals.user.id == res.locals.id){
-            res.cookie("token", token);
-        }
+        await userService.changePassword(res.locals.user, res.locals.id, res.locals.password);
 
         res.sendStatus(StatusCodes.OK);
     } catch (error) {

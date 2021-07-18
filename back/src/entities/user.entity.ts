@@ -96,7 +96,9 @@ export class UserEntity extends Entity{
             firstname : this._firstname,
             lastname : this._lastname,
             email : this._email,
-            is_admin :this._is_admin
+            is_admin :this._is_admin,
+            created_at : super.created_at,
+            updated_at : super.updated_at
         }
     }
 }

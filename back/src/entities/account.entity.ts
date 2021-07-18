@@ -14,7 +14,6 @@ export class AccountEntity extends Entity{
 
     private _balance: number;
 
-
     constructor(account:AccountJSON){
         super(account);
         this._user_id = account.user_id;
@@ -44,6 +43,17 @@ export class AccountEntity extends Entity{
 
     set balance(value: number){
         this._balance = value;
+    }
+
+    toJSON() : AccountJSON{
+        return {
+            id : super.id,
+            user_id : this._user_id,
+            name : this._name,
+            balance : this._balance,
+            created_at : this.created_at,
+            updated_at : this.updated_at
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 import Joi from "joi";
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { UserJSON } from "../entities/user.entity";
 
 export class AuthValidator {
     static async signUp(req:Request, res:Response, next:NextFunction) {
@@ -14,7 +15,7 @@ export class AuthValidator {
         }).required();
 
         try {
-            const value = await signUpSchema.validateAsync(req.body);
+            const value:UserJSON = await signUpSchema.validateAsync(req.body);
             res.locals.user = value;
             next();
         } catch(error){

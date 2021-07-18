@@ -20,7 +20,6 @@ export class OperationEntity extends Entity {
         this._comment = operation.comment;
     }
 
-
     get account_id() : number{
         return this._account_id;
     }
@@ -43,6 +42,17 @@ export class OperationEntity extends Entity {
 
     set comment(value: string){
         this._comment = value;
+    }
+
+    toJSON() : OperationJSON {
+        return {
+            id : super.id,
+            account_id : this._account_id,
+            amount : this._amount,
+            comment : this._comment,
+            created_at : super.created_at,
+            updated_at : super.updated_at
+        }
     }
     
 }
