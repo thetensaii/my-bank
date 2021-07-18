@@ -3,6 +3,8 @@ import { Factory } from "../models/factory";
 import { OperationEntity, OperationJSON } from "../entities/operation.entity";
 import { UserPublicJSON, UserEntity } from "../entities/user.entity";
 import { AccountEntity } from "../entities/account.entity";
+import { HttpError } from "../core/HttpError";
+import { StatusCodes } from "http-status-codes";
 
 @Service({transient : true})
 export class OperationService {
@@ -32,24 +34,24 @@ export class OperationService {
     async create(user:UserPublicJSON, operation:OperationJSON):Promise<OperationEntity>{
         if(!user.id){ 
             this.factory.release();
-            throw new Error("User doesn't exist");
+            throw new HttpError(StatusCodes.NOT_FOUND, "User doesn't exist");
         }
         
         let userEntity:UserEntity|null = await this.factory.UserModel.findByID(user.id);
         if(!userEntity){
             this.factory.release();
-            throw new Error("User doesn't exist");
+            throw new HttpError(StatusCodes.NOT_FOUND, "User doesn't exist");
         }
         
         let accountEntity:AccountEntity|null = await this.factory.AccountModel.findByID(operation.account_id);
         if(!accountEntity){
             this.factory.release();
-            throw new Error("Account doesn't exist");
+            throw new HttpError(StatusCodes.NOT_FOUND, "Account doesn't exist");
         }
         
         if(accountEntity.user_id !== user.id){
             this.factory.release();
-            throw new Error("You don't have access to this account");
+            throw new HttpError(StatusCodes.FORBIDDEN, "You don't have access to this account");
         }
 
         let operationEntity:OperationEntity|null = new OperationEntity(operation);
@@ -69,37 +71,37 @@ export class OperationService {
             await this.factory.rollback();
             await this.factory.release();
 
-            throw new Error("Error while creating operation")
+            throw new HttpError(StatusCodes.INTERNAL_SERVER_ERROR, "Error while creating operation")
         }
     }
 
     async delete(user:UserPublicJSON, operationID:number):Promise<void>{
         if(!user.id){ 
             this.factory.release();
-            throw new Error("User doesn't exist");
+            throw new HttpError(StatusCodes.NOT_FOUND, "User doesn't exist");
         }
         
         let userEntity:UserEntity|null = await this.factory.UserModel.findByID(user.id);
         if(!userEntity){
             this.factory.release();
-            throw new Error("User doesn't exist");
+            throw new HttpError(StatusCodes.NOT_FOUND, "User doesn't exist");
         }
         let operationEntity:OperationEntity|null = await this.factory.OperationModel.findByID(operationID);
         
         if(!operationEntity){
             this.factory.release();
-            throw new Error("Operation doesn't exist");
+            throw new HttpError(StatusCodes.NOT_FOUND, "Operation doesn't exist");
         }
 
         let accountEntity:AccountEntity|null = await this.factory.AccountModel.findByID(operationEntity.account_id);
         if(!accountEntity){
             this.factory.release();
-            throw new Error("Account doesn't exist");
+            throw new HttpError(StatusCodes.NOT_FOUND, "Account doesn't exist");
         }
 
         if(accountEntity.user_id !== user.id){
             this.factory.release();
-            throw new Error("Youaccounts don't have access to this operation");
+            throw new HttpError(StatusCodes.FORBIDDEN, "You don't have access to this operation");
         }
 
         try {
@@ -113,7 +115,7 @@ export class OperationService {
             await this.factory.rollback();
             await this.factory.release();
 
-            throw new Error("Error while deleting operation")
+            throw new HttpError(StatusCodes.INTERNAL_SERVER_ERROR, "Error while deleting operation")
         }
     }
 

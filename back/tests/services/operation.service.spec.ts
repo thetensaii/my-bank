@@ -16,7 +16,7 @@ import { UserService } from '../../src/services/user.service';
 import { OperationEntity, OperationJSON } from '../../src/entities/operation.entity';
 
 
-describe("AccountService test", () => {
+describe("OperationService test", () => {
     let operationService:OperationService;
     let operations:OperationJSON[] = [];
     let operationEntity:OperationEntity|null;
@@ -161,7 +161,7 @@ describe("AccountService test", () => {
         expect(results.length).to.be.equal(operations.length)
     });
 
-    it("should find Operation by Acount", async () => {
+    it("should find all Operation", async () => {
         // ARRANGE
         for(let o of operations){
             operationService = Container.get(OperationService); 
