@@ -1,7 +1,6 @@
 import { Router, Request, Response } from "express";
 import { Container } from "typedi"
 import { StatusCodes } from "http-status-codes";
-import { AuthMiddleware } from "../middlewares/auth.middleware";
 import { HttpError } from "../core/HttpError";
 import { OperationEntity, OperationJSON } from "../entities/operation.entity";
 import { OperationService } from "../services/operation.service";
@@ -9,7 +8,8 @@ import { OperationValidator } from "../validators/operation.validator";
 
 export const OperationRouter = Router();
 
-OperationRouter.get("/:id", OperationValidator.findByID, AuthMiddleware.isAuth, async (req:Request, res:Response) => {
+
+OperationRouter.get("/:id", OperationValidator.findByID, async (req:Request, res:Response) => {
     let operationService:OperationService = Container.get(OperationService);
 
     let operationID:number = res.locals.id;
@@ -22,14 +22,13 @@ OperationRouter.get("/:id", OperationValidator.findByID, AuthMiddleware.isAuth, 
         let operationJSON:OperationJSON = operationEntity.toJSON();
 
         res.status(StatusCodes.OK).json(operationJSON);
-
     } catch (error) {
         console.log(`${error.httpCode} - ${error.message}`)
         res.status(error.httpCode).send(error.message)
     }
 });
 
-OperationRouter.get("/account/:id", OperationValidator.findByAccountID, AuthMiddleware.isAuth, async (req:Request, res:Response) => {
+OperationRouter.get("/account/:id", OperationValidator.findByAccountID, async (req:Request, res:Response) => {
     let operationService:OperationService = Container.get(OperationService);
 
     let accountID:number = res.locals.accountID;
@@ -44,7 +43,7 @@ OperationRouter.get("/account/:id", OperationValidator.findByAccountID, AuthMidd
     }
 });
 
-OperationRouter.post("/", OperationValidator.create, AuthMiddleware.isAuth, async (req:Request, res:Response) => {
+OperationRouter.post("/", OperationValidator.create, async (req:Request, res:Response) => {
     let operationService:OperationService = Container.get(OperationService);
 
     try {
@@ -58,7 +57,7 @@ OperationRouter.post("/", OperationValidator.create, AuthMiddleware.isAuth, asyn
     }
 });
 
-OperationRouter.delete("/:id", OperationValidator.deleteByID, AuthMiddleware.isAuth, async (req:Request, res:Response) => {
+OperationRouter.delete("/:id", OperationValidator.deleteByID, async (req:Request, res:Response) => {
     let operationService:OperationService = Container.get(OperationService);
 
     try {

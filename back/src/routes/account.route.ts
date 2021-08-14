@@ -1,7 +1,6 @@
 import { Router, Request, Response } from "express";
 import { Container } from "typedi"
 import { StatusCodes } from "http-status-codes";
-import { AuthMiddleware } from "../middlewares/auth.middleware";
 import { HttpError } from "../core/HttpError";
 import { AccountValidator } from "../validators/account.validator";
 import { AccountEntity, AccountJSON } from "../entities/account.entity";
@@ -11,7 +10,7 @@ import { OperationService } from "../services/operation.service";
 
 export const AccountRouter = Router();
 
-AccountRouter.get("/:id", AccountValidator.findByID, AuthMiddleware.isAuth, async (req:Request, res:Response) => {
+AccountRouter.get("/:id", AccountValidator.findByID, async (req:Request, res:Response) => {
     let accountService:AccountService = Container.get(AccountService);
     let operationService:OperationService = Container.get(OperationService);
 
@@ -37,7 +36,7 @@ AccountRouter.get("/:id", AccountValidator.findByID, AuthMiddleware.isAuth, asyn
     }
 });
 
-AccountRouter.get("/user/:id", AccountValidator.findByID, AuthMiddleware.isAuth, async (req:Request, res:Response) => {
+AccountRouter.get("/user/:id", AccountValidator.findByID, async (req:Request, res:Response) => {
     let accountService:AccountService = Container.get(AccountService);
 
     let accountID:number = +req.params.id;
@@ -52,7 +51,7 @@ AccountRouter.get("/user/:id", AccountValidator.findByID, AuthMiddleware.isAuth,
     }
 });
 
-AccountRouter.post("/", AccountValidator.create, AuthMiddleware.isAuth, async (req:Request, res:Response) => {
+AccountRouter.post("/", AccountValidator.create, async (req:Request, res:Response) => {
     let accountService:AccountService = Container.get(AccountService);
     try {
         let accountEntity:AccountEntity = await accountService.create(res.locals.user, res.locals.account);
@@ -65,7 +64,7 @@ AccountRouter.post("/", AccountValidator.create, AuthMiddleware.isAuth, async (r
     }
 });
  
-AccountRouter.put("/:id", AccountValidator.changeName, AuthMiddleware.isAuth, async(req:Request, res:Response) => {
+AccountRouter.put("/:id", AccountValidator.changeName, async(req:Request, res:Response) => {
     let accountService:AccountService = Container.get(AccountService);
     try {
         await accountService.changeName(res.locals.user, res.locals.account.id, res.locals.account.name);
@@ -76,7 +75,7 @@ AccountRouter.put("/:id", AccountValidator.changeName, AuthMiddleware.isAuth, as
     }
 });
 
-AccountRouter.delete("/:id", AccountValidator.deleteByID, AuthMiddleware.isAuth, async (req:Request, res:Response) => {
+AccountRouter.delete("/:id", AccountValidator.deleteByID, async (req:Request, res:Response) => {
     let accountService:AccountService = Container.get(AccountService);
     
     try {

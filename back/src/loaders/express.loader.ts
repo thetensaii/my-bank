@@ -6,6 +6,7 @@ import { AuthRouter } from "../routes/auth.route";
 import { UserRouter } from "../routes/user.route";
 import { AccountRouter } from "../routes/account.route";
 import { OperationRouter } from "../routes/operation.route";
+import { AuthMiddleware } from "../middlewares/auth.middleware";
 export default async ({ app }: { app: express.Application })=> {
 
     app.use(express.json());
@@ -17,6 +18,8 @@ export default async ({ app }: { app: express.Application })=> {
     });
 
     app.use("/auth", AuthRouter);
+    
+    app.use(AuthMiddleware.isAuth)
     app.use("/users", UserRouter);
     app.use("/accounts", AccountRouter);
     app.use("/operations", OperationRouter);
