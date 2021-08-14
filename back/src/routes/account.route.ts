@@ -11,19 +11,19 @@ import { OperationService } from "../services/operation.service";
 export const AccountRouter = Router();
 
 AccountRouter.get("/:id", AccountValidator.findByID, async (req:Request, res:Response) => {
-    let accountService:AccountService = Container.get(AccountService);
-    let operationService:OperationService = Container.get(OperationService);
+    const accountService:AccountService = Container.get(AccountService);
+    const operationService:OperationService = Container.get(OperationService);
 
-    let accountID:number = +req.params.id;
+    const accountID:number = +req.params.id;
     try {
-        let accountEntity:AccountEntity|null = await accountService.findByID(accountID);
+        const accountEntity:AccountEntity|null = await accountService.findByID(accountID);
         if(!accountEntity){
             throw new HttpError(StatusCodes.NOT_FOUND, "Account doesn't exist");
         }
 
-        let operations:OperationEntity[] = await operationService.findByAccountID(accountID);
-        let accountJSON:AccountJSON = accountEntity.toJSON();
-        let operationsJSON:OperationJSON[] = operations.map(o => o.toJSON());
+        const operations:OperationEntity[] = await operationService.findByAccountID(accountID);
+        const accountJSON:AccountJSON = accountEntity.toJSON();
+        const operationsJSON:OperationJSON[] = operations.map(o => o.toJSON());
 
         res.status(StatusCodes.OK).json({
             account : accountJSON,
@@ -37,12 +37,12 @@ AccountRouter.get("/:id", AccountValidator.findByID, async (req:Request, res:Res
 });
 
 AccountRouter.get("/user/:id", AccountValidator.findByID, async (req:Request, res:Response) => {
-    let accountService:AccountService = Container.get(AccountService);
+    const accountService:AccountService = Container.get(AccountService);
 
-    let accountID:number = +req.params.id;
+    const accountID:number = +req.params.id;
     try {
-        let accounts:AccountEntity[] = await accountService.findByUserID(accountID);
-        let accountsJSON:AccountJSON[] = accounts.map(a => a.toJSON()); 
+        const accounts:AccountEntity[] = await accountService.findByUserID(accountID);
+        const accountsJSON:AccountJSON[] = accounts.map(a => a.toJSON()); 
 
         res.status(StatusCodes.OK).json(accountsJSON);
     } catch (error) {
@@ -52,10 +52,10 @@ AccountRouter.get("/user/:id", AccountValidator.findByID, async (req:Request, re
 });
 
 AccountRouter.post("/", AccountValidator.create, async (req:Request, res:Response) => {
-    let accountService:AccountService = Container.get(AccountService);
+    const accountService:AccountService = Container.get(AccountService);
     try {
-        let accountEntity:AccountEntity = await accountService.create(res.locals.user, res.locals.account);
-        let accountJSON:AccountJSON = accountEntity.toJSON();
+        const accountEntity:AccountEntity = await accountService.create(res.locals.user, res.locals.account);
+        const accountJSON:AccountJSON = accountEntity.toJSON();
         
         res.status(StatusCodes.CREATED).json(accountJSON);
     } catch (error) {
@@ -65,10 +65,10 @@ AccountRouter.post("/", AccountValidator.create, async (req:Request, res:Respons
 });
  
 AccountRouter.put("/:id", AccountValidator.changeName, async(req:Request, res:Response) => {
-    let accountService:AccountService = Container.get(AccountService);
+    const accountService:AccountService = Container.get(AccountService);
     try {
-        await accountService.changeName(res.locals.user, res.locals.account.id, res.locals.account.name);
-        res.sendStatus(StatusCodes.OK);
+        const accountEntity:AccountEntity = await accountService.changeName(res.locals.user, res.locals.account.id, res.locals.account.name);
+        res.status(StatusCodes.OK).send(accountEntity.toJSON());
     } catch (error) {
         console.log(`${error.httpCode} - ${error.message}`)
         res.status(error.httpCode).send(error.message)
@@ -76,11 +76,10 @@ AccountRouter.put("/:id", AccountValidator.changeName, async(req:Request, res:Re
 });
 
 AccountRouter.delete("/:id", AccountValidator.deleteByID, async (req:Request, res:Response) => {
-    let accountService:AccountService = Container.get(AccountService);
+    const accountService:AccountService = Container.get(AccountService);
     
     try {
         await accountService.delete(res.locals.user, res.locals.id);
-        
         res.sendStatus(StatusCodes.OK)
     } catch (error) {
         console.log(`${error.httpCode} - ${error.message}`)

@@ -20,7 +20,6 @@ export class AuthMiddleware {
         try { 
             user = await verifyUserToken(token);
         } catch(error){
-            console.log(error)
             res.sendStatus(StatusCodes.UNAUTHORIZED);
             return;
         }

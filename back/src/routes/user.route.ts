@@ -10,8 +10,6 @@ import { HttpError } from "../core/HttpError";
 
 export const UserRouter = Router();
 
-
-
 UserRouter.get("/:id", UserValidator.findByID, async (req:Request, res:Response) => {
     let userService:UserService = Container.get(UserService);
     try {

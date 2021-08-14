@@ -46,8 +46,10 @@ AuthRouter.get("/me", AuthMiddleware.isAuth, async (req:Request, res:Response) =
 
 AuthRouter.get("/disconnect", AuthMiddleware.isAuth, async (req:Request, res:Response) => {
     try {
+        console.log("Disconnect route")
         res.cookie("token", "", {maxAge : 1, httpOnly : true})
-        res.status(StatusCodes.OK)
+        console.log("Cookie set")
+        res.sendStatus(StatusCodes.OK)
     } catch (error) {
         console.log(`${error.httpCode} - ${error.message}`)
         res.status(error.httpCode).send(error.message)
