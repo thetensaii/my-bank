@@ -6,6 +6,7 @@ import { UserEntity } from "../entities/user.entity";
 import { StatusCodes } from "http-status-codes";
 import { createUserToken } from "../core/JWT";
 import { AuthMiddleware } from "../middlewares/auth.middleware";
+import { HttpError } from "../core/HttpError";
 export const AuthRouter = Router();
 
 AuthRouter.post("/signup", AuthValidator.signUp, async (req:Request, res:Response) => {
@@ -15,9 +16,14 @@ AuthRouter.post("/signup", AuthValidator.signUp, async (req:Request, res:Respons
         let token:string = await createUserToken(userEntity);
 
         res.sendStatus(StatusCodes.CREATED);
-    } catch (error) {
-        console.log(`${error.httpCode} - ${error.message}`)
-        res.status(error.httpCode).send(error.message)
+    } catch ( error) {
+        if(error instanceof HttpError) {
+            console.log(`${error.httpCode} - ${error.message}`);
+            res.status(error.httpCode).send(error.message);
+        } else if (error instanceof Error){
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+            console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);
+        }
     }
 });
 
@@ -30,8 +36,13 @@ AuthRouter.post("/signin", AuthValidator.signIn, async (req:Request, res:Respons
         res.cookie("token", token, {httpOnly : true});
         res.status(StatusCodes.OK).json(userEntity.toPublicJSON());
     } catch (error) {
-        console.log(`${error.httpCode} - ${error.message}`)
-        res.status(error.httpCode).send(error.message)
+        if(error instanceof HttpError) {
+            console.log(`${error.httpCode} - ${error.message}`);
+            res.status(error.httpCode).send(error.message);
+        } else if (error instanceof Error){
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+            console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);
+        }
     }
 });
 
@@ -39,8 +50,13 @@ AuthRouter.get("/me", AuthMiddleware.isAuth, async (req:Request, res:Response) =
     try {
         res.status(StatusCodes.OK).json(res.locals.user);
     } catch (error) {
-        console.log(`${error.httpCode} - ${error.message}`)
-        res.status(error.httpCode).send(error.message)
+        if(error instanceof HttpError) {
+            console.log(`${error.httpCode} - ${error.message}`);
+            res.status(error.httpCode).send(error.message);
+        } else if (error instanceof Error){
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+            console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);
+        }
     }
 });
 
@@ -51,7 +67,12 @@ AuthRouter.get("/disconnect", AuthMiddleware.isAuth, async (req:Request, res:Res
         console.log("Cookie set")
         res.sendStatus(StatusCodes.OK)
     } catch (error) {
-        console.log(`${error.httpCode} - ${error.message}`)
-        res.status(error.httpCode).send(error.message)
+        if(error instanceof HttpError) {
+            console.log(`${error.httpCode} - ${error.message}`);
+            res.status(error.httpCode).send(error.message);
+        } else if (error instanceof Error){
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+            console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);
+        }
     }
 });

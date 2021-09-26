@@ -23,8 +23,13 @@ OperationRouter.get("/:id", OperationValidator.findByID, async (req:Request, res
 
         res.status(StatusCodes.OK).json(operationJSON);
     } catch (error) {
-        console.log(`${error.httpCode} - ${error.message}`)
-        res.status(error.httpCode).send(error.message)
+        if(error instanceof HttpError) {
+            console.log(`${error.httpCode} - ${error.message}`);
+            res.status(error.httpCode).send(error.message);
+        } else if (error instanceof Error){
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+            console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);
+        }
     }
 });
 
@@ -38,8 +43,13 @@ OperationRouter.get("/account/:id", OperationValidator.findByAccountID, async (r
 
         res.status(StatusCodes.OK).json(operationsJSON);
     } catch (error) {
-        console.log(`${error.httpCode} - ${error.message}`)
-        res.status(error.httpCode).send(error.message)
+        if(error instanceof HttpError) {
+            console.log(`${error.httpCode} - ${error.message}`);
+            res.status(error.httpCode).send(error.message);
+        } else if (error instanceof Error){
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+            console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);
+        }
     }
 });
 
@@ -52,8 +62,13 @@ OperationRouter.post("/", OperationValidator.create, async (req:Request, res:Res
         
         res.status(StatusCodes.CREATED).json(operationJSON);
     } catch (error) {
-        console.log(`${error.httpCode} - ${error.message}`)
-        res.status(error.httpCode).send(error.message)
+        if(error instanceof HttpError) {
+            console.log(`${error.httpCode} - ${error.message}`);
+            res.status(error.httpCode).send(error.message);
+        } else if (error instanceof Error){
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+            console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);
+        }
     }
 });
 
@@ -65,7 +80,12 @@ OperationRouter.delete("/:id", OperationValidator.deleteByID, async (req:Request
         
         res.sendStatus(StatusCodes.OK);
     } catch (error) {
-        console.log(`${error.httpCode} - ${error.message}`)
-        res.status(error.httpCode).send(error.message)
+        if(error instanceof HttpError) {
+            console.log(`${error.httpCode} - ${error.message}`);
+            res.status(error.httpCode).send(error.message);
+        } else if (error instanceof Error){
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+            console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);
+        }
     }
 });

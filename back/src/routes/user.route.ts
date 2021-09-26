@@ -21,8 +21,13 @@ UserRouter.get("/:id", UserValidator.findByID, async (req:Request, res:Response)
 
         res.status(StatusCodes.OK).json(userEntity.toPublicJSON());
     } catch (error) {
-        console.log(`${error.httpCode} - ${error.message}`)
-        res.status(error.httpCode).send(error.message)
+        if(error instanceof HttpError) {
+            console.log(`${error.httpCode} - ${error.message}`);
+            res.status(error.httpCode).send(error.message);
+        } else if (error instanceof Error){
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+            console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);
+        }
     }
 });
 
@@ -33,8 +38,13 @@ UserRouter.get("/", async (req:Request, res:Response) => {
 
         res.status(StatusCodes.OK).json(usersEntity.map(u => { return u.toPublicJSON() }));
     } catch (error) {
-        console.log(`${error.httpCode} - ${error.message}`)
-        res.status(error.httpCode).send(error.message)
+        if(error instanceof HttpError) {
+            console.log(`${error.httpCode} - ${error.message}`);
+            res.status(error.httpCode).send(error.message);
+        } else if (error instanceof Error){
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+            console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);
+        }
     }
 });
 
@@ -50,8 +60,13 @@ UserRouter.put("/:id",UserValidator.changeUser, async (req:Request, res:Response
 
         res.status(StatusCodes.OK).send(userEntity.toPublicJSON());
     } catch (error) {
-        console.log(`${error.httpCode} - ${error.message}`)
-        res.status(error.httpCode).send(error.message)
+        if(error instanceof HttpError) {
+            console.log(`${error.httpCode} - ${error.message}`);
+            res.status(error.httpCode).send(error.message);
+        } else if (error instanceof Error){
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+            console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);
+        }
     }
 });
 
@@ -62,8 +77,13 @@ UserRouter.put("/password/:id",UserValidator.changePassword, async (req:Request,
 
         res.sendStatus(StatusCodes.OK);
     } catch (error) {
-        console.log(`${error.httpCode} - ${error.message}`)
-        res.status(error.httpCode).send(error.message)
+        if(error instanceof HttpError) {
+            console.log(`${error.httpCode} - ${error.message}`);
+            res.status(error.httpCode).send(error.message);
+        } else if (error instanceof Error){
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+            console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);
+        }
     }
 });
 
@@ -74,7 +94,12 @@ UserRouter.delete("/:id", UserValidator.deleteByID, async (req:Request, res:Resp
         
         res.sendStatus(StatusCodes.OK)
     } catch (error) {
-        console.log(`${error.httpCode} - ${error.message}`)
-        res.status(error.httpCode).send(error.message)
+        if(error instanceof HttpError) {
+            console.log(`${error.httpCode} - ${error.message}`);
+            res.status(error.httpCode).send(error.message);
+        } else if (error instanceof Error){
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+            console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);
+        }
     }
 });

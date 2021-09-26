@@ -31,8 +31,13 @@ AccountRouter.get("/:id", AccountValidator.findByID, async (req:Request, res:Res
         });
 
     } catch (error) {
-        console.log(`${error.httpCode} - ${error.message}`)
-        res.status(error.httpCode).send(error.message)
+        if(error instanceof HttpError) {
+            console.log(`${error.httpCode} - ${error.message}`);
+            res.status(error.httpCode).send(error.message);
+        } else if (error instanceof Error){
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+            console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);
+        }
     }
 });
 
@@ -46,8 +51,13 @@ AccountRouter.get("/user/:id", AccountValidator.findByID, async (req:Request, re
 
         res.status(StatusCodes.OK).json(accountsJSON);
     } catch (error) {
-        console.log(`${error.httpCode} - ${error.message}`)
-        res.status(error.httpCode).send(error.message)
+        if(error instanceof HttpError) {
+            console.log(`${error.httpCode} - ${error.message}`);
+            res.status(error.httpCode).send(error.message);
+        } else if (error instanceof Error){
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+            console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);
+        }
     }
 });
 
@@ -59,8 +69,13 @@ AccountRouter.post("/", AccountValidator.create, async (req:Request, res:Respons
         
         res.status(StatusCodes.CREATED).json(accountJSON);
     } catch (error) {
-        console.log(`${error.httpCode} - ${error.message}`)
-        res.status(error.httpCode).send(error.message)
+        if(error instanceof HttpError) {
+            console.log(`${error.httpCode} - ${error.message}`);
+            res.status(error.httpCode).send(error.message);
+        } else if (error instanceof Error){
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+            console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);
+        }
     }
 });
  
@@ -70,8 +85,13 @@ AccountRouter.put("/:id", AccountValidator.changeName, async(req:Request, res:Re
         const accountEntity:AccountEntity = await accountService.changeName(res.locals.user, res.locals.account.id, res.locals.account.name);
         res.status(StatusCodes.OK).send(accountEntity.toJSON());
     } catch (error) {
-        console.log(`${error.httpCode} - ${error.message}`)
-        res.status(error.httpCode).send(error.message)
+        if(error instanceof HttpError) {
+            console.log(`${error.httpCode} - ${error.message}`);
+            res.status(error.httpCode).send(error.message);
+        } else if (error instanceof Error){
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+            console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);
+        }
     }
 });
 
@@ -82,7 +102,12 @@ AccountRouter.delete("/:id", AccountValidator.deleteByID, async (req:Request, re
         await accountService.delete(res.locals.user, res.locals.id);
         res.sendStatus(StatusCodes.OK)
     } catch (error) {
-        console.log(`${error.httpCode} - ${error.message}`)
-        res.status(error.httpCode).send(error.message)
+        if(error instanceof HttpError) {
+            console.log(`${error.httpCode} - ${error.message}`);
+            res.status(error.httpCode).send(error.message);
+        } else if (error instanceof Error){
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+            console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);
+        }
     }
 });

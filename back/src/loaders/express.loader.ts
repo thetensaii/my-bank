@@ -7,8 +7,10 @@ import { UserRouter } from "../routes/user.route";
 import { AccountRouter } from "../routes/account.route";
 import { OperationRouter } from "../routes/operation.route";
 import { AuthMiddleware } from "../middlewares/auth.middleware";
+import cors from "cors"
 export default async ({ app }: { app: express.Application })=> {
 
+    app.use(cors())
     app.use(express.json());
     app.use(express.urlencoded({ extended : false}));
     app.use(cookieParser());
