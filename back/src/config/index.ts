@@ -20,6 +20,8 @@ if(process.env.NODE_ENV === "dev"){
 export default {
     "NODE_ENV" : process.env.NODE_ENV || "dev",
 
+    "FRONTEND_HOST" : process.env.FRONTEND_HOST || "",
+
     // Server port
     "PORT": process.env.PORT || 8080,
 
