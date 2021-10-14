@@ -1,11 +1,19 @@
 import React from 'react'
 
-export default function HomeView() {
+type HomeViewProps = {
+    text?: string,
+    onClick? : () => void
+}
+
+export const HomeView: React.FC<HomeViewProps> = ({ text, onClick }) => {
 
 
     return (
-        <h2>
-            HOME !
-        </h2>
+        <>
+            <h2 onClick={onClick}>
+                HOME !
+            </h2>
+            <p>{text}</p>
+        </>
     )
 }

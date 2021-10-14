@@ -1,0 +1,12 @@
+/* @font-face {
+    font-family: "Montserrat";
+    src: url("./assets/fonts/Montserrat-Light.ttf");
+} */
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+
+* {
+	box-sizing: border-box;
+    margin : 0;
+    padding : 0;
+    font-family: 'Montserrat', sans-serif;
+}
