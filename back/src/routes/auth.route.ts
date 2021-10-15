@@ -19,7 +19,9 @@ AuthRouter.post("/signup", AuthValidator.signUp, async (req:Request, res:Respons
     } catch ( error) {
         if(error instanceof HttpError) {
             console.log(`${error.httpCode} - ${error.message}`);
-            res.status(error.httpCode).send(error.message);
+            res.status(error.httpCode).send({
+                errors : [error.message]
+            });
         } else if (error instanceof Error){
             res.status(StatusCodes.INTERNAL_SERVER_ERROR);
             console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);
@@ -38,7 +40,9 @@ AuthRouter.post("/signin", AuthValidator.signIn, async (req:Request, res:Respons
     } catch (error) {
         if(error instanceof HttpError) {
             console.log(`${error.httpCode} - ${error.message}`);
-            res.status(error.httpCode).send(error.message);
+            res.status(error.httpCode).send({
+                errors : [error.message]
+            });
         } else if (error instanceof Error){
             res.status(StatusCodes.INTERNAL_SERVER_ERROR);
             console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);
@@ -52,7 +56,9 @@ AuthRouter.get("/me", AuthMiddleware.isAuth, async (req:Request, res:Response) =
     } catch (error) {
         if(error instanceof HttpError) {
             console.log(`${error.httpCode} - ${error.message}`);
-            res.status(error.httpCode).send(error.message);
+            res.status(error.httpCode).send({
+                errors : [error.message]
+            });
         } else if (error instanceof Error){
             res.status(StatusCodes.INTERNAL_SERVER_ERROR);
             console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);
@@ -62,14 +68,14 @@ AuthRouter.get("/me", AuthMiddleware.isAuth, async (req:Request, res:Response) =
 
 AuthRouter.get("/disconnect", AuthMiddleware.isAuth, async (req:Request, res:Response) => {
     try {
-        console.log("Disconnect route")
         res.cookie("token", "", {maxAge : 1, httpOnly : true})
-        console.log("Cookie set")
         res.sendStatus(StatusCodes.OK)
     } catch (error) {
         if(error instanceof HttpError) {
             console.log(`${error.httpCode} - ${error.message}`);
-            res.status(error.httpCode).send(error.message);
+            res.status(error.httpCode).send({
+                errors : [error.message]
+            });
         } else if (error instanceof Error){
             res.status(StatusCodes.INTERNAL_SERVER_ERROR);
             console.log(`${StatusCodes.INTERNAL_SERVER_ERROR} - ${error.message}`);

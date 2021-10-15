@@ -114,6 +114,31 @@ describe("UserModel test", () => {
         
     });
 
+    it("should find User by email in DB", async () => {
+        // ARRANGE
+        let i = Math.floor(Math.random() * users.length);
+        let user = users[i];
+        userEntity = new UserEntity(user);
+
+        let userID:number = await factory.UserModel.add(userEntity!);
+
+        // ACT
+        userEntity = await factory.UserModel.findByEmail(userEntity.email);
+
+        //ASSERT
+        expect(userEntity).not.to.be.null;
+        expect(userEntity!.id).to.be.equal(userID);
+        expect(userEntity!.login).to.be.equal(user.login);
+        expect(userEntity!.firstname).to.be.equal(user.firstname);
+        expect(userEntity!.lastname).to.be.equal(user.lastname);
+        expect(userEntity!.email).to.be.equal(user.email);
+        expect(userEntity!.password).to.be.equal(user.password);
+        expect(userEntity!.is_admin).to.be.equal(user.is_admin);
+        expect(userEntity!.created_at).to.be.a("Date");
+        expect(userEntity!.updated_at).to.be.null;
+        
+    });
+
     it("should set User in DB", async () => {
         // ARRANGE
         let i = Math.floor(Math.random() * users.length);

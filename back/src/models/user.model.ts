@@ -45,6 +45,21 @@ export default class UserModel{
         return new UserEntity(results[0]);
     }
 
+    async findByEmail(email:string): Promise<UserEntity|null> {
+        let results:UserJSON[] = await this.connection.then( conn => {
+            return conn.query("SELECT *\
+                                FROM users \
+                                WHERE email = ?;",
+                            [email]);
+        });
+                                             
+        if(!results.length){
+            return null;
+        }
+        
+        return new UserEntity(results[0]);
+    }
+
     async add(user:UserEntity): Promise<number> {
         let result = await this.connection.then(conn => {
             return conn.query("INSERT INTO users\
