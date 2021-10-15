@@ -24,6 +24,9 @@
 	margin: 20px 0 30px;
 }
 
+.errorList {
+	list-style: none;
+}
 
 .container {
     background-color: #fff;

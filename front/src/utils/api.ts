@@ -10,5 +10,5 @@ export const apiBackRequest = async (endpoint: string, options: AxiosRequestConf
         ...defaultOptions,
         ...options
     })
-    return response.data;
+    return response;
 }
