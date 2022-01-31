@@ -6,7 +6,7 @@ export const apiBackRequest = async (endpoint: string, options: AxiosRequestConf
         withCredentials : true
     }
 
-    const response:AxiosResponse = await axios(config.REACT_APP_BACKEND_DEVELOPMENT_URL + endpoint, {
+    const response:AxiosResponse = await axios(config.BACKEND_SERVER_URL + endpoint, {
         ...defaultOptions,
         ...options
     })

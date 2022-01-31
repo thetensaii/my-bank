@@ -12,10 +12,10 @@ export const AuthContainer: React.FC = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
-    const [isSignUpFormActive, setIsSignUpFormActive] = useState<boolean>(location.pathname === PATHS.SIGNUP)
+    const [isSignUpFormActive, setIsSignUpFormActive] = useState<boolean>(location.pathname.toLowerCase().includes(PATHS.SIGNUP.toLowerCase()))
     const [success, setSuccess] = useState<string | null>(null)
     const [errors, setErrors] = useState<string[]>([])
-    const defaultErrorMessage = "Une erreur a été rencontrée."
+    const defaultErrorMessage = "Une erreur a été rencontrée.";
 
     const handleSignUpFormSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
@@ -28,8 +28,8 @@ export const AuthContainer: React.FC = () => {
             const isCreated = await signUp(signUpData);
             if (isCreated) {
                 const pseudo = signUpForm.login.value;
-                setSuccess(`L'utilisateur "${pseudo}" a été créé !`)
-                setErrors([])
+                setSuccess(`L'utilisateur "${pseudo}" a été créé !`);
+                setErrors([]);
 
                 signUpForm.reset();
 

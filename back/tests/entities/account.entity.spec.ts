@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import {AccountJSON, AccountEntity} from "../../src/entities/account.entity"
+import { AccountJSON, AccountEntity } from "../../src/entities/account.entity"
 import faker from "faker/locale/fr"
 
 describe("AccountEntity test", () => {

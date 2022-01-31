@@ -1,33 +1,30 @@
 import express from "express";
-import { StatusCodes } from "http-status-codes";
 import cookieParser from "cookie-parser";
-
-import { AuthRouter } from "../routes/auth.route";
-import { UserRouter } from "../routes/user.route";
-import { AccountRouter } from "../routes/account.route";
-import { OperationRouter } from "../routes/operation.route";
-import { AuthMiddleware } from "../middlewares/auth.middleware";
+import { ApiRouter } from "../routes/api.route";
 import cors from "cors"
 import config from "../config";
-export default async ({ app }: { app: express.Application }) => {
+import path from "path"
 
-    app.use(cors({
-        origin: config.FRONTEND_HOST,
-        credentials: true
-    }));
+export default async ({ app }: { app: express.Application }) => {
+    
+    if(config.NODE_ENV !== "production"){
+        app.use(cors({
+            origin: config.FRONTEND_HOST,
+            credentials: true
+        }));
+    }
+
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
     app.use(cookieParser());
+     
+    app.use("/api", ApiRouter)
+    
+    if(config.NODE_ENV === "production"){
+        app.use(express.static("client"));
 
-    app.get("/status", (req: express.Request, res: express.Response) => {
-        res.status(StatusCodes.OK).json({ "Status": "OK" });
-    });
-
-    app.use("/auth", AuthRouter);
-
-    app.use(AuthMiddleware.isAuth)
-    app.use("/users", UserRouter);
-    app.use("/accounts", AccountRouter);
-    app.use("/operations", OperationRouter);
-
+        app.get('*', (req:express.Request, res:express.Response) => {
+            res.sendFile(path.join(__dirname, '../../client', 'index.html'));
+        });
+    }
 };

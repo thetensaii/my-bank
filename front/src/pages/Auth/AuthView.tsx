@@ -70,7 +70,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
                         </div>
                         <div className={`${styles.overlayPanel} ${styles.overlayRight}`}>
                             <h1>Bienvenue !</h1>
-                            <Paragraph>Inscrivez-vous et créer/gérer l'ensemble de vos comptes</Paragraph>
+                            <Paragraph>Inscrivez-vous afin de créer et gérer l'ensemble de vos comptes</Paragraph>
                             <Button ghost onClick={onSignUpPanelClick}>S'enregistrer</Button>
                         </div>
                     </div>

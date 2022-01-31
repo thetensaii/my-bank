@@ -1,0 +1,34 @@
+# Production Dockerfile
+
+# Building react app
+FROM node:16 as front
+
+WORKDIR /usr/src/front
+
+COPY front/package*.json ./
+
+RUN npm install
+
+COPY front/ .
+
+RUN npm run build
+
+# Copy build react app to another image &
+# Starting NodeJS server
+FROM node:16
+
+RUN apt-get -q update && apt-get -qy install netcat
+
+WORKDIR /usr/src/webapp/client
+COPY --from=front /usr/src/front/build ./
+
+WORKDIR /usr/src/webapp
+COPY back/package*.json ./
+
+RUN npm install --only=prod
+
+COPY back/ .
+
+EXPOSE 8080
+
+CMD [ "npm", "start" ]

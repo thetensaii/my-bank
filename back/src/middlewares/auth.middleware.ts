@@ -5,7 +5,7 @@ import { ObjectToken } from '../types/ObjectToken';
 import { Container } from 'typedi';
 import { UserService } from '../services/user.service';
 import { UserEntity } from '../entities/user.entity';
-import { HttpError } from "../core/HttpError";
+// import { HttpError } from "../core/HttpError";
 
 export class AuthMiddleware {
     static async isAuth(req:Request, res:Response, next:NextFunction){

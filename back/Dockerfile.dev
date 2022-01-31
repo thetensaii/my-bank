@@ -1,0 +1,8 @@
+FROM node:16
+RUN apt-get -q update && apt-get -qy install netcat
+WORKDIR /usr/src/back
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 8080
+CMD [ "npm", "run", "dev" ]

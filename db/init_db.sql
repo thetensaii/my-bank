@@ -1,6 +1,6 @@
-CREATE DATABASE IF NOT EXISTS my_bank_test;
+-- CREATE DATABASE IF NOT EXISTS my_bank;
 
-USE my_bank_test;
+-- USE my_bank;
 
 CREATE TABLE users (
     id INT NOT NULL AUTO_INCREMENT,
@@ -39,5 +39,5 @@ CREATE TABLE operations (
     FOREIGN KEY (account_id) REFERENCES accounts(id)
 );
 
-CREATE USER 'mybanktest'@'%' IDENTIFIED WITH mysql_native_password BY 'Mybank123#';
-GRANT ALL PRIVILEGES ON my_bank_test.* TO 'mybanktest'@'%';
+-- CREATE USER 'mybank'@'%' IDENTIFIED WITH mysql_native_password BY 'Mybank123#';
+-- GRANT ALL PRIVILEGES ON my_bank.* TO 'mybank'@'%';

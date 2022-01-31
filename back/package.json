@@ -2,24 +2,16 @@
   "name": "my-bank",
   "version": "1.0.0",
   "description": "First bank application with TypeScript, NodeJS, ReactJS and MySQL",
-  "main": "index.js",
+  "main": "./build/index.js",
   "scripts": {
-    "start": "tsc && node -r dotenv/config -r ts-node/register dist/index.js",
-    "dev": "concurrently -k -n \"TypeScript,Node\" -p \"[{name}]\" -c \"blue,green\" \"tsc --watch\" \"rm -r ./dist/* && nodemon -r dotenv/config dist/index.js\"",
-    "test": "mocha -r dotenv/config -r ts-node/register \"tests/**/*.spec.ts\"",
-    "build": "tsc",
-    "init-db": "sudo mysql -u root -p < init_db.sql",
-    "truncate-db": "sudo mysql -u root -p < truncate_db.sql",
-    "drop-db": "sudo mysql -u root -p < drop_db.sql",
-    "init-test-db": "sudo mysql -u root -p < init_test_db.sql",
-    "truncate-test-db": "sudo mysql -u root -p < truncate_test_db.sql",
-    "drop-test-db": "sudo mysql -u root -p < drop_test_db.sql"
+    "start": "tsc && node build/index.js",
+    "dev": "concurrently -k -n \"TypeScript,Node\" -p \"[{name}]\" -c \"blue,green\" \"tsc --watch\" \"nodemon build/index.js\"",
+    "test": "mocha --exit -r ts-node/register \"tests/**/*.spec.ts\""
   },
   "keywords": [],
   "author": "Salimou FOFANA",
   "license": "ISC",
   "dependencies": {
-    "@types/bluebird": "^3.5.34",
     "bcrypt": "^5.0.1",
     "bluebird": "^3.7.2",
     "cookie-parser": "^1.4.5",
@@ -31,9 +23,10 @@
     "jsonwebtoken": "^8.5.1",
     "promise-mysql": "^5.0.3",
     "reflect-metadata": "^0.1.13",
-    "typedi": "^0.10.0"
-  },
-  "devDependencies": {
+    "typedi": "^0.10.0",
+    "typescript": "^4.2.4",
+    "ts-node": "^9.1.1",
+    "@types/bluebird": "^3.5.34",
     "@types/bcrypt": "^5.0.0",
     "@types/chai": "^4.2.18",
     "@types/cookie-parser": "^1.4.2",
@@ -44,13 +37,13 @@
     "@types/jsonwebtoken": "^8.5.1",
     "@types/mocha": "^8.2.2",
     "@types/mysql": "^2.15.18",
-    "@types/node": "^15.0.2",
+    "@types/node": "^15.0.2"
+  },
+  "devDependencies": {
     "chai": "^4.3.4",
     "concurrently": "^6.3.0",
     "faker": "^5.5.3",
     "mocha": "^8.4.0",
-    "nodemon": "^2.0.7",
-    "ts-node": "^9.1.1",
-    "typescript": "^4.2.4"
+    "nodemon": "^2.0.7"
   }
 }
