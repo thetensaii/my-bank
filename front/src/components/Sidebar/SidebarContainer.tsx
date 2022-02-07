@@ -1,11 +1,15 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Cookies from "universal-cookie"
 import { userSelector } from 'redux/selectors/userSelectors';
 import { UserProps } from 'utils/props/UserProps';
 import { SidebarView } from './SidebarView'; 
 import { FaHome, FaCreditCard, FaMoneyBillAlt } from 'react-icons/fa'
 import { PATHS } from 'routes/constants'
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+import { apiBackRequest } from 'utils/api'
+import { unsetUserAction } from 'redux/actions/userActions';
+import config from 'config'
 
 type SidebarContainerProps = {
 }
@@ -13,14 +17,31 @@ type SidebarContainerProps = {
 export const SidebarContainer:React.FC<SidebarContainerProps> = () => {
     const user:UserProps|null = useSelector(userSelector);
     const location = useLocation();
+    const dispatch = useDispatch();
+    const history = useHistory();
 
-    return <SidebarView user={user!} navLinkItems={navLinkItems} actualPath={location.pathname} />;
+    const signOutIconClick = async () => {
+        const cookies = new Cookies();
+
+        await apiBackRequest("/auth/disconnect");
+        cookies.remove(config.AUTH_TOKEN);
+        dispatch(unsetUserAction());
+
+        history.push('/');
+    }
+
+    return <SidebarView 
+                user={user!} 
+                navLinkItems={navLinkItems} 
+                actualPath={location.pathname} 
+                signOutIconClick={signOutIconClick}
+    />
 };
 
 export type navLinkItem = {
     text : string,
     path : string,
-    icon : any
+    icon : JSX.Element
 }
 
 const navLinkItems:navLinkItem[] = [
@@ -39,5 +60,4 @@ const navLinkItems:navLinkItem[] = [
         path : PATHS.TRANSACTIONS,
         icon : <FaMoneyBillAlt />
     }
-
 ]

@@ -1,9 +1,11 @@
 import React from 'react';
-import { UserProps } from 'utils/props/UserProps';
+import { Link } from 'react-router-dom';
 import {FaRegUserCircle} from 'react-icons/fa'
-import styles from './Sidebar.module.css'
+import { VscSignOut } from 'react-icons/vsc'
+import { UserProps } from 'utils/props/UserProps';
 import { navLinkItem } from './SidebarContainer';
-import { NavLink } from 'react-router-dom';
+import styles from './Sidebar.module.css'
+
 export enum LoggedInPages {
   HOME = "home",
   ACCOUNTS = "accounts",
@@ -13,10 +15,11 @@ export enum LoggedInPages {
 type SidebarViewProps = {
   user:UserProps|null,
   navLinkItems : navLinkItem[],
-  actualPath:string
+  actualPath:string,
+  signOutIconClick:() => void
 }
 
-export const SidebarView:React.FC<SidebarViewProps> = ({user, navLinkItems, actualPath}) => {
+export const SidebarView:React.FC<SidebarViewProps> = ({user, navLinkItems, actualPath, signOutIconClick}) => {
   return <div className={styles.sidebar}>
     <div className={styles.profileLink}>
       <FaRegUserCircle size={56}/>
@@ -25,12 +28,13 @@ export const SidebarView:React.FC<SidebarViewProps> = ({user, navLinkItems, actu
     <div className={styles.navLinkList}>
     {navLinkItems.map((item, idx) => { 
       return (
-          <NavLink key={idx} to={item.path} className={`${styles.navLinkItem} ${actualPath === item.path ? styles.navLinkItemActive : ''}`}>
-              <span className={styles.navLinkItemIcon}>{item.icon }</span>
+          <Link key={idx} to={item.path} className={`${styles.navLinkItem} ${actualPath === item.path ? styles.navLinkItemActive : ''}`}>
+              <span className={styles.navLinkItemIcon}>{item.icon}</span>
               <span className={styles.navLinkItemText}>{item.text}</span>
-          </NavLink>
+          </Link>
       )
     })}
     </div>
+    <VscSignOut className={styles.signOutIcon} onClick={signOutIconClick}/>
   </div>;
 };
