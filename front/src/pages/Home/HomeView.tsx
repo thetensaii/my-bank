@@ -1,19 +1,71 @@
 import React from 'react'
+import MainLayout from 'components/MainLayout'
+import Header from 'components/Header'
 
 type HomeViewProps = {
-    text?: string,
-    onClick? : () => void
+
 }
 
-export const HomeView: React.FC<HomeViewProps> = ({ text, onClick }) => {
-
-
+export const HomeView: React.FC<HomeViewProps> = () => {
     return (
-        <>
-            <h2 onClick={onClick}>
-                HOME !
-            </h2>
-            <p>{text}</p>
-        </>
+        <MainLayout>
+            <Header title='accueil' />
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+            <h1>HOME PAGE</h1>
+        </MainLayout>
     )
 }

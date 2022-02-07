@@ -1,21 +1,23 @@
 # My Bank
 
-Il s'agit d'une petite applicaton web de banque.  
-J'utilise la MERN stack (Mongo, Express, ReactJS, NodeJS) ainsi que Docker.  
+Il s'agit d'une applicaton web de banque.  
+J'utilise la MERN stack (MySQL, Express, ReactJS, NodeJS) ainsi que Docker.  
 Le langage de programmation est le Typescript.
 
 ## Fonctionnalités
 
-* Créer un compte
-* Se connecter
-* Créer différents comptes bancaires
-* Modifier son solde & Opérations (Crédit/ Débits)
+- [x] Créer un compte
+- [x] Se connecter
+- [ ] Modifier son profil
+- [ ] Voir et Créer différents comptes bancaires
+- [ ] Opérations (Crédit/ Débits)
 
 ## Commandes
 
 Lancer l'application en mode developpement :
 ```bash
 # Depuis la racine du projet
+
 ./run_dev.sh
 ```
 

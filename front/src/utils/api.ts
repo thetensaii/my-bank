@@ -12,3 +12,10 @@ export const apiBackRequest = async (endpoint: string, options: AxiosRequestConf
     })
     return response;
 }
+
+export const enum ApiPaths {
+    ME = "/auth/me",
+    DISCONNECT = "/auth/disconnect",
+    SIGNIN = "/auth/signin",
+    SIGNUP = "/auth/signup",
+}

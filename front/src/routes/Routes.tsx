@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Redirect } from 'react-router-dom'
 import Home from "pages/Home"
 import { AnonymousRoute } from './components/AnonymousRoute'
 import { ProtectedRoute } from './components/ProtectedRoute'
@@ -12,6 +12,8 @@ export const Routes:React.FC = () => {
                 <AnonymousRoute path={PATHS.LOGIN} exact component={Auth} />
                 <AnonymousRoute path={PATHS.SIGNUP} exact component={Auth} />
                 <ProtectedRoute path={PATHS.ROOT} exact component={Home}/>
+                <ProtectedRoute path={PATHS.ACCOUNTS} exact component={Home}/>
+                <ProtectedRoute path={PATHS.TRANSACTIONS} exact component={Home}/>
                 <Redirect to={PATHS.ROOT} />
             </Switch>
         </Router>

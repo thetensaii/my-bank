@@ -1,0 +1,66 @@
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    min-height: 600px;
+    width: var(--sidebar-width);
+    color: white;
+    background: linear-gradient(180deg, var(--secondary-color) 0%, var(--primary-color) 100%);;
+}
+
+.profileLink{
+    position: relative;
+    margin-top: 70px;
+    height: 60px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.profileLink:hover{
+    background-color: rgba(115, 93, 88, 0.3);
+    box-shadow: 0px 4px 4px rgba(39, 33, 33, 0.3);
+}
+
+.profileText {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.navLinkList{
+    position: relative;
+    margin-top: 100px;
+}
+
+.navLinkItem{
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    height: 70px;
+    width: 100%;
+}
+
+.navLinkItem:hover:not(.navLinkItemActive){
+    background-color: rgba(115, 93, 88, 0.7);
+    box-shadow: 0px 4px 4px rgba(39, 33, 33, 0.3);
+}
+
+.navLinkItemIcon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    width: 90px;
+}
+
+.navLinkItemText{
+    font-size: 26px;
+}
+
+.navLinkItemActive{
+    background-color: rgba(38, 39, 37, 0.7);
+    box-shadow: 0px 4px 4px rgba(39, 33, 33, 0.6) inset;
+}

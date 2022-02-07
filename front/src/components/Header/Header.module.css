@@ -1,0 +1,25 @@
+.header{
+    height: 80px;
+    background-color: var(--gray-background-color);
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.title{
+    font-size: 36px;
+}
+
+.button {
+    padding: 15px 20px 15px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50px;
+}
+
+.button:hover {
+    background-color: var(--primary-color-hover);
+    cursor: pointer;
+}

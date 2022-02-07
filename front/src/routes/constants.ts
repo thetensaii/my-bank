@@ -1,5 +1,7 @@
 export enum PATHS {
     ROOT = "/",
     LOGIN = "/login",
-    SIGNUP = "/signup"
+    SIGNUP = "/signup",
+    ACCOUNTS = "/accounts",
+    TRANSACTIONS = "/operations"
 }

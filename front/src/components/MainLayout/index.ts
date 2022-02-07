@@ -1,0 +1,1 @@
+export {MainLayoutContainer as default} from './MainLayoutContainer'
