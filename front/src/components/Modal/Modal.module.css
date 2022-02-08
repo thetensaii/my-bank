@@ -1,0 +1,36 @@
+.modalBackground {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modalCard {
+    position: relative;
+    padding: 30px 40px;
+    background-color: white;
+    box-shadow: 1px 6px 4px rgba(0, 0, 0, 0.28);
+    border-radius: 10px;
+    max-width: 60%;
+    color: black;
+}
+
+.modalTitle {
+    font-weight: 400;
+}
+
+.modalCloseButton {
+    position: absolute;
+    top : 20px;
+    right : 30px;
+}
+
+.modalCloseButton:hover {
+    cursor: pointer;
+    font-weight: bold;
+}

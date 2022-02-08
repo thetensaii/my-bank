@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Cookies from "universal-cookie"
 import { userSelector } from 'redux/selectors/userSelectors';
@@ -20,6 +20,8 @@ export const SidebarContainer:React.FC<SidebarContainerProps> = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
+    const [profileModal, setProfileModal] = useState<boolean>(false);
+
     const signOutIconClick = async () => {
         const cookies = new Cookies();
 
@@ -35,6 +37,8 @@ export const SidebarContainer:React.FC<SidebarContainerProps> = () => {
                 navLinkItems={navLinkItems} 
                 actualPath={location.pathname} 
                 signOutIconClick={signOutIconClick}
+                isProfileModalActive={profileModal}
+                setProfileModal={setProfileModal}
     />
 };
 

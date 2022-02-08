@@ -15,7 +15,7 @@
 .profileLink{
     position: relative;
     margin-top: 70px;
-    height: 60px;
+    padding: 5px 0;
     width: 100%;
     display: flex;
     align-items: center;
