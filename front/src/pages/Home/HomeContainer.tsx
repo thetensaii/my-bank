@@ -8,6 +8,6 @@ type HomeContainerProps = {
 export const HomeContainer:React.FC<HomeContainerProps> = () => {
 
     return (
-        <HomeView showProfileModal={false}/>
+        <HomeView />
     )
 }

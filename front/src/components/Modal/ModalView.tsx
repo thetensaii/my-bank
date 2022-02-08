@@ -29,6 +29,6 @@ export const ModalView:React.FC<ModalViewProps> = ({title, showModal, closeModal
           </div>
       </div> :
       null, 
-      document.body
+      document.getElementById('modal') as Element
   );
 };
