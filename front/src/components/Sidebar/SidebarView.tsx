@@ -6,6 +6,7 @@ import { UserProps } from 'utils/props/UserProps';
 import { navLinkItem } from './SidebarContainer';
 import styles from './Sidebar.module.css'
 import Modal from 'components/Modal'
+import ProfileForm from './ProfileForm';
 
 
 export enum LoggedInPages {
@@ -41,8 +42,8 @@ export const SidebarView:React.FC<SidebarViewProps> = ({user, navLinkItems, actu
       })}
     </div>
     <VscSignOut className={styles.signOutIcon} onClick={signOutIconClick}/>
-    <Modal title="Modifier Profil" showModal={isProfileModalActive} closeModal={() => setProfileModal(false)}>
-      
+    <Modal title="Mettre à jour profil" showModal={isProfileModalActive} closeModal={() => setProfileModal(false)}>
+      <ProfileForm />
     </Modal>
   </div>;
 };
