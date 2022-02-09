@@ -22,10 +22,14 @@ export const ModalView:React.FC<ModalViewProps> = ({title, showModal, closeModal
     showModal ?
       <div className={styles.modalBackground} onClick={handleCloseModal} ref={modalBackgroundRef}>
           <div className={styles.modalCard}>
-            <MdClose className={styles.modalCloseButton} onClick={() => closeModal()}/>
+            <MdClose className={styles.modalCloseIcon} onClick={closeModal}/>
             <h1 className={styles.modalTitle}>{title}</h1>
             <hr />
             { children }
+            <hr />
+            <button className={styles.modalCloseButton} onClick={closeModal}>
+              Retour
+            </button>
           </div>
       </div> :
       null, 
