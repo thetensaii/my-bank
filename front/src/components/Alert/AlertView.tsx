@@ -1,6 +1,6 @@
 import React from 'react'
+import { createPortal } from 'react-dom'
 import styles from "./Alert.module.css"
-
 export enum AlertTypes {
     danger = "Danger",
     info = "Info",
@@ -12,9 +12,10 @@ type AlertViewProps = {
 
 export const AlertView: React.FC<AlertViewProps> = ({ type = AlertTypes.info, children }) => {
 
-    return (
+    return createPortal(
         <div className={`${styles.alert} ${styles[`alert${type}`]}`}>
             {children}
-        </div>
+        </div>,
+        document.getElementById("alert") as Element
     )
 }

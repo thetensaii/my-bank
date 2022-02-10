@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setUserAction } from 'redux/actions/userActions';
 import { PATHS } from 'routes/constants';
 import axios from 'axios';
+import { getFormData } from 'utils/functions';
 
 
 export const AuthContainer: React.FC = () => {
@@ -21,8 +22,7 @@ export const AuthContainer: React.FC = () => {
         e.preventDefault();
 
         const signUpForm: HTMLFormElement = e.currentTarget;
-        const signUpFormData = new FormData(signUpForm)
-        const signUpData = Object.fromEntries(signUpFormData);
+        const signUpData = getFormData(signUpForm);
 
         try {
             const isCreated = await signUp(signUpData);
@@ -58,8 +58,7 @@ export const AuthContainer: React.FC = () => {
     const handleSignInFormSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         const signInForm: HTMLFormElement = e.currentTarget;
-        const signInFormData: FormData = new FormData(signInForm)
-        const signInData = Object.fromEntries(signInFormData);
+        const signInData = getFormData(signInForm)
 
         try {
             const user = await signIn(signInData);
