@@ -51,7 +51,7 @@ export class UserService {
             throw new HttpError(StatusCodes.CONFLICT, "Login already taken.");
         }
 
-        const otherUserWithSameEmail = await this.factory.UserModel.findByEmail(changedUser.login);
+        const otherUserWithSameEmail = await this.factory.UserModel.findByEmail(changedUser.email);
         if(otherUserWithSameEmail?.id !== user.id){
             this.factory.release();
             throw new HttpError(StatusCodes.CONFLICT, "Email already taken.");
