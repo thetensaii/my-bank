@@ -44,6 +44,19 @@ export class UserService {
             this.factory.release();
             throw new HttpError(StatusCodes.FORBIDDEN, "You don't have access to this user.");
         }
+        
+        const otherUserWithSameLogin = await this.factory.UserModel.findByLogin(changedUser.login);
+        if(otherUserWithSameLogin?.id !== user.id){
+            this.factory.release();
+            throw new HttpError(StatusCodes.CONFLICT, "Login already taken.");
+        }
+
+        const otherUserWithSameEmail = await this.factory.UserModel.findByEmail(changedUser.login);
+        if(otherUserWithSameEmail?.id !== user.id){
+            this.factory.release();
+            throw new HttpError(StatusCodes.CONFLICT, "Email already taken.");
+        }
+        
 
         let userEntity:UserEntity|null = await this.factory.UserModel.findByID(user.id);
         if(!userEntity){
@@ -74,6 +87,7 @@ export class UserService {
         } catch (error) {
             await this.factory.rollback();
             await this.factory.release();
+            console.log(error);
 
             throw new HttpError(StatusCodes.INTERNAL_SERVER_ERROR, "Error while updating user")
         }
