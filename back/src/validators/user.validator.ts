@@ -1,4 +1,4 @@
-import Joi from "joi";
+import Joi, { ValidationError } from "joi";
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
@@ -37,8 +37,16 @@ export class UserValidator {
             res.locals.changedUser.id = value.id;
             next();
         } catch(error){
-            res.status(StatusCodes.BAD_REQUEST).send(error.message);
-            console.log(`${StatusCodes.BAD_REQUEST} - ${error.message}`);
+            if(error instanceof ValidationError){
+                const errors = error.details.map(d => d.message)
+                res.status(StatusCodes.BAD_REQUEST).send({
+                    errors : errors
+                });
+                console.log(`${StatusCodes.BAD_REQUEST} - ${error.message}`)
+            } else if(error instanceof Error){
+                res.status(StatusCodes.BAD_REQUEST).send(error.message);
+                console.log(`${StatusCodes.BAD_REQUEST} - ${error.message}`)
+            }
         }
     }
 
@@ -60,8 +68,16 @@ export class UserValidator {
             res.locals.id = value.id;
             next();
         } catch(error){
-            res.status(StatusCodes.BAD_REQUEST).send(error.message);
-            console.log(`${StatusCodes.BAD_REQUEST} - ${error.message}`);
+            if(error instanceof ValidationError){
+                const errors = error.details.map(d => d.message)
+                res.status(StatusCodes.BAD_REQUEST).send({
+                    errors : errors
+                });
+                console.log(`${StatusCodes.BAD_REQUEST} - ${error.message}`)
+            } else if(error instanceof Error){
+                res.status(StatusCodes.BAD_REQUEST).send(error.message);
+                console.log(`${StatusCodes.BAD_REQUEST} - ${error.message}`)
+            }
         }
     }
 
