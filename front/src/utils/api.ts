@@ -18,6 +18,7 @@ export const enum ApiPaths {
     DISCONNECT = "/auth/disconnect",
     SIGNIN = "/auth/signin",
     SIGNUP = "/auth/signup",
-    USERS = "/users"
+    USERS = "/users",
+    USER_PASSWORD = "/users/password"
 
 }

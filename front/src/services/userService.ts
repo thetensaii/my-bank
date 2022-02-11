@@ -7,5 +7,15 @@ export const updateUser = async (userID:number, data:Object) : Promise<UserProps
         data: data
     })
 
-    return response.data
+    return response.data;
+}
+
+
+export const updateUserPassword = async (userID:number, data:Object) : Promise<boolean> => {
+    const response = await apiBackRequest(`${ApiPaths.USER_PASSWORD}/${userID}`, {
+        method: "PUT",
+        data: data
+    })
+
+    return response.status === 200;
 }

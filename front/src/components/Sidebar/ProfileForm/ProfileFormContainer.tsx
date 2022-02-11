@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserAction } from 'redux/actions/userActions';
 import { userSelector } from 'redux/selectors/userSelectors';
-import { updateUser } from 'services/userService';
+import { updateUser, updateUserPassword } from 'services/userService';
 import { getFormData } from 'utils/functions';
 import { UserProps } from 'utils/props/UserProps';
 import { ProfileFormView } from './ProfileFormView';
@@ -48,10 +48,11 @@ export const ProfileFormContainer:React.FC<ProfileFormContainerProps> = () => {
       })
     } catch(error){
       if (axios.isAxiosError(error)) {
-        if (error.response) {
+        if (error.response?.data.errors) {
+          const errors = [...error.response.data.errors]
           setAlert({
             type: AlertTypes.danger, 
-            message: error.response.data
+            message: errors[0]
           });
         } else {
             setAlert({
@@ -66,14 +67,37 @@ export const ProfileFormContainer:React.FC<ProfileFormContainerProps> = () => {
 
   }
   
-  const onUserPasswordUpdate = (e:React.FormEvent<HTMLFormElement>) => {
+  const onUserPasswordUpdate = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setAlert(null);
     const userPasswordUpdateForm = e.currentTarget;
     const userPasswordUpdateData = getFormData(userPasswordUpdateForm);
 
-    console.log(userPasswordUpdateData);
+    try{
+      await updateUserPassword(user!.id, userPasswordUpdateData)
+      setAlert({
+        type : AlertTypes.success,
+        message : "Mot de passe modifié"
+      })
+    } catch(error){
+      if (axios.isAxiosError(error)) {
+        if (error.response?.data.errors) {
+          const errors = [...error.response.data.errors]
+          setAlert({
+            type: AlertTypes.danger, 
+            message: errors[0]
+          });
+        } else {
+            setAlert({
+              type: AlertTypes.danger, 
+              message: "Une erreur a été rencontré"
+            });
+        }
+      } else if (error instanceof Error) {
+          console.log(error.message);
+      }
+    }
   }
 
   return <ProfileFormView user={user!} onUserUpdate={onUserUpdate} onUserPasswordUpdate={onUserPasswordUpdate} alert={alert} />;
