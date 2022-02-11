@@ -46,14 +46,15 @@ export class UserService {
         }
         
         const otherUserWithSameLogin = await this.factory.UserModel.findByLogin(changedUser.login);
-        if(otherUserWithSameLogin?.id !== user.id){
+        if(otherUserWithSameLogin && otherUserWithSameLogin?.id !== user.id){
             this.factory.release();
             throw new HttpError(StatusCodes.CONFLICT, "Login already taken.");
         }
 
         const otherUserWithSameEmail = await this.factory.UserModel.findByEmail(changedUser.email);
-        if(otherUserWithSameEmail?.id !== user.id){
+        if(otherUserWithSameEmail && otherUserWithSameEmail?.id !== user.id){
             this.factory.release();
+            console.log(otherUserWithSameEmail)
             throw new HttpError(StatusCodes.CONFLICT, "Email already taken.");
         }
         
