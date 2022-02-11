@@ -8,7 +8,7 @@ Le langage de programmation est le Typescript.
 
 - [x] Créer un compte
 - [x] Se connecter
-- [ ] Modifier son profil
+- [x] Modifier son profil
 - [ ] Voir et Créer différents comptes bancaires
 - [ ] Opérations (Crédit/ Débits)
 

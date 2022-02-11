@@ -28,7 +28,7 @@ export const SidebarView:React.FC<SidebarViewProps> = ({user, navLinkItems, actu
 
   return <div className={styles.sidebar}>
     <div className={styles.profileLink} onClick={() => setProfileModal(true)}>
-      <FaRegUserCircle size={56}/>
+      <FaRegUserCircle className={styles.userIcon}/>
       <span className={styles.profileText}>{user?.firstname} {user?.lastname.toUpperCase()}</span>
     </div>
     <div className={styles.navLinkList}>

@@ -47,6 +47,8 @@ export const ProfileFormContainer:React.FC<ProfileFormContainerProps> = () => {
         message : "Utilisateur modifié"
       })
     } catch(error){
+      userUpdateForm.login.focus();
+
       if (axios.isAxiosError(error)) {
         if (error.response?.data.errors) {
           const errors = [...error.response.data.errors]
@@ -71,16 +73,20 @@ export const ProfileFormContainer:React.FC<ProfileFormContainerProps> = () => {
     e.preventDefault();
 
     setAlert(null);
-    const userPasswordUpdateForm = e.currentTarget;
+    const userPasswordUpdateForm:HTMLFormElement = e.currentTarget;
     const userPasswordUpdateData = getFormData(userPasswordUpdateForm);
 
     try{
       await updateUserPassword(user!.id, userPasswordUpdateData)
+      userPasswordUpdateForm.password.value = '';
+
       setAlert({
         type : AlertTypes.success,
         message : "Mot de passe modifié"
       })
     } catch(error){
+      userPasswordUpdateForm.password.focus();
+
       if (axios.isAxiosError(error)) {
         if (error.response?.data.errors) {
           const errors = [...error.response.data.errors]
