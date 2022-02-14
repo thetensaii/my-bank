@@ -13,7 +13,7 @@
 }
 
 .label{
-    font-size: 20px;
+    font-size: 1.2rem;
 }
 
 .inputText{
@@ -21,13 +21,13 @@
     width: 200px;
     padding-left: 30px;
     border-radius: 50px;
-    font-size: 15px;
+    font-size: 1rem;
 }
 
 .saveButton {
     background-color: var(--primary-color);
     margin: 8px auto 16px auto;
-    font-size: 18px;
+    font-size: 1.1rem;
     width: 80%;
     border-radius: 50px;
     border: none;
