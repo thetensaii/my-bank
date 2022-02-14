@@ -7,7 +7,7 @@ import { checkAuth } from 'services/authService';
 import { UserProps } from 'utils/props/UserProps';
 import "./App.css"
 
-export const App = () => {
+export const App:React.FC = () => {
   const [loading, toggleLoading] = useToggle(true);
   const dispatch = useDispatch()
 
