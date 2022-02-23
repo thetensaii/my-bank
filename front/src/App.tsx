@@ -1,33 +1,15 @@
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux';
+import React from 'react'
 import Routes from 'routes'
-import useToggle from 'hooks/useToggle';
-import { setUserAction } from 'redux/actions/userActions';
-import { checkAuth } from 'services/authService';
-import { UserProps } from 'utils/props/UserProps';
+import useAuth from 'hooks/useAuth';
 import "./App.css"
 
 export const App:React.FC = () => {
-  const [loading, toggleLoading] = useToggle(true);
-  const dispatch = useDispatch()
-
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const user: UserProps = await checkAuth();
-        dispatch(setUserAction(user))
-        toggleLoading()
-      } catch (error) {
-        toggleLoading()
-      }
-    })()
-  }, [dispatch])
+  const [loading] = useAuth();
 
   return (
     <>
       {loading ?
-        null :
+        null:
         <Routes />
       }
     </>

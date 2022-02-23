@@ -10,4 +10,4 @@ const useToggle = (inital:boolean = true): [boolean, () => void] => {
     return [value, toggle];
 }
 
-export {useToggle as default};
+export default useToggle;
