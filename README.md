@@ -18,19 +18,18 @@ Lancer l'application en mode developpement :
 ```bash
 # Depuis la racine du projet
 
-./run_dev.sh
+make dev
 ```
 
 Lancer les tests unitaires du back-end :
 ```bash
 # Depuis la racine du projet
-
-./run_test_back.sh
+make test_back
 ```
 
 Lancer l'application en mode production :
 ```bash
 # Depuis la racine du projet
 
-./run_prod.sh
+make prod
 ```
