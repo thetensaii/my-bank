@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useHistory, useLocation } from 'react-router';
-import { signIn, signUp } from 'services/authService';
+import { signUp } from 'services/authService';
 import { AuthView } from './AuthView';
 import { useDispatch } from 'react-redux';
-import { setUserAction } from 'redux/actions/userActions';
+import { signInUserAction } from 'redux/actions/userActions';
 import { PATHS } from 'routes/constants';
 import axios from 'axios';
 import { getFormData } from 'utils/functions';
@@ -13,16 +13,23 @@ export const AuthContainer: React.FC = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
-    const [isSignUpFormActive, setIsSignUpFormActive] = useState<boolean>(location.pathname.toLowerCase().includes(PATHS.SIGNUP.toLowerCase()))
-    const [success, setSuccess] = useState<string | null>(null)
-    const [errors, setErrors] = useState<string[]>([])
+    const [isSignUpFormActive, setIsSignUpFormActive] = useState<boolean>(location.pathname.toLowerCase().includes(PATHS.SIGNUP.toLowerCase()));
+    const [success, setSuccess] = useState<string | null>(null);
+    const [errors, setErrors] = useState<string[]>([]);
     const defaultErrorMessage = "Une erreur a été rencontrée.";
 
     const handleSignUpFormSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
 
         const signUpForm: HTMLFormElement = e.currentTarget;
-        const signUpData = getFormData(signUpForm);
+        const signUpDataRaw = getFormData(signUpForm);
+        const signUpData = {
+            login : signUpDataRaw.login as string,
+            lastname : signUpDataRaw.lastname as string,
+            firstname : signUpDataRaw.firstname as string,
+            email : signUpDataRaw.email as string,
+            password : signUpDataRaw.password as string
+        }
 
         try {
             const isCreated = await signUp(signUpData);
@@ -58,12 +65,14 @@ export const AuthContainer: React.FC = () => {
     const handleSignInFormSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         const signInForm: HTMLFormElement = e.currentTarget;
-        const signInData = getFormData(signInForm)
+        const signInDataRaw = getFormData(signInForm)
+        const signInData = {
+            login : signInDataRaw.login as string,
+            password : signInDataRaw.password as string
+        }
 
         try {
-            const user = await signIn(signInData);
-            dispatch(setUserAction(user))
-
+            await dispatch(signInUserAction(signInData));
             history.push("/");
         } catch (error) {
             setSuccess(null)

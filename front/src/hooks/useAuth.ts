@@ -1,9 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from 'react-redux';
 import useToggle from 'hooks/useToggle';
-import { setUserAction } from 'redux/actions/userActions';
-import { checkAuth } from 'services/authService';
-import { UserProps } from 'utils/props/UserProps';
+import { checkUserAuthAction } from 'redux/actions/userActions';
 
 const useAuth = () => {
     const [loading, toggleLoading] = useToggle(true);
@@ -12,17 +10,12 @@ const useAuth = () => {
 
     useEffect(() => {
         (async () => {
-            try {
-                const user: UserProps = await checkAuth();
-                dispatch(setUserAction(user))
-                toggleLoading()
-            } catch (error) {
-                toggleLoading()
-            }
+            await dispatch(checkUserAuthAction());
+            toggleLoading()
         })()
     }, [dispatch])
 
-    return [loading]
+    return loading
 } 
 
 export default useAuth;

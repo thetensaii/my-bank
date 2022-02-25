@@ -4,7 +4,7 @@ import useAuth from 'hooks/useAuth';
 import "./App.css"
 
 export const App:React.FC = () => {
-  const [loading] = useAuth();
+  const loading = useAuth();
 
   return (
     <>

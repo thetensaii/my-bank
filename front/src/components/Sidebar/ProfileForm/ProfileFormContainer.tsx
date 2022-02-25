@@ -1,13 +1,12 @@
 import { AlertTypes } from 'components/Alert/AlertView';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUserAction } from 'redux/actions/userActions';
 import { userSelector } from 'redux/selectors/userSelectors';
-import { updateUser, updateUserPassword } from 'services/userService';
+import { updateUserPassword } from 'services/userService';
 import { getFormData } from 'utils/functions';
-import { UserProps } from 'utils/props/UserProps';
 import { ProfileFormView } from './ProfileFormView';
 import axios from 'axios'
+import { updateUserAction } from 'redux/actions/userActions';
 
 
 
@@ -24,7 +23,13 @@ export const ProfileFormContainer:React.FC<ProfileFormContainerProps> = () => {
     
     setAlert(null)
     const userUpdateForm = e.currentTarget;
-    const userUpdateData = getFormData(userUpdateForm);
+    const userUpdateDataRaw = getFormData(userUpdateForm);
+    const userUpdateData = {
+      login: userUpdateDataRaw.login as string,
+      firstname: userUpdateDataRaw.firstname as string,
+      lastname: userUpdateDataRaw.lastname as string,
+      email: userUpdateDataRaw.email as string
+    }
     
     if(
       userUpdateData.login === user!.login &&
@@ -40,8 +45,8 @@ export const ProfileFormContainer:React.FC<ProfileFormContainerProps> = () => {
     }
 
     try{
-      const updatedUser:UserProps = await updateUser(user!.id, userUpdateData)
-      dispatch(setUserAction(updatedUser))
+      
+      await dispatch(updateUserAction(user!.id, userUpdateData))
       setAlert({
         type : AlertTypes.success,
         message : "Utilisateur modifié"

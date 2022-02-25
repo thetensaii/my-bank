@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Cookies from "universal-cookie"
 import { userSelector } from 'redux/selectors/userSelectors';
 import { UserProps } from 'utils/props/UserProps';
 import { SidebarView } from './SidebarView'; 
 import { FaHome, FaCreditCard, FaMoneyBillAlt } from 'react-icons/fa'
 import { PATHS } from 'routes/constants'
 import { useHistory, useLocation } from 'react-router-dom';
-import { apiBackRequest } from 'utils/api'
-import { unsetUserAction } from 'redux/actions/userActions';
-import config from 'config'
+import { signOutUserAction } from 'redux/actions/userActions';
 
 type SidebarContainerProps = {
 }
@@ -23,12 +20,7 @@ export const SidebarContainer:React.FC<SidebarContainerProps> = () => {
     const [profileModal, setProfileModal] = useState<boolean>(false);
 
     const signOutIconClick = async () => {
-        const cookies = new Cookies();
-
-        await apiBackRequest("/auth/disconnect");
-        cookies.remove(config.AUTH_TOKEN);
-        dispatch(unsetUserAction());
-
+        await dispatch(signOutUserAction());
         history.push('/');
     }
 
