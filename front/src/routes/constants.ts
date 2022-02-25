@@ -3,5 +3,5 @@ export enum PATHS {
     LOGIN = "/login",
     SIGNUP = "/signup",
     ACCOUNTS = "/accounts",
-    TRANSACTIONS = "/operations"
+    TRANSACTIONS = "/transactions"
 }
