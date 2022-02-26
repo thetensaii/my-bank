@@ -45,3 +45,9 @@ body {
 
     --sidebar-width : 350px;
 }
+
+hr {
+    height: 1px;
+    background-color : rgba(182, 173, 171, 0.85);
+    border: none;
+}
