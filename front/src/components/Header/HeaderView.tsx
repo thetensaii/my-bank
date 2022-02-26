@@ -13,7 +13,8 @@ export const HeaderView:React.FC<HeaderViewProps> = ({ title, buttonText, button
       <h1 className={styles.title}>{title.toUpperCase()}</h1>
       {buttonText ? 
         <button className={styles.button} onClick={buttonOnClick}>{buttonText.toUpperCase()}</button> : 
-        // Add empty div so that title stay at the same place with space-around in css
-        <div></div>} 
+        
+        <div></div>// Add empty div so that title stay at the same place with space-around in css
+      }
   </div>
 };
