@@ -1,0 +1,41 @@
+.form{
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    width: 450px;
+}
+
+.formControl {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 8px 0;
+}
+
+.label{
+    font-size: 1.2rem;
+}
+
+.inputText{
+    height: 30px;
+    width: 200px;
+    padding-left: 30px;
+    border-radius: 50px;
+    font-size: 1rem;
+}
+
+.submitButton {
+    background-color: var(--primary-color);
+    margin: 8px auto 16px auto;
+    font-size: 1.1rem;
+    width: 80%;
+    border-radius: 50px;
+    border: none;
+    color: white;
+    padding: 5px 0;
+}
+
+.submitButton:hover{
+    background-color: var(--primary-color-hover);
+    cursor: pointer;
+}
