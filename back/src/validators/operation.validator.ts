@@ -41,7 +41,7 @@ export class OperationValidator {
 
         let createSchema:Joi.ObjectSchema = Joi.object({
             account_id : Joi.number().required(),
-            amount : Joi.string().required(),
+            amount : Joi.number().precision(2).required(),
             comment : Joi.string().required()
         }).required();
 

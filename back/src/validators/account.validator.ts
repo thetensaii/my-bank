@@ -39,7 +39,7 @@ export class AccountValidator {
         let createSchema:Joi.ObjectSchema = Joi.object({
             user_id : Joi.number().required(),
             name : Joi.string().required(),
-            balance : Joi.number().required()
+            balance : Joi.number().precision(2).required()
         }).required();
 
         try {
