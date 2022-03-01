@@ -38,7 +38,7 @@ export class AccountValidator {
 
         let createSchema:Joi.ObjectSchema = Joi.object({
             user_id : Joi.number().required(),
-            name : Joi.string().required(),
+            name : Joi.string().min(4).required(),
             balance : Joi.number().precision(2).required()
         }).required();
 
@@ -55,7 +55,7 @@ export class AccountValidator {
     static async changeName(req:Request, res:Response, next:NextFunction) {
 
         let changeNameSchema:Joi.ObjectSchema = Joi.object({
-            name : Joi.string().required()
+            name : Joi.string().min(4).required()
         }).required();
 
         let IDSchema:Joi.ObjectSchema = Joi.object({
