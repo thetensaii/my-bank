@@ -1,0 +1,1 @@
+export { UpdateAccountFormModalContainer as default} from './UpdateAccountFormModalContainer'

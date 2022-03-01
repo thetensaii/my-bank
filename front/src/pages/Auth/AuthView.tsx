@@ -13,8 +13,10 @@ export type AuthViewProps = {
     onSignInPanelClick: (e: React.MouseEvent<HTMLButtonElement>) => void,
     onSignUpPanelClick: (e: React.MouseEvent<HTMLButtonElement>) => void,
     isSignUpFormActive: boolean,
-    errors: string[],
-    success?: string|null
+    errors: string[]|null,
+    closeErrorsAlert: () => void,
+    success: string|null,
+    closeSuccessAlert: () => void
 }
 
 export const AuthView: React.FC<AuthViewProps> = ({
@@ -24,14 +26,16 @@ export const AuthView: React.FC<AuthViewProps> = ({
     onSignUpPanelClick,
     isSignUpFormActive,
     errors,
-    success }) => {
+    closeErrorsAlert,
+    success,
+    closeSuccessAlert }) => {
 
     return (
         <div className={styles.body}>
-            {success && <Alert type={AlertTypes.success}>{success}</Alert>}
+            {success && <Alert type={AlertTypes.success} closeAlert={closeSuccessAlert}>{success}</Alert>}
             {
-                errors.length > 0 &&
-                <Alert type={AlertTypes.danger}>
+                errors && errors.length > 0 &&
+                <Alert type={AlertTypes.danger} closeAlert={closeErrorsAlert}>
                     <ul className={styles.errorList}>
                         {errors.map((e, idx) => <li key={idx}>
                             {e}

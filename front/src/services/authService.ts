@@ -10,7 +10,7 @@ export const checkAuth = async (): Promise<UserProps> => {
         method: "GET"
     });
     return response.data
-}
+}  
 
 export const signIn = async (data: {login:string, password:string}) => {
     const response: AxiosResponse = await apiBackRequest(ApiPaths.SIGNIN, {

@@ -1,0 +1,34 @@
+.iconsList{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.icon:hover {
+    cursor: pointer;
+}
+
+.openIcon {
+    padding-top: 3px;
+    font-size: 2.15rem;
+}
+.openIcon:hover{
+    color:green;
+}
+
+.editIcon {
+    margin-left: 15px;
+    font-size: 1.85rem;
+}
+.editIcon:hover{
+    color:blue;
+}
+
+
+.deleteIcon{
+    margin-left: 15px;
+    font-size: 2.25rem;
+}
+.deleteIcon:hover{
+    color: red;
+}

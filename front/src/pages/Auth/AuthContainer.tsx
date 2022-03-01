@@ -15,11 +15,22 @@ export const AuthContainer: React.FC = () => {
     const location = useLocation();
     const [isSignUpFormActive, setIsSignUpFormActive] = useState<boolean>(location.pathname.toLowerCase().includes(PATHS.SIGNUP.toLowerCase()));
     const [success, setSuccess] = useState<string | null>(null);
-    const [errors, setErrors] = useState<string[]>([]);
+    const [errors, setErrors] = useState<string[] | null>(null);
     const defaultErrorMessage = "Une erreur a été rencontrée.";
+
+
+    const resetErrors = () => {
+        setErrors(null);
+    }
+
+    const resetSuccess = () => {
+        setSuccess(null);
+    }
 
     const handleSignUpFormSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
+        resetSuccess();
+        resetErrors();
 
         const signUpForm: HTMLFormElement = e.currentTarget;
         const signUpDataRaw = getFormData(signUpForm);
@@ -36,14 +47,12 @@ export const AuthContainer: React.FC = () => {
             if (isCreated) {
                 const pseudo = signUpForm.login.value;
                 setSuccess(`L'utilisateur "${pseudo}" a été créé !`);
-                setErrors([]);
 
                 signUpForm.reset();
 
                 setIsSignUpFormActive(false);
             }
         } catch (error) {
-            setSuccess(null)
 
             signUpForm.password.value = "";
             signUpForm.login.focus();
@@ -64,6 +73,9 @@ export const AuthContainer: React.FC = () => {
 
     const handleSignInFormSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
+        resetSuccess();
+        resetErrors();
+
         const signInForm: HTMLFormElement = e.currentTarget;
         const signInDataRaw = getFormData(signInForm)
         const signInData = {
@@ -75,7 +87,6 @@ export const AuthContainer: React.FC = () => {
             await dispatch(signInUserAction(signInData));
             history.push("/");
         } catch (error) {
-            setSuccess(null)
             signInForm.password.value = "";
             signInForm.login.focus();
 
@@ -100,7 +111,9 @@ export const AuthContainer: React.FC = () => {
             onSignUpPanelClick={() => setIsSignUpFormActive(true)}
             isSignUpFormActive={isSignUpFormActive}
             errors={errors}
+            closeErrorsAlert={resetErrors}
             success={success}
+            closeSuccessAlert={resetSuccess}
         />
     )
 }

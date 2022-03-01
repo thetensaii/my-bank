@@ -8,10 +8,11 @@ type ProfileFormViewProps = {
   user:UserProps,
   onUserUpdate: (e:React.FormEvent<HTMLFormElement>) => void,
   onUserPasswordUpdate: (e:React.FormEvent<HTMLFormElement>) => void,
-  alert:{type:AlertTypes, message:string}|null
+  alert:{type:AlertTypes, message:string}|null,
+  closeAlert: () => void
 }
 
-export const ProfileFormView:React.FC<ProfileFormViewProps> = ({user, onUserUpdate, onUserPasswordUpdate, alert}) => {
+export const ProfileFormView:React.FC<ProfileFormViewProps> = ({user, onUserUpdate, onUserPasswordUpdate, alert, closeAlert}) => {
   return <>
     <form className={styles.profileForm} onSubmit={onUserUpdate}>
       <div className={styles.formControl}>
@@ -45,7 +46,7 @@ export const ProfileFormView:React.FC<ProfileFormViewProps> = ({user, onUserUpda
         Mettre à jour le mot de passe
       </button>
     </form>
-    {alert && <Alert type={alert.type}>{alert.message}</Alert>}
+    {alert && <Alert type={alert.type} closeAlert={closeAlert} >{alert.message}</Alert>}
     
   </> 
 

@@ -1,5 +1,5 @@
 import { AlertTypes } from 'components/Alert/AlertView';
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from 'redux/selectors/userSelectors';
 import { updateUserPassword } from 'services/userService';
@@ -7,6 +7,7 @@ import { getFormData } from 'utils/functions';
 import { ProfileFormView } from './ProfileFormView';
 import axios from 'axios'
 import { updateUserAction } from 'redux/actions/userActions';
+import { useAlert } from 'hooks/useAlert';
 
 
 
@@ -16,12 +17,12 @@ type ProfileFormContainerProps = {
 export const ProfileFormContainer:React.FC<ProfileFormContainerProps> = () => {
   const user = useSelector(userSelector);
   const dispatch = useDispatch();
-  const [alert, setAlert] = useState<{type:AlertTypes, message:string}|null>(null)
+  const [alert, updateAlert, removeAlert] = useAlert()
 
   const onUserUpdate = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
-    setAlert(null)
+    removeAlert();
     const userUpdateForm = e.currentTarget;
     const userUpdateDataRaw = getFormData(userUpdateForm);
     const userUpdateData = {
@@ -37,35 +38,22 @@ export const ProfileFormContainer:React.FC<ProfileFormContainerProps> = () => {
       userUpdateData.lastname === user!.lastname &&
       userUpdateData.email === user!.email
     ){
-      setAlert({
-        type : AlertTypes.info,
-        message : "Aucune modification n'a été effectué."
-      })
+      updateAlert(AlertTypes.info, "Aucune modification n'a été effectué.");
       return
     }
 
     try{
-      
-      await dispatch(updateUserAction(user!.id, userUpdateData))
-      setAlert({
-        type : AlertTypes.success,
-        message : "Utilisateur modifié"
-      })
+      await dispatch(updateUserAction(user!.id, userUpdateData));
+      updateAlert(AlertTypes.success, "Utilisateur modifié");
     } catch(error){
       userUpdateForm.login.focus();
 
       if (axios.isAxiosError(error)) {
         if (error.response?.data.errors) {
           const errors = [...error.response.data.errors]
-          setAlert({
-            type: AlertTypes.danger, 
-            message: errors[0]
-          });
+          updateAlert(AlertTypes.danger, errors[0])
         } else {
-            setAlert({
-              type: AlertTypes.danger, 
-              message: "Une erreur a été rencontré"
-            });
+          updateAlert(AlertTypes.danger, "Une erreur a été rencontré");
         }
       } else if (error instanceof Error) {
           console.log(error.message);
@@ -77,7 +65,7 @@ export const ProfileFormContainer:React.FC<ProfileFormContainerProps> = () => {
   const onUserPasswordUpdate = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    setAlert(null);
+    removeAlert();
     const userPasswordUpdateForm:HTMLFormElement = e.currentTarget;
     const userPasswordUpdateData = getFormData(userPasswordUpdateForm);
 
@@ -85,25 +73,16 @@ export const ProfileFormContainer:React.FC<ProfileFormContainerProps> = () => {
       await updateUserPassword(user!.id, userPasswordUpdateData)
       userPasswordUpdateForm.password.value = '';
 
-      setAlert({
-        type : AlertTypes.success,
-        message : "Mot de passe modifié"
-      })
+      updateAlert(AlertTypes.success, "Mot de passe modifié");
     } catch(error){
       userPasswordUpdateForm.password.focus();
 
       if (axios.isAxiosError(error)) {
         if (error.response?.data.errors) {
-          const errors = [...error.response.data.errors]
-          setAlert({
-            type: AlertTypes.danger, 
-            message: errors[0]
-          });
+          const errors = [...error.response.data.errors];
+          updateAlert(AlertTypes.danger, errors[0]);
         } else {
-            setAlert({
-              type: AlertTypes.danger, 
-              message: "Une erreur a été rencontré"
-            });
+          updateAlert(AlertTypes.danger, "Une erreur a été rencontré");
         }
       } else if (error instanceof Error) {
           console.log(error.message);
@@ -111,5 +90,5 @@ export const ProfileFormContainer:React.FC<ProfileFormContainerProps> = () => {
     }
   }
 
-  return <ProfileFormView user={user!} onUserUpdate={onUserUpdate} onUserPasswordUpdate={onUserPasswordUpdate} alert={alert} />;
+  return <ProfileFormView user={user!} onUserUpdate={onUserUpdate} onUserPasswordUpdate={onUserPasswordUpdate} alert={alert} closeAlert={removeAlert}/>;
 };

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import useToggle from 'hooks/useToggle';
 import { checkUserAuthAction } from 'redux/actions/userActions';
 
-const useAuth = () => {
+const useAuth:() => boolean = () => {
     const [loading, toggleLoading] = useToggle(true);
     const dispatch = useDispatch()
 

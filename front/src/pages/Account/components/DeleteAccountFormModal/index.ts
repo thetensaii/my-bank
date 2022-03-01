@@ -1,0 +1,1 @@
+export {DeleteAccountFormModalContainer as default} from './DeleteAccountFormModalContainer'
