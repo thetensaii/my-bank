@@ -6,6 +6,7 @@ import SubmitButton from 'components/Form/components/SubmitButton'
 import Modal from 'components/Modal'
 import React from 'react'
 import { AccountProps } from 'utils/props/AccountProps'
+import styles from './UpdateAccountFormModal.module.css'
 
 
 type UpdateAccountFormModalViewProps = {
@@ -20,6 +21,7 @@ type UpdateAccountFormModalViewProps = {
 export const UpdateAccountFormModalView:React.FC<UpdateAccountFormModalViewProps> = ({account, showModal, closeModal, alert, closeAlert, onFormSubmit}) => {
   return (
     <Modal title={`Modification du compte : ${account.name}`} showModal={showModal} closeModal={closeModal}>
+      <div className={styles.main}>
         <Form onSubmit={onFormSubmit}>
             <Input 
                 name='name'
@@ -31,6 +33,7 @@ export const UpdateAccountFormModalView:React.FC<UpdateAccountFormModalViewProps
             <div>Solde actuelle : {account.balance} €</div>
             <SubmitButton>Modifier le compte</SubmitButton>
         </Form>
+      </div>
         {alert && <Alert type={alert.type} closeAlert={closeAlert}>{alert.message}</Alert>}
     </Modal>
   )
