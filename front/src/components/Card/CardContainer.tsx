@@ -2,7 +2,7 @@ import React from 'react';
 import { CardView } from './CardView'
 
 type CardContainerProps = {
-  title:string
+  title?:string
 }
 
 export const CardContainer:React.FC<CardContainerProps> = ({ title, children}) => {
