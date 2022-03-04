@@ -1,6 +1,4 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import { deleteAccountAction } from 'redux/actions/accountActions'
 import { AccountProps } from 'utils/props/AccountProps'
 import { DeleteAccountFormModalView } from './DeleteAccountFormModalView'
 import axios from 'axios'
@@ -10,18 +8,18 @@ import { useAlert } from 'hooks/useAlert'
 
 type DeleteAccountFormModalContainerProps = {
     account : AccountProps,
+    deleteAccountFunction: () => Promise<void>,
     showModal : boolean,
     closeModal : () => void,
     onDeleteSuccess : (accountNAme:string) => void
 }
 
-export const DeleteAccountFormModalContainer:React.FC<DeleteAccountFormModalContainerProps> = ({ account, showModal, closeModal, onDeleteSuccess }) => {
-  const dispatch = useDispatch();
+export const DeleteAccountFormModalContainer:React.FC<DeleteAccountFormModalContainerProps> = ({ account, deleteAccountFunction, showModal, closeModal, onDeleteSuccess }) => {
   const [alert, updateAlert, removeAlert] = useAlert();
 
   const deleteAccount = async () => {
     try{
-      await dispatch(deleteAccountAction(account.id));
+      await deleteAccountFunction();
       onDeleteSuccess(account.name);
     } catch(error) {
       if (axios.isAxiosError(error) && error.response) {

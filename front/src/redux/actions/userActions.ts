@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
-import { checkAuth, signIn, signOut } from "services/authService";
-import { updateUser } from "services/userService";
+import { AuthService } from "services/authService";
+import { UserService } from "services/userService";
 import { UserProps } from "utils/props/UserProps";
 
 export enum UserActions {
@@ -25,7 +25,7 @@ export type UserActionsProps = {
 
 
 export const signInUserAction = (data : {login:string, password:string}) => async (dispatch: Dispatch) => {
-    const user = await signIn(data);
+    const user = await AuthService.signIn(data);
 
     dispatch({
         type : UserActions.SIGNIN,
@@ -35,7 +35,7 @@ export const signInUserAction = (data : {login:string, password:string}) => asyn
 
 export const checkUserAuthAction = () => async (dispatch: Dispatch) => {
     try{
-        const user:UserProps = await checkAuth();
+        const user:UserProps = await AuthService.checkAuth();
 
         dispatch({
             type: UserActions.AUTO_AUTH,
@@ -51,7 +51,7 @@ type updateUserProps = {
     email : string
 }
 export const updateUserAction = (id:number, user:updateUserProps) => async (dispatch : Dispatch) => {
-    const updatedUser:UserProps = await updateUser(id, user)
+    const updatedUser:UserProps = await UserService.updateUser(id, user)
 
     dispatch({
         type : UserActions.UPDATE,
@@ -60,7 +60,7 @@ export const updateUserAction = (id:number, user:updateUserProps) => async (disp
 }
 
 export const signOutUserAction = () => async (dispatch: Dispatch ) => {
-    await signOut();
+    await AuthService.signOut();
     const action:UserActionsProps = {type : UserActions.SIGNOUT}
 
     dispatch(action)

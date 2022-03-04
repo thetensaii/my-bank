@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { AccountView } from './AccountView'
 import { useSelector } from 'react-redux';
 import { userSelector } from 'redux/selectors/userSelectors';
-import useLoadAccounts from 'hooks/useLoadAccounts';
 import { useAlert } from 'hooks/useAlert';
 import { AlertTypes } from 'components/Alert/AlertView';
-import useSelectAccount from 'hooks/useSelectAccount';
+import { useAccounts } from 'hooks/useAccounts';
 
 export enum ACCOUNT_MODALS {
     ADD ,
@@ -18,10 +17,19 @@ type AccountContainerProps = {
 }
 
 export const AccountContainer:React.FC<AccountContainerProps> = () => {
-    const user = useSelector(userSelector);
-    const [ loading , accounts] = useLoadAccounts(user!.id);
+    const {
+        loadingAccounts, 
+        accounts, 
+        account, 
+        addAccount, 
+        updateAccount, 
+        deleteAccount,
+        selectAccountByID, 
+        deselectAccount
+    } = useAccounts();
+
+    // Alert
     const [alert, updateAlert, removeAlert] = useAlert();
-    const [account, selectAccountByID] = useSelectAccount();
 
     // Modals
     const [selectedModal, setSelectedModal] = useState<ACCOUNT_MODALS | null>(null);
@@ -30,41 +38,45 @@ export const AccountContainer:React.FC<AccountContainerProps> = () => {
     const [deleteAccountModal, setDeleteAccountModal] = useState<boolean>(false);
 
 
-    const onAddAccountSuccess = (accountName:string) => {
+    const onAddAccountSuccess = async (accountName:string) => {
         closeAddAccountModal();
         updateAlert(AlertTypes.success, `Le compte '${accountName}' a bien été ajouté`);
     }
-
-    const onDeleteAccountSuccess = (accountName:string) => {
+    
+    const onDeleteAccountSuccess = async (accountName:string) => {
         closeDeleteAccountModal();
         updateAlert(AlertTypes.success, `Le compte '${accountName}' a bien été supprimé`);
     }
 
     const handleHeaderButtonClick = (e:React.MouseEvent<HTMLButtonElement>) : void => {
+        removeAlert();
         setSelectedModal(ACCOUNT_MODALS.ADD);
     }
     
     const closeAddAccountModal:() => void = () => {
-        setSelectedModal(null)
-
+        setSelectedModal(null);
     }
     
     const closeUpdateAccountModal: () =>  void = () => {
-        setSelectedModal(null)
+        setSelectedModal(null);
+        deselectAccount();
     }
     
     const closeDeleteAccountModal: () =>  void = () => {
-        setSelectedModal(null)
+        setSelectedModal(null);
+        deselectAccount();
     }
     
-    const openUpdateForm = async (accountID:number) => {
+    const openUpdateModal = async (accountID:number) => {
         selectAccountByID(accountID);
         setSelectedModal(ACCOUNT_MODALS.UPDATE);
+        removeAlert();
     }
     
-    const openDeleteForm = async (accountID:number) => {
+    const openDeleteModal = async (accountID:number) => {
         selectAccountByID(accountID);
         setSelectedModal(ACCOUNT_MODALS.DELETE);
+        removeAlert();
     }
 
     useEffect(() => {
@@ -96,13 +108,14 @@ export const AccountContainer:React.FC<AccountContainerProps> = () => {
             default :
                 return
         }
-    }, [account,selectedModal, setAddAccountModal, setUpdateAccountModal, setDeleteAccountModal]);
+    }, [account, selectedModal, setAddAccountModal, setUpdateAccountModal, setDeleteAccountModal]);
 
     return (
         <AccountView 
             accounts={accounts}
             
             headerButtonOnClick={handleHeaderButtonClick}
+            addAccountFunction={addAccount}
             onAddAccountSuccess={onAddAccountSuccess}
             alert={alert}
             closeAlert={removeAlert}
@@ -112,11 +125,13 @@ export const AccountContainer:React.FC<AccountContainerProps> = () => {
             
             selectedAccount={account}
 
-            openUpdateForm={openUpdateForm}
+            openUpdateModal={openUpdateModal}
+            updateAccountFunction={updateAccount}
             showUpdateAccountModal={updateAccountModal}
             closeUpdateAccountModal={closeUpdateAccountModal}
 
-            openDeleteForm={openDeleteForm}
+            openDeleteModal={openDeleteModal}
+            deleteAccountFunction={deleteAccount}
             onDeleteAccountSuccess={onDeleteAccountSuccess}
             showDeleteAccountModal={deleteAccountModal}
             closeDeleteAccountModal={closeDeleteAccountModal}

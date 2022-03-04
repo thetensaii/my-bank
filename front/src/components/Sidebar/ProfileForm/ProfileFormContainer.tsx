@@ -2,7 +2,7 @@ import { AlertTypes } from 'components/Alert/AlertView';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from 'redux/selectors/userSelectors';
-import { updateUserPassword } from 'services/userService';
+import { UserService } from 'services/userService';
 import { getFormData } from 'utils/functions';
 import { ProfileFormView } from './ProfileFormView';
 import axios from 'axios'
@@ -70,7 +70,7 @@ export const ProfileFormContainer:React.FC<ProfileFormContainerProps> = () => {
     const userPasswordUpdateData = getFormData(userPasswordUpdateForm);
 
     try{
-      await updateUserPassword(user!.id, userPasswordUpdateData)
+      await UserService.updateUserPassword(user!.id, userPasswordUpdateData)
       userPasswordUpdateForm.password.value = '';
 
       updateAlert(AlertTypes.success, "Mot de passe modifié");

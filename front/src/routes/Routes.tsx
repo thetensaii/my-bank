@@ -6,6 +6,7 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import { PATHS } from './constants'
 import Auth from 'pages/Auth'
 import Account from 'pages/Account'
+import Transaction from 'pages/Transaction'
 export const Routes:React.FC = () => {
     return (
         <Router>
@@ -14,7 +15,7 @@ export const Routes:React.FC = () => {
                 <AnonymousRoute path={PATHS.SIGNUP} exact component={Auth} />
                 <ProtectedRoute path={PATHS.ROOT} exact component={Home}/>
                 <ProtectedRoute path={PATHS.ACCOUNTS} exact component={Account}/>
-                <ProtectedRoute path={PATHS.TRANSACTIONS} exact component={Home}/>
+                <ProtectedRoute path={PATHS.TRANSACTIONS} exact component={Transaction}/>
                 <Redirect to={PATHS.ROOT} />
             </Switch>
         </Router>

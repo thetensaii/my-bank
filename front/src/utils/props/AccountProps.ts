@@ -3,6 +3,6 @@ export type AccountProps = {
     user_id : number,
     name:string,
     balance:number,
-    created_at:Date|null,
+    created_at:Date,
     updated_at?:Date|null,
 }

@@ -4,7 +4,7 @@ export type UserProps = {
     firstname: string,
     lastname: string,
     email: string,
-    created_at:Date|null,
+    created_at:Date,
     updated_at?:Date|null,
     is_admin?:boolean
 }

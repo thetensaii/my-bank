@@ -14,6 +14,11 @@ type AccountViewProps = {
     selectedAccount : AccountProps | null,
 
     headerButtonOnClick: (e : React.MouseEvent<HTMLButtonElement>) => void,
+    addAccountFunction : (data : {
+      user_id : number,
+      name : string,
+      balance : number
+    }) => Promise<void>,
     onAddAccountSuccess: (accountName:string) => void,
 
     alert : {type:AlertTypes, message :string} |null,
@@ -22,17 +27,19 @@ type AccountViewProps = {
     showAddAccountModal : boolean,
     closeAddAccountModal : () => void,
 
-    openUpdateForm: (accountID:number) => void,
+    openUpdateModal: (accountID:number) => void,
+    updateAccountFunction: (data : {name : string}) => Promise<void>,
     showUpdateAccountModal : boolean,
     closeUpdateAccountModal : () => void
 
-    openDeleteForm: (accountID:number) => void,
+    openDeleteModal: (accountID:number) => void,
+    deleteAccountFunction: () => Promise<void>,
     onDeleteAccountSuccess: (accountName:string) => void,
     showDeleteAccountModal : boolean,
     closeDeleteAccountModal : () => void
 }
 
-export const AccountView:React.FC<AccountViewProps> = ({accounts, selectedAccount, headerButtonOnClick, onAddAccountSuccess, showAddAccountModal, closeAddAccountModal, alert, closeAlert, openUpdateForm, showUpdateAccountModal, closeUpdateAccountModal, openDeleteForm, onDeleteAccountSuccess, showDeleteAccountModal, closeDeleteAccountModal}) => {
+export const AccountView:React.FC<AccountViewProps> = ({accounts, selectedAccount, headerButtonOnClick, addAccountFunction,onAddAccountSuccess, showAddAccountModal, closeAddAccountModal, alert, closeAlert, openUpdateModal, updateAccountFunction, showUpdateAccountModal, closeUpdateAccountModal, openDeleteModal, deleteAccountFunction, onDeleteAccountSuccess, showDeleteAccountModal, closeDeleteAccountModal}) => {
 
     
   return (
@@ -41,14 +48,14 @@ export const AccountView:React.FC<AccountViewProps> = ({accounts, selectedAccoun
         {accounts &&
         <div className={styles.main}>
             <ul>
-                {accounts.map(account => <AccountCard key={account.id} account={account} openUpdateForm={openUpdateForm} openDeleteForm={openDeleteForm}/>)}
+                {accounts.map(account => <AccountCard key={account.id} account={account} openUpdateModal={openUpdateModal} openDeleteModal={openDeleteModal}/>)}
             </ul>
         </div>}
         
         {alert && <Alert type={alert.type} closeAlert={closeAlert}>{alert.message}</Alert>}
-        <AddAccountFormModal onAddSuccess={onAddAccountSuccess} showModal={showAddAccountModal} closeModal={closeAddAccountModal}/>
-        {selectedAccount && <UpdateAccountFormModal account={selectedAccount} showModal={showUpdateAccountModal} closeModal={closeUpdateAccountModal} />}
-        {selectedAccount && <DeleteAccountFormModal account={selectedAccount} onDeleteSuccess={onDeleteAccountSuccess} showModal={showDeleteAccountModal} closeModal={closeDeleteAccountModal} />}
+        <AddAccountFormModal addAccountFunction={addAccountFunction} onAddSuccess={onAddAccountSuccess} showModal={showAddAccountModal} closeModal={closeAddAccountModal}/>
+        {selectedAccount && <UpdateAccountFormModal account={selectedAccount} updateAccountFunction={updateAccountFunction} showModal={showUpdateAccountModal} closeModal={closeUpdateAccountModal} />}
+        {selectedAccount && <DeleteAccountFormModal account={selectedAccount} deleteAccountFunction={deleteAccountFunction} onDeleteSuccess={onDeleteAccountSuccess} showModal={showDeleteAccountModal} closeModal={closeDeleteAccountModal} />}
     </MainLayout>
   )
 }

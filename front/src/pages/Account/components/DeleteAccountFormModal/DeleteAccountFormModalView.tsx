@@ -24,7 +24,8 @@ export const DeleteAccountFormModalView:React.FC<DeleteAccountFormModalViewProps
         <ul className={styles.infoList}>
             <li>Nom : {account.name}</li>
             <li>Solde : {account.balance} €</li>
-            <li>Créé le : {account.created_at}</li>
+            <li>Créé le : {account.created_at.toLocaleDateString()} à {account.created_at.toLocaleTimeString()}</li>
+            {account.updated_at && <li>Dernière modification le : {account.updated_at.toLocaleDateString()} à {account.updated_at.toLocaleTimeString()}</li> }
         </ul>
         <SubmitButton onClick={deleteAccount}>Suppprimer le compte</SubmitButton>
       </div>

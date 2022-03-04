@@ -21,6 +21,8 @@ export const enum ApiPaths {
     USERS = "/users",
     USER_PASSWORD = "/users/password",
     ACCOUNTS = "/accounts",
-    USER_ACCOUNTS = "/accounts/user"
+    USER_ACCOUNTS = "/accounts/user",
+    OPERATIONS = "/operations",
+    ACCOUNT_OPERATIONS = "/operations/account"
 
 }

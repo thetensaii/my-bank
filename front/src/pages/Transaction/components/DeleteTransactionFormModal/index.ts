@@ -1,0 +1,1 @@
+export {DeleteTransactionFormModalContainer as default} from './DeleteTransactionFormModalContainer'

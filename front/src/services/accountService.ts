@@ -1,41 +1,63 @@
 import { apiBackRequest, ApiPaths } from "utils/api";
 import { AccountProps } from "utils/props/AccountProps";
 
+export class AccountService {
 
-export const getUserAccounts = async (userID:number) : Promise<AccountProps[]> => {
-    const response  = await apiBackRequest(`${ApiPaths.USER_ACCOUNTS}/${userID}`);
+    static async getUserAccounts(userID:number) : Promise<AccountProps[]> {
+        const {data : accountsResponse} : {data : AccountResponseProps[]} = await apiBackRequest(`${ApiPaths.USER_ACCOUNTS}/${userID}`);
+        
+        const accounts:AccountProps[] = accountsResponse.map(a  => ({
+            ...a,
+            created_at : new Date(a.created_at),
+            updated_at : a.updated_at ? new Date(a.updated_at) : null
+        }))  
 
-    return response.data;
+        return accounts;
+    }
+    
+    static async addAccount(data : {
+        user_id : number,
+        name : string,
+        balance : number
+    }) : Promise<AccountProps> {
+        const { data:accountResponse }  : {data : AccountResponseProps} = await apiBackRequest(ApiPaths.ACCOUNTS, {
+            method : 'POST',
+            data : data
+        })
+
+        return convertAccountResponseToAccount(accountResponse);
+    }
+    
+    static async updateAccount(accountID:number, data : {
+        name:string
+    }) : Promise<AccountProps> {
+        const {data : accountResponse} : {data : AccountResponseProps} = await apiBackRequest(`${ApiPaths.ACCOUNTS}/${accountID}`, {
+            method :  'PUT',
+            data : data
+        })
+
+        return convertAccountResponseToAccount(accountResponse);
+    }
+
+    static async deleteAccount(accountID:number):Promise<boolean> {
+        const response = await apiBackRequest(`${ApiPaths.ACCOUNTS}/${accountID}`, {
+            method: 'DELETE'
+        })
+
+        return response.status === 200;
+    }
+
 }
 
-export const addAccount = async (data : {
-    user_id : number,
-    name : string,
-    balance : string
-}) => {
-    const response = await apiBackRequest(ApiPaths.ACCOUNTS, {
-        method : 'POST',
-        data : data
-    })
+type AccountResponseProps = {
+    created_at : string,
+    updated_at : string | null
+} & AccountProps
 
-    return response.data;
-}
-
-export const updateAccount = async (accountID:number, data : {
-    name:string
-}) => {
-    const response = await apiBackRequest(`${ApiPaths.ACCOUNTS}/${accountID}`, {
-        method :  'PUT',
-        data : data
-    })
-
-    return response.data
-}
-
-export const deleteAccount = async (accountID:number) => {
-    const response = await apiBackRequest(`${ApiPaths.ACCOUNTS}/${accountID}`, {
-        method: 'DELETE'
-    })
-
-    return response.status === 200;
-}
+const convertAccountResponseToAccount = (accountResponse : AccountResponseProps) : AccountProps=> {
+    return {
+        ...accountResponse,
+        created_at : new Date(accountResponse.created_at),
+        updated_at : accountResponse.updated_at ? new Date(accountResponse.updated_at) : null
+    }
+}  

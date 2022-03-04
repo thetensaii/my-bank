@@ -5,35 +5,35 @@ import { ApiPaths } from "utils/api";
 import Cookies from "universal-cookie";
 import config from "config";
 
-export const checkAuth = async (): Promise<UserProps> => {
-    const response: AxiosResponse = await apiBackRequest(ApiPaths.ME, {
-        method: "GET"
-    });
-    return response.data
-}  
+export class AuthService {
+    static async checkAuth(): Promise<UserProps> {
+        const response: AxiosResponse = await apiBackRequest(ApiPaths.ME, {
+            method: "GET"
+        });
+        return response.data
+    }  
+    static async signIn(data: {login:string, password:string}) {
+        const response: AxiosResponse = await apiBackRequest(ApiPaths.SIGNIN, {
+            method: "POST",
+            data: data
+        })
+        return response.data
+    }
 
-export const signIn = async (data: {login:string, password:string}) => {
-    const response: AxiosResponse = await apiBackRequest(ApiPaths.SIGNIN, {
-        method: "POST",
-        data: data
-    })
-    return response.data
-}
+    static async signUp(data: Object) {
+        const response: AxiosResponse = await apiBackRequest(ApiPaths.SIGNUP, {
+            method: "POST",
+            data: data
+        })
+        
+        return response.status === 201;
+    }
+    static async signOut(){
+        const cookies = new Cookies();
+        cookies.remove(config.AUTH_TOKEN);
 
-export const signUp = async (data: Object) => {
-    const response: AxiosResponse = await apiBackRequest(ApiPaths.SIGNUP, {
-        method: "POST",
-        data: data
-    })
-    
-    return response.status === 201;
-}
+        const response:AxiosResponse = await apiBackRequest(ApiPaths.DISCONNECT)
 
-export const signOut = async () => {
-    const cookies = new Cookies();
-    cookies.remove(config.AUTH_TOKEN);
-
-    const response:AxiosResponse = await apiBackRequest(ApiPaths.DISCONNECT)
-
-    return response.status === 200;
+        return response.status === 200;
+    }
 }

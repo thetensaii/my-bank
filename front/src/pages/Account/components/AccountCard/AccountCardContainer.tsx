@@ -4,17 +4,17 @@ import { AccountCardView } from './AccountCardView'
 
 type AccountCardContainerProps = {
     account :  AccountProps,
-    openUpdateForm : (accountID:number) => void,
-    openDeleteForm : (accountID:number) => void
+    openUpdateModal : (accountID:number) => void,
+    openDeleteModal : (accountID:number) => void
 }
 
-export const AccountCardContainer:React.FC<AccountCardContainerProps> = ({account, openUpdateForm, openDeleteForm}) => {
+export const AccountCardContainer:React.FC<AccountCardContainerProps> = ({account, openUpdateModal, openDeleteModal}) => {
 	const onUpdateIconClick = () => {
-		openUpdateForm(account.id);
+		openUpdateModal(account.id);
 	}
 
 	const onDeleteIconClick = () => {
-		openDeleteForm(account.id);
+		openDeleteModal(account.id);
 	}
 
 	return (

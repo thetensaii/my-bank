@@ -1,0 +1,1 @@
+export {CreateTransactionFormModalContainer as default} from './CreateTransactionFormModalContainer'

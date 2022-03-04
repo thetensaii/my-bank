@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useHistory, useLocation } from 'react-router';
-import { signUp } from 'services/authService';
+import { AuthService } from 'services/authService';
 import { AuthView } from './AuthView';
 import { useDispatch } from 'react-redux';
 import { signInUserAction } from 'redux/actions/userActions';
@@ -43,7 +43,7 @@ export const AuthContainer: React.FC = () => {
         }
 
         try {
-            const isCreated = await signUp(signUpData);
+            const isCreated = await AuthService.signUp(signUpData);
             if (isCreated) {
                 const pseudo = signUpForm.login.value;
                 setSuccess(`L'utilisateur "${pseudo}" a été créé !`);
