@@ -26,7 +26,6 @@ export const AddAccountModalFormContainer:React.FC<AddAccountModalFormContainerP
     const defaultErrorMessage = "Une erreur a été rencontrée.";
 	
 	const onCloseModal = () => {
-		console.log('CLOSE ADD ACCOUNT MODAL')
 		removeAlert();
 		closeModal();
 	}

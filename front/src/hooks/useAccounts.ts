@@ -22,13 +22,14 @@ export const useAccounts = () :{
 
     }=> {
     const [accounts, setAccounts] = useState<AccountProps[]>([])
-    const [loadingAccounts, toggleLoading] = useToggle(true);
+    const [loadingAccounts, toggleLoading] = useToggle(false);
     const user = useSelector(userSelector);
 
     const [accountID, setAccountID] = useState<number|null>(null);
     const [account, setAccount] = useState<AccountProps|null>(null);
 
     const fetchAccounts = useCallback(async () => {
+        toggleLoading();
         try{
             if(user){
                 const newAccounts = await AccountService.getUserAccounts(user.id);
@@ -40,7 +41,7 @@ export const useAccounts = () :{
             console.log(error)
             // TODO : Manage Alert with redux store
         }
-    }, [])
+    }, [user, toggleLoading])
     
     useEffect(() => { // Set acccounts on component did mount
         (async() => {

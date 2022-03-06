@@ -26,13 +26,12 @@ export const CreateTransactionFormModalView:React.FC<CreateTransactionFormModalV
 
 
   return (
-    <Modal title='Création de compte' showModal={showModal} closeModal={closeModal}>
+    <Modal title='Création de transaction' showModal={showModal} closeModal={closeModal}>
       <Form onSubmit={onFormSubmit}>
 			<Select
 				name='account_id'
 				label='Compte'
 				options={accounts.map(account => ({value : account.id, label : account.name }))}
-				
 			/>
 			<Input 
 				type='number'

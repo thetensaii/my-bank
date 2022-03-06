@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { AccountView } from './AccountView'
-import { useSelector } from 'react-redux';
-import { userSelector } from 'redux/selectors/userSelectors';
 import { useAlert } from 'hooks/useAlert';
 import { AlertTypes } from 'components/Alert/AlertView';
 import { useAccounts } from 'hooks/useAccounts';
@@ -18,7 +16,6 @@ type AccountContainerProps = {
 
 export const AccountContainer:React.FC<AccountContainerProps> = () => {
     const {
-        loadingAccounts, 
         accounts, 
         account, 
         addAccount, 

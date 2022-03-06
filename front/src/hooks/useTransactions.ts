@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { TransactionService } from "services/transactionService";
 import { AccountProps } from "utils/props/AccountProps";
 import { TransactionProps } from "utils/props/TransactionProps";
@@ -31,9 +31,9 @@ export const useTransactions = ():{
         } else {
             setTransaction(null);
         }
-    }, [transactionID, setTransaction])
+    }, [transactionID, transactions, setTransaction])
     
-    const fetchTransactions = async (accounts:AccountProps[]) => {
+    const fetchTransactions = useCallback(async (accounts:AccountProps[]) => {
         toggleLoading();
         try{
             const transactionsByAccounts = await Promise.all(accounts.map(async account => TransactionService.getAccountTransactions(account.id))); 
@@ -44,37 +44,38 @@ export const useTransactions = ():{
             toggleLoading();
         }catch(error){
             toggleLoading();
-            console.log(error)
+            console.log(error);
             // TODO : Manage Alert with redux store
         }
-    }
-
-    const selectTransactionByID = (transactionID:number) => {
+    }, [toggleLoading, setTransactions]);
+    
+    const selectTransactionByID = useCallback((transactionID:number) => {
         setTransactionID(transactionID);
-    }
+    }, []);
 
-    const deselectTransaction = () => {
+    const deselectTransaction = useCallback(() => {
         setTransactionID(null)
-    }
+    }, []);
 
-    const addTransaction = async (data : {
+    const addTransaction = useCallback(async (data : {
         account_id : number,
         amount : number,
         comment : string
     }) => {
         const newTransaction = await TransactionService.addTransaction(data);
         setTransactions(transactions => [newTransaction, ...transactions]);
-    }
-
-    const deleteTransaction = async () => {
+    }, []);
+    
+    const deleteTransaction = useCallback(async () => {
         if(transactionID){
             await TransactionService.deleteTransaction(transactionID);
             setTransactions(transactions.filter(t => t.id !== transactionID));
             setTransactionID(null);
         } else{
+            // TODO : Alert no transaction selected
 
         }
-    }
+    }, [transactionID, transactions]);
 
     return {
         loadingTransactions: loadingTransactions,

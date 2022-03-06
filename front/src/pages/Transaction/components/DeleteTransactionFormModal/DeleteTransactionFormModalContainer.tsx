@@ -1,7 +1,7 @@
+import axios from 'axios'
 import { AlertTypes } from 'components/Alert/AlertView'
-import { useAccounts } from 'hooks/useAccounts'
 import { useAlert } from 'hooks/useAlert'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { AccountProps } from 'utils/props/AccountProps'
 import { TransactionProps } from 'utils/props/TransactionProps'
 import { DeleteTransactionFormModalView } from './DeleteTransactionFormModalView'
@@ -26,9 +26,20 @@ export const DeleteTransactionFormModalContainer:React.FC<DeleteTransactionFormM
             await deleteTransactionFunction();
             onDeleteTransactionSuccess();
         } catch(error) {
-            updateAlert(AlertTypes.danger, 'Une erreur a été rencontrée')
+            if (axios.isAxiosError(error) && error.response) {
+				console.error(error.response.data)
+				updateAlert(AlertTypes.danger, error.response.data)
+			} else if (error instanceof Error) {
+				console.error(error.message);
+				updateAlert(AlertTypes.danger, 'Une erreur a été rencontrée.')
+			}
         }
     }
+
+    const onCloseModal = () => {
+		closeModal();
+		removeAlert();
+	}
     
     return (
 
@@ -37,7 +48,7 @@ export const DeleteTransactionFormModalContainer:React.FC<DeleteTransactionFormM
             account={account}
             deleteTransaction={deleteTransaction}
             showModal={showModal}
-            closeModal={closeModal}
+            closeModal={onCloseModal}
             alert={alert}
             closeAlert={removeAlert}
         />

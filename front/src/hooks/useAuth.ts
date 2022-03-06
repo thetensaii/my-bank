@@ -13,7 +13,7 @@ const useAuth:() => boolean = () => {
             await dispatch(checkUserAuthAction());
             toggleLoading()
         })()
-    }, [dispatch])
+    }, [dispatch, toggleLoading])
 
     return loading
 } 

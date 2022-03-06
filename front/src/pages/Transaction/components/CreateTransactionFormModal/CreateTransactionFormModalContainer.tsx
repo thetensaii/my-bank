@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
-import { AlertTypes } from 'components/Alert/AlertView'
+import React from 'react'
 import { useAlert } from 'hooks/useAlert'
 import { CreateTransactionFormModalView } from './CreateTransactionFormModalView'
 import { getFormData } from 'utils/functions'
 import { AccountProps } from 'utils/props/AccountProps'
+import { AlertTypes } from 'components/Alert/AlertView'
+import axios from 'axios'
 
 type CreateTransactionFormModalContainerProps = {
 	accounts : AccountProps[],
@@ -33,13 +34,22 @@ export const CreateTransactionFormModalContainer:React.FC<CreateTransactionFormM
 		}
 
 		try{
-			// await dispatch(addTransactionAction(addTransactionFormData))
 			await addTransactionFunction(addTransactionData)
 			onAddTransactionSuccess();
 		} catch (error){
-			console.error(error)
-			// updateAlert(AlertTypes.danger, error.message);
+			if (axios.isAxiosError(error) && error.response) {
+				console.error(error.response.data)
+				updateAlert(AlertTypes.danger, error.response.data)
+			} else if (error instanceof Error) {
+				console.error(error.message);
+				updateAlert(AlertTypes.danger, 'Une erreur a été rencontrée.')
+			}
 		}
+	}
+
+	const onCloseModal = () => {
+		closeModal();
+		removeAlert();
 	}
     
     return (
@@ -49,7 +59,7 @@ export const CreateTransactionFormModalContainer:React.FC<CreateTransactionFormM
 			onFormSubmit={onFormSubmit}
 
 			showModal={showModal}
-			closeModal={closeModal}
+			closeModal={onCloseModal}
 
 			alert={alert}
 			closeAlert={removeAlert}

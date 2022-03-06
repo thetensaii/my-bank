@@ -36,7 +36,7 @@ export const TransactionContainer:React.FC<TransactionContainerProps> = () => {
 
 	useEffect(() => {
 		fetchTransactions(accounts);
-	}, [accounts])
+	}, [accounts, fetchTransactions])
 
 	useEffect(() => {
 		if(transaction){
@@ -44,7 +44,7 @@ export const TransactionContainer:React.FC<TransactionContainerProps> = () => {
 		} else {
 			deselectAccount();
 		}
-	}, [transaction])
+	}, [transaction, selectAccountByID, deselectAccount])
 
 	useEffect(() => {
 		switch(selectedModal){
@@ -61,12 +61,6 @@ export const TransactionContainer:React.FC<TransactionContainerProps> = () => {
 				setDeleteTransactionModal(false);
 		}
 	}, [selectedModal, setAddTransactionModal, setDeleteTransactionModal]);
-	
-	useEffect(() => {
-		if(!loadingAccounts && accounts && accounts.length === 0 ){
-			updateAlert(AlertTypes.danger, 'Pas de compte créé.');
-		}
-	}, [loadingAccounts, accounts]);
 
 	const handleHeaderButtonClick = () : void => {
 		if(accounts && accounts.length === 0) {
