@@ -1,0 +1,1 @@
+export { RecipesCardContainer as default } from './RecipesCardContainer'

@@ -5,7 +5,7 @@ import { TransactionProps } from "utils/props/TransactionProps";
 import useToggle from "./useToggle"
 
 
-export const useTransactions = ():{
+export const useTransactions = (accounts: AccountProps[]):{
     loadingTransactions : boolean,
     transactions : TransactionProps[],
     transaction : TransactionProps| null,
@@ -32,27 +32,33 @@ export const useTransactions = ():{
             setTransaction(null);
         }
     }, [transactionID, transactions, setTransaction])
+
+	
     
     const fetchTransactions = useCallback(async (accounts:AccountProps[]) => {
-        toggleLoading();
+		toggleLoading();
         try{
-            const transactionsByAccounts = await Promise.all(accounts.map(async account => TransactionService.getAccountTransactions(account.id))); 
+			const transactionsByAccounts = await Promise.all(accounts.map(async account => TransactionService.getAccountTransactions(account.id))); 
             const newTransactions = transactionsByAccounts.reduce((previousState, accountList) => 
-                [...previousState, ...accountList]
-            , [])
+			[...previousState, ...accountList]
+            , []);
             setTransactions(newTransactions.sort((a, b) => b.created_at.getTime() - a.created_at.getTime()));
             toggleLoading();
         }catch(error){
-            toggleLoading();
+			toggleLoading();
             console.log(error);
             // TODO : Manage Alert with redux store
         }
     }, [toggleLoading, setTransactions]);
+
+	useEffect(() => {
+		fetchTransactions(accounts);
+	}, [accounts, fetchTransactions]);
     
     const selectTransactionByID = useCallback((transactionID:number) => {
-        setTransactionID(transactionID);
+		setTransactionID(transactionID);
     }, []);
-
+	
     const deselectTransaction = useCallback(() => {
         setTransactionID(null)
     }, []);

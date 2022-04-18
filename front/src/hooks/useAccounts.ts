@@ -39,7 +39,7 @@ export const useAccounts = () :{
         }catch(error){
             toggleLoading();
             console.log(error)
-            // TODO : Manage Alert with redux store
+			// TODO : Manage Alert with redux store
         }
     }, [user, toggleLoading])
     

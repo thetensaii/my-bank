@@ -1,53 +1,62 @@
 @font-face {
-    font-family: "Montserrat";
-    font-weight: 300;
-    src: url("./assets/fonts/Montserrat-Light.ttf");
+  font-family: "Montserrat";
+  font-weight: 300;
+  src: url("./assets/fonts/Montserrat-Light.ttf");
 }
 
 @font-face {
-    font-family: "Montserrat";
-    font-weight: 400;
-    src: url("./assets/fonts/Montserrat-Regular.ttf");
+  font-family: "Montserrat";
+  font-weight: 400;
+  src: url("./assets/fonts/Montserrat-Regular.ttf");
 }
 
 @font-face {
-    font-family: "Montserrat";
-    font-weight: 500;
-    src: url("./assets/fonts/Montserrat-Medium.ttf");
+  font-family: "Montserrat";
+  font-weight: 500;
+  src: url("./assets/fonts/Montserrat-Medium.ttf");
 }
 
 @font-face {
-    font-family: "Montserrat";
-    font-weight: 600;
-    src: url("./assets/fonts/Montserrat-SemiBold.ttf");
+  font-family: "Montserrat";
+  font-weight: 600;
+  src: url("./assets/fonts/Montserrat-SemiBold.ttf");
 }
 
 @font-face {
-    font-family: "Montserrat";
-    font-weight: 700;
-    src: url("./assets/fonts/Montserrat-Bold.ttf");
+  font-family: "Montserrat";
+  font-weight: 700;
+  src: url("./assets/fonts/Montserrat-Bold.ttf");
 }
 
 * {
-	box-sizing: border-box;
-    margin : 0;
-    padding : 0;
-    font-family: 'Montserrat', sans-serif;    
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", sans-serif;
 }
 
 body {
-    background-color: #F0EAEA;
+  background-color: #f0eaea;
+  color: #3c1e18;
 
-    --primary-color : #FF4B2B;
-    --primary-color-hover : #ee2703;
-    --secondary-color : #FF416C;
-    --gray-background-color : #735D58;
+  --primary-color: #ff4b2b;
+  --primary-color-hover: #ee2703;
+  --secondary-color: #ff416c;
+  --gray-background-color: #735d58;
 
-    --sidebar-width : 350px;
+  --first-account-color: #3c6997;
+  --second-account-color: #fb8b24;
+  --third-account-color: #0cce6b;
+  --fourth-account-color: #d90368;
+  --other-account-color: #c4c4c4;
+  --negative-accounts-color: "#de2100",
+
+  --brown-text-color: rgba(130, 88, 78, 0.81);
+  --sidebar-width: 350px;
 }
 
 hr {
-    height: 1px;
-    background-color : rgba(182, 173, 171, 0.85);
-    border: none;
+  height: 1px;
+  background-color: rgba(182, 173, 171, 0.85);
+  border: none;
 }

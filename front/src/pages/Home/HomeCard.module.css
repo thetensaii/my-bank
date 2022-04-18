@@ -1,0 +1,64 @@
+.main {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-weight: 600;
+  margin: 25px 0;
+}
+
+.chart{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+
+.total {
+	margin-top: 10px;
+}
+
+.accountName {
+  color: var(--brown-text-color);
+  display: inline-block;
+  width: 10rem;
+  margin-right: 8px;
+}
+
+.account {
+  display: flex;
+  align-items: center;
+}
+
+.bullet {
+  font-size: 0.75rem;
+  margin-right: 8px;
+}
+
+.firstAccount {
+  color: var(--first-account-color);
+}
+
+.secondAccount {
+  color: var(--second-account-color);
+}
+
+.thirdAccount {
+  color: var(--third-account-color);
+}
+
+.fourthAccount {
+  color: var(--fourth-account-color);
+}
+
+.otherAccounts {
+  color: var(--other-account-color);
+}
+
+.negativesAccount {
+  color: red;
+}
+
+.doughnut {
+  width: 40%;
+}
